@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('no_telp')->nullable();
             $table->string('angkatan')->nullable();
             $table->string('kelas')->nullable();
+            $table->string('jenis_kelamin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
