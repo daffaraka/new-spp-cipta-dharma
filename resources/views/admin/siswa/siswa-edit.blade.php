@@ -93,12 +93,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="">No Telfon</label>
-            <input type="number" name="no_telp" class="form-control" value="{{ $siswa->no_telp }}" required>
-        </div>
-
-
-        <div class="mb-3">
             <label for="">Nama Wali</label>
             <input type="text" name="nama_wali" class="form-control" value="{{ $siswa->nama_wali }}" required>
         </div>

@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tagihan::class);
     }
+
+    public function menerbitkan()
+    {
+        return $this->hasMany(Tagihan::class, 'user_penerbit_id');
+    }
 }

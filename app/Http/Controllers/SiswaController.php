@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\SiswaExport;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -139,5 +143,22 @@ class SiswaController extends Controller
                 })
                 ->get()
         );
+    }
+
+
+    public function export()
+    {
+        $tgl = date('d-m-Y_H-i-s');
+        return Excel::download(new SiswaExport, 'siswa_'.$tgl.'.xlsx');
+    }
+
+
+    public function print()
+    {
+        $siswas = User::role('SiswaOrangTua')->latest()->get();
+        $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
+            ->setPaper('a4', 'landscape');
+        $tgl = date('d-m-Y_H-i`-s');
+        return $pdf->stream('siswa'.$tgl.'.pdf');
     }
 }

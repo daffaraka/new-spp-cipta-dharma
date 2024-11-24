@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Tagihan;
 use Illuminate\Http\Request;
 
-class LaporanPetugasController extends Controller
+class LaporanSPPController extends Controller
 {
     public function index()
     {
-        $data['judul'] = 'Laporan Data Petugas';
-        $data['laporan_petugas'] = User::role(['Petugas', 'KepalaSekolah'])->withCount('menerbitkan')->latest()->get();
+        $data['judul'] = 'Laporan Data SPP';
+        $data['laporan_spp'] = Tagihan::with('siswa')->latest()->get();
 
         // dd($data);
-        return view('admin.laporan-petugas.laporan-petugas-index', $data);
+        return view('admin.laporan-spp.laporan-spp-index', $data);
     }
 
 
@@ -65,14 +65,26 @@ class LaporanPetugasController extends Controller
     }
 
 
+    public function edit(User $petugas)
+    {
+        return view('admin.petugas.petugas-edit', compact('siswa'));
+    }
+
+
+    public function destroy(User $petugas)
+    {
+        $petugas->delete();
+        return redirect()->route('siswa.index')->with('success', 'Data siswa telah dihapus');
+    }
+
     public function filter(Request $request)
     {
         // dd($request->all());
         if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return User::role(['Petugas', 'KepalaSekolah'])->latest()->get();
+            return Tagihan::with('siswa')->latest()->get();
         } else {
             return response()->json(
-                User::role(['Petugas', 'KepalaSekolah'])
+                Tagihan::with('siswa')
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
                         $query->whereYear('created_at', $request->filter_tahun);
                     })

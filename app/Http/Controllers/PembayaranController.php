@@ -43,8 +43,17 @@ class PembayaranController extends Controller
     }
 
 
-    public function verifikasi(Tagihan $pembayaran) {
+    public function verifikasi($id) {
+        $pembayaran = Tagihan::find($id);
         $pembayaran->status = 'Lunas';
+        $pembayaran->melunasi_id = auth()->user()->id;
+        $pembayaran->save();
+
+        return to_route('pembayaran.index')->with('success', 'pembayaran telah diverifikasi');
+    }
+
+    public function kirimKuitansi($id) {
+        $pembayaran = Tagihan::find($id);
         $pembayaran->melunasi_id = auth()->user()->id;
         $pembayaran->save();
 

@@ -39,38 +39,30 @@
         <thead class="thead-light">
             <tr>
                 <th>#</th>
-                <th>Nama petugas</th>
-                <th>Jabatan</th>
-                <th>Email</th>
-                <th>No Telfon</th>
-                <th>NIP</th>
-                <th>SPP Terbit</th>
-                <th>SPP Dilunasi</th>
+                <th>No Invoice</th>
+                <th>NIS</th>
+                <th>Nama Siswa</th>
+                <th>Kelas</th>
+                <th>Bulan</th>
+                <th>Tahun</th>
+                <th>Total Bayar</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($laporan_petugas as $index => $petugas)
+            @foreach ($laporan_spp as $index => $spp)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $petugas->nama }}</td>
-                    <td>
-                        <ul>
-                            @foreach ($petugas->roles as $role)
-                                <li>{{ $role->name }}</li>
-                            @endforeach
-                        </ul>
-
-
-                    </td>
-                    <td>{{ $petugas->email }}</td>
-                    <td>{{ $petugas->no_telp ?? '-' }}</td>
-                    <td>{{ $petugas->nip ?? '-'}}</td>
-                    <td>{{ $petugas->menerbitkan_count }}</td>
-                    <td>{{ $petugas->no_telp ?? '-' }}</td>
+                    <td>{{ $spp->no_invoice }}</td>
+                    <td>{{ $spp->siswa->nis }}</td>
+                    <td>{{ $spp->siswa->nama }}</td>
+                    <td>{{ $spp->siswa->kelas }}</td>
+                    <td>{{ $spp->bulan }}</td>
+                    <td>{{ $spp->tahun }}</td>
+                    <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
                     <td>
                         <div class="d-grid">
-                            <a href="{{ route('laporanPetugas.show', ['petugas' => $petugas->id]) }}"
+                            <a href="{{ route('laporanSpp.show', ['spp' => $spp->id]) }}"
                                 class="btn btn-block btn-info my-1">Detail</a>
                         </div>
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class LaporanPetugasController extends Controller
+class LaporanSiswaController extends Controller
 {
     public function index()
     {
@@ -65,14 +65,26 @@ class LaporanPetugasController extends Controller
     }
 
 
+    public function edit(User $petugas)
+    {
+        return view('admin.petugas.petugas-edit', compact('siswa'));
+    }
+
+
+    public function destroy(User $petugas)
+    {
+        $petugas->delete();
+        return redirect()->route('siswa.index')->with('success', 'Data siswa telah dihapus');
+    }
+
     public function filter(Request $request)
     {
         // dd($request->all());
         if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return User::role(['Petugas', 'KepalaSekolah'])->latest()->get();
+            return User::role(['SiswaOrangTua'])->latest()->get();
         } else {
             return response()->json(
-                User::role(['Petugas', 'KepalaSekolah'])
+                User::role(['SiswaOrangTua'])
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
                         $query->whereYear('created_at', $request->filter_tahun);
                     })

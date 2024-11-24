@@ -45,9 +45,9 @@
                 <div class="collapse show" id="collapseLaporan" aria-labelledby="headingOne"
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link"   href="{{ route('petugas.index') }}">Laporan Petugas</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Laporan Siswa</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Laporan SPP</a>
+                        <a class="nav-link"   href="{{ route('laporanPetugas.index') }}">Laporan Petugas</a>
+                        <a class="nav-link" href="{{route('laporanSiswa.index')}}">Laporan Siswa</a>
+                        <a class="nav-link" href="{{route('laporanSpp.index')}}">Laporan SPP</a>
                     </nav>
                 </div>
 

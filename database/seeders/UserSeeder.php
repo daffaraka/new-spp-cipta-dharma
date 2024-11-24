@@ -52,6 +52,9 @@ class UserSeeder extends Seeder
                 [
                     'nama' => 'User ' . $i,
                     'email' => 'user' . $i . '@gmail.com',
+                    'nis' => $faker->unique()->numerify('######'),
+                    'nisn' => $faker->unique()->numerify('##########'),
+                    'jenis_kelamin' => $jk[array_rand($jk)],
                     'password' => bcrypt('password'),
                     'tanggal_lahir' => $faker->date('Y-m-d'),
                     'nama_wali' => $faker->name,

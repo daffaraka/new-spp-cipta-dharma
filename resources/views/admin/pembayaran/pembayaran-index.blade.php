@@ -57,9 +57,13 @@
         <thead class="thead-light">
             <tr>
                 <th>#</th>
-                <th>Nama Biaya</th>
+                <th>No Invoice</th>
+                <th>Nama Invoice</th>
                 <th>Siswa</th>
-                <th>Status</th>
+                <th>Nominal</th>
+                <th>Nama Nominal</th>
+                <th>Bulan</th>
+                <th>Tahun</th>
                 <th>Tanggal Terbit</th>
                 <th>Tanggal Lunas</th>
                 <th>Admin Penerbit</th>
@@ -72,14 +76,24 @@
             @foreach ($pembayarans as $index => $pembayaran)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $pembayaran->biaya->nama_biaya }}</td>
-                    <td>{{ $pembayaran->siswa->nama }}</td>
-                    <td>
+                    <td> {{$pembayaran->no_invoice}}</td>
+                    <td>{{ $pembayaran->nama_invoice }}</td>
+                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas}} </b></td>
+                    <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
+                    <td>{{ $pembayaran->biaya->nama_nominal }}</td>
+                    {{-- <td>
                         @if ($pembayaran->status == 'Belum Lunas')
                             <span class="badge rounded-pill bg-danger">Belum Lunas</span>
                         @else
                             <span class="badge rounded-pill bg-success">Lunas</span>
                         @endif
+                    </td> --}}
+                    <td>
+                        {{ $pembayaran->bulan }}
+                    </td>
+                    <td>
+                        {{ $pembayaran->tahun }}
+
                     </td>
                     <td>{{ $pembayaran->tanggal_terbit }}</td>
                     <td>{{ $pembayaran->tanggal_lunas ?? '-' }}</td>
@@ -87,16 +101,12 @@
                     <td>{{ $pembayaran->melunasi->nama ?? '-' }}</td>
 
                     <td>{{ \Carbon\Carbon::parse($pembayaran->created_at)->isoFormat('HH:mm:ss, dddd, D MMMM Y') }}</td>
-                    <td>
-                        <a href="{{ route('tagihan.edit', $pembayaran->id) }}" class="btn btn-warning">Edit</a>
 
-                        <form action="{{ route('tagihan.destroy', $pembayaran->id) }}" method="POST"
-                            style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
-                        </form>
+                    <td>
+                        <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-warning">Detail</a>
+                        <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}" class="btn btn-info">Verifikasi</a>
+                        <a href="{{ route('pembayaran.kuitansi', $pembayaran->id) }}" class="btn btn-secondary">Kuitansi</a>
+
                     </td>
                 </tr>
             @endforeach

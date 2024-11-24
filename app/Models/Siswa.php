@@ -19,7 +19,8 @@ class Siswa extends Model
         'email',
         'angkatan',
         'kelas',
-        'user_id'
+        'user_id',
+        'nama_orang_tua'
     ];
 
 

@@ -1,7 +1,24 @@
 @extends('admin.admin-layout')
 @section('content')
-    <div class="my-3">
-        <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah Siswa</a>
+    <div class="d-flex justify-content-between my-3">
+        <div>
+            <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah Siswa</a>
+
+        </div>
+        <div>
+            <a href="{{route('siswa.export')}}" class="btn btn-outline-success" id="btnExport">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </a>
+            <a href="#" class="btn btn-warning" id="btnImport">
+                <i class="fas fa-file-import"></i> Import Excel
+            </a>
+            <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
+                <i class="fas fa-print"></i> Print
+            </a>
+
+        </div>
+
+
     </div>
     <div class="row mb-3">
         <div class="col-md-4">
@@ -28,6 +45,9 @@
             <button class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
             </button>
+
+
+
 
         </div>
     </div>
