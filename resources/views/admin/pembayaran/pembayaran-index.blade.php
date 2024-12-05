@@ -147,8 +147,8 @@
                                 '<td>' + value.created_at + '</td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
-                                '<a href="{{ route('tagihan.edit', "' + value.id + '") }}" class="btn btn-warning my-1">Edit</a>' +
-                                '<form action="{{ route('tagihan.destroy', "' + value.id + '") }}" method="POST" style="display:inline;">' +
+                                '<a href="/tagihan/' + value.id + '/edit" class="btn btn-warning my-1">Edit</a>' +
+                                '<form action="/tagihan/' + value.id + '" method="POST" style="display:inline;">' +
                                 '@csrf' +
                                 '@method('DELETE')' +
                                 '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +

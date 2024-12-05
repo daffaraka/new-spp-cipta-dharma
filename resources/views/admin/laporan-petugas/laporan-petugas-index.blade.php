@@ -107,7 +107,7 @@
                                 '<td>' + value.roles.map(role => role.name).join(', ') + '</td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
-                                '<a href="{{ route('laporanPetugas.show', ['petugas' => ' + value.id + ']) }}" class="btn btn-block btn-info my-1">Detail</a>' +
+                                '<a href="/laporan-petugas/' + value.id + '" class="btn btn-block btn-info my-1">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

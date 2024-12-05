@@ -6,10 +6,10 @@
 
         </div>
         <div>
-            <a href="{{route('siswa.export')}}" class="btn btn-outline-success" id="btnExport">
+            <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
                 <i class="fas fa-file-excel"></i> Export Excel
             </a>
-            <a href="#" class="btn btn-warning" id="btnImport">
+            <a href="#" class="btn btn-warning" id="btnImport" data-bs-toggle="modal" data-bs-target="#importModal">
                 <i class="fas fa-file-import"></i> Import Excel
             </a>
             <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
@@ -107,6 +107,59 @@
 
         </tbody>
     </table>
+
+
+    <!-- Button trigger modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Import Data Siswa
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" class="form-control" accept=".xls,.xlsx,.csv">
+                        <button type="submit" class="btn btn-primary mt-3">Import</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="my-modal-title">Title</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Content</p>
+                </div>
+                <div class="modal-footer">
+                    Footer
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -139,18 +192,21 @@
                             '<td>' + value.jenis_kelamin + '</td>' +
                             '<td>' +
                             '<div class="d-grid">' +
-                            '<a href="{{ route('siswa.show', "' + value.id + '") }}" class="btn btn-block btn-info my-1">Detail</a>' +
-                            '<a href="{{ route('siswa.edit', "' + value.id + '") }}" class="btn btn-block btn-warning my-1">Edit</a>' +
-
-                            '<form action="{{ route('siswa.destroy', "' + value.id + '") }}" method="POST" style="display:inline;">' +
-                            '@csrf' +
-                            '@method('DELETE')' +
+                            '<a href="/siswa/' + value.id +
+                            '" class="btn btn-block btn-info my-1">Detail</a>' +
+                            '<a href="/siswa/' + value.id +
+                            '/edit" class="btn btn-block btn-warning my-1">Edit</a>' +
+                            '<form action="/siswa/' + value.id +
+                            '" method="POST" style="display:inline;">' +
+                            '<input type="hidden" name="_token" value="{{ csrf_token() }}">' +
+                            '<input type="hidden" name="_method" value="DELETE">' +
                             '<button type="submit" class="btn btn-danger btn-block my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus siswa ini?\')">Hapus</button>' +
                             '</form>' +
                             '</div>' +
                             '</td>' +
                             '</tr>');
                     });
+
                 }
             });
         });

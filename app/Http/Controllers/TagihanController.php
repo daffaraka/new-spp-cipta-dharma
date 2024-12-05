@@ -59,12 +59,13 @@ class TagihanController extends Controller
         return to_route('tagihan.index')->with('success', 'Tagihan baru ditambahkan');
     }
 
-    // public function show(Tagihan $tagihan)
-    // {
-    //     $data['judul'] = 'Edit Data Tagihan';
-    //     $data['tagihan'] = $tagihan;
-    //     return view('admin.tagihan.tagihan-edit',$data);
-    // }
+    public function show(Tagihan $tagihan)
+    {
+        $data['judul'] = 'Edit Data Tagihan';
+        $data['tagihan'] = $tagihan->with('siswa', 'biaya', 'penerbit')->first();
+
+        return view('admin.tagihan.tagihan-show',$data);
+    }
 
     public function edit(Tagihan $tagihan)
     {

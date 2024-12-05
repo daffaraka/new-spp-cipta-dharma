@@ -97,16 +97,18 @@
                                 $('#dataTables tbody').append('<tr>' +
                                     '<td>' + (index + 1) + '</td>' +
                                     '<td>' + value.nama_biaya + '</td>' +
-                                    '<td>' + value.nominal + '</td>' +
+                                    '<td>' + 'Rp. ' + value.nominal.toLocaleString('id-ID') + '</td>' +
                                     '<td>' + value.nama_nominal + '</td>' +
                                     '<td>' + value.tahun + '</td>' +
                                     '<td>' + value.bulan + '</td>' +
                                     '<td>' + value.level + '</td>' +
                                     '<td>' +
-                                    '<a href="{{ route('biaya.show', "' + value.id + '") }}" class="btn  btn-info mx-1">Detail</a>' +
-                                    '<a href="{{ route('biaya.edit', "' + value.id + '") }}" class="btn btn-warning mx-1">Edit</a>' +
+                                    '<a href="biaya/' + value.id +
+                                    '" class="btn  btn-info mx-1">Detail</a>' +
+                                    '<a href="biaya/' + value.id +
+                                    '/edit" class="btn btn-warning mx-1">Edit</a>' +
 
-                                    '<form action="{{ route('biaya.destroy', "' + value.id + '") }}" method="POST" style="display:inline;">' +
+                                    '<form action="biaya/' + value.id + '" method="POST" style="display:inline;">' +
                                     '@csrf' +
                                     '@method('DELETE')' +
                                     '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data biaya ini?\')">Hapus</button>' +

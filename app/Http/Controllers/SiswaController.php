@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use PhpParser\Node\Stmt\Return_;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -150,6 +151,14 @@ class SiswaController extends Controller
     {
         $tgl = date('d-m-Y_H-i-s');
         return Excel::download(new SiswaExport, 'siswa_'.$tgl.'.xlsx');
+    }
+
+
+    public function import()
+    {
+        Excel::import(new SiswaImport, request()->file('file'));
+
+    return redirect()->back()->with('success', 'Data siswa baru telah ditambahkan');
     }
 
 

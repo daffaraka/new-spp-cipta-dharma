@@ -41,6 +41,7 @@
 
 
                     </td>
+                    <td></td>
                     <td>
                         <div class="d-grid">
                             <a href="{{ route('petugas.show', ['petugas' => $petugas->id]) }}"

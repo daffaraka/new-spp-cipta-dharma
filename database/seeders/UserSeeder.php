@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $agama = ['Islam', 'Kristen', 'Katholik', 'Hindu', 'Budha'];
         $jk = ['Laki-laki', 'Perempuan'];
-        $angkatan = [2021, 2022, 2023, 2024];
+        $angkatan = [2019,2020,2021, 2022, 2023, 2024];
         $kelas = ['10A', '10B', '11A', '11B', '12A', '12B'];
 
 
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
 
 
         $jk = ['Laki-laki', 'Perempuan'];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $user = User::create(
                 [
                     'nama' => 'User ' . $i,

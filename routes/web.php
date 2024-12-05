@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('siswa', SiswaController::class);
     Route::get('export-siswa',[SiswaController::class,'export'])->name('siswa.export');
     Route::get('print-siswa',[SiswaController::class,'print'])->name('siswa.print');
+    Route::post('import',[SiswaController::class,'import'])->name('siswa.import');
     Route::post('filter-siswa', [SiswaController::class, 'filter'])->name('siswa.filter');
 
     Route::resource('tagihan', TagihanController::class);
