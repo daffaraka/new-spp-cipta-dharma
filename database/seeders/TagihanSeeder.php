@@ -18,6 +18,7 @@ class TagihanSeeder extends Seeder
      */
     public function run()
     {
+        $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
         for ($i = 1; $i <= 10; $i++) {
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $namaInvoice = 'Tagihan Bulanan ' . $i;
@@ -31,11 +32,13 @@ class TagihanSeeder extends Seeder
                 'user_id' => $use[array_rand($use)],
                 'biaya_id' => $biaya[array_rand($biaya)],
                 'bulan' => $bulan,
-                'tahun' => date('Y'),
+                'tahun' => $tahun[array_rand($tahun)],
                 'tanggal_terbit' => \Carbon\Carbon::now(),
                 'tanggal_lunas' => null,
                 'user_penerbit_id' => 1,
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],
+                'created_at' => \Carbon\Carbon::now(),
+
             ]);
         }
     }

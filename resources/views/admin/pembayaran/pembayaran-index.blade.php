@@ -58,6 +58,7 @@
             <tr>
                 <th>#</th>
                 <th>No Invoice</th>
+                <th>Bukti</th>
                 <th>Nama Invoice</th>
                 <th>Siswa</th>
                 <th>Nominal</th>
@@ -76,9 +77,10 @@
             @foreach ($pembayarans as $index => $pembayaran)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td> {{$pembayaran->no_invoice}}</td>
+                    <td> {{ $pembayaran->no_invoice }}</td>
+                    <td> <img src="{{ asset($pembayaran->bukti_pelunasan) }}" alt="{{$pembayaran->bukti_pelunasan}}"></td>
                     <td>{{ $pembayaran->nama_invoice }}</td>
-                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas}} </b></td>
+                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
                     <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
                     <td>{{ $pembayaran->biaya->nama_nominal }}</td>
                     {{-- <td>
@@ -105,7 +107,8 @@
                     <td>
                         <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-warning">Detail</a>
                         <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}" class="btn btn-info">Verifikasi</a>
-                        <a href="{{ route('pembayaran.kuitansi', $pembayaran->id) }}" class="btn btn-secondary">Kuitansi</a>
+                        <a href="{{ route('pembayaran.kuitansi', $pembayaran->id) }}"
+                            class="btn btn-secondary">Kuitansi</a>
 
                     </td>
                 </tr>
@@ -133,25 +136,34 @@
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
-                                '<td>' + value.biaya.no_invoice + '</td>' +
-                                '<td>' + value.biaya.nama_invoice + '</td>' +
-                                '<td>' + value.siswa.nama + '</td>' +
-                                '<td>' + (value.status === 'Belum Lunas' ?
-                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                    '<span class="badge rounded-pill bg-success">Lunas</span>'
-                                ) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.nama_invoice + '</td>' +
+                                '<td>' + value.siswa.nama + '-' + value.siswa
+                                .kelas + '</td>' +
+                                '<td> Rp. ' + value.biaya.nominal + '</td>' +
+                                '<td>' + value.biaya.nama_nominal + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' + value.tahun + '</td>' +
                                 '<td>' + value.tanggal_terbit + '</td>' +
                                 '<td>' + (value.tanggal_lunas || '-') + '</td>' +
-                                '<td>' + (value.penerbit.nama || '-') + '</td>' +
-                                '<td>' + (value.melunasi.nama || '-') + '</td>' +
-                                '<td>' + value.created_at + '</td>' +
+                                '<td>' + (value.penerbit ? value.penerbit.nama :
+                                    '-') + '</td>' +
+                                '<td>' + (value.melunasi ? value.melunasi.nama :
+                                    '-') + '</td>' +
+                                '<td>' + (value.created_at ? new Date(value
+                                        .created_at).toLocaleDateString('id-ID') :
+                                    '-') + '</td>' +
                                 '<td>' +
+                                '<a href="/pembayaran/' + value.id +
+                                '" class="btn btn-info">Detail</a>' +
                                 '<div class="d-grid">' +
-                                '<a href="/tagihan/' + value.id + '/edit" class="btn btn-warning my-1">Edit</a>' +
-                                '<form action="/tagihan/' + value.id + '" method="POST" style="display:inline;">' +
+                                '<a href="/pembayaran/' + value.id +
+                                '/edit" class="btn btn-warning my-1">Edit</a>' +
+                                '<form action="/pembayaran/' + value.id +
+                                '" method="POST" style="display:inline;">' +
                                 '@csrf' +
                                 '@method('DELETE')' +
-                                '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
+                                '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data pembayaran keluar ini?\')">Hapus</button>' +
                                 '</form>' +
                                 '</div>' +
                                 '</td>' +

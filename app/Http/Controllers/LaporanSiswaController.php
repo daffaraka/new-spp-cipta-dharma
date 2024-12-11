@@ -9,11 +9,11 @@ class LaporanSiswaController extends Controller
 {
     public function index()
     {
-        $data['judul'] = 'Laporan Data Petugas';
-        $data['laporan_petugas'] = User::role(['Petugas', 'KepalaSekolah'])->withCount('menerbitkan')->latest()->get();
+        $data['judul'] = 'Laporan Data Siswa';
+        $data['laporan_siswa'] = User::role(['SiswaOrangTua'])->withCount('menerbitkan')->latest()->get();
 
         // dd($data);
-        return view('admin.laporan-petugas.laporan-petugas-index', $data);
+        return view('admin.laporan-siswa.laporan-siswa-index', $data);
     }
 
 

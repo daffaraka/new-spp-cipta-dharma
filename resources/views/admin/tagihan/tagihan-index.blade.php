@@ -28,7 +28,7 @@
             <label for="filterTahun">Filter Tahun</label>
             <select id="filterTahun" name="filter_tahun" class="form-control">
                 <option value="">Pilih Tahun</option>
-                @for ($year = 2020; $year <= date('Y'); $year++)
+                @for ($year = 2019; $year <= date('Y'); $year++)
                     <option value="{{ $year }}">{{ $year }}</option>
                 @endfor
             </select>
@@ -146,19 +146,20 @@
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
-                                '<td>' + value.biaya.no_invoice + '</td>' +
-                                '<td>' + value.biaya.nama_invoice + '</td>' +
-                                '<td>' + value.siswa.nama + '</td>' +
-                                '<td>' + (value.status === 'Belum Lunas' ?
-                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                    '<span class="badge rounded-pill bg-success">Lunas</span>'
-                                ) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.nama_invoice + '</td>' +
+                                '<td>' + value.siswa.nama + '-' + value.siswa.kelas + '</td>' +
+                                '<td> Rp. ' + value.biaya.nominal + '</td>' +
+                                '<td>' + value.biaya.nama_nominal + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' + value.tahun + '</td>' +
                                 '<td>' + value.tanggal_terbit + '</td>' +
                                 '<td>' + (value.tanggal_lunas || '-') + '</td>' +
-                                '<td>' + (value.penerbit.nama || '-') + '</td>' +
-                                '<td>' + (value.melunasi.nama || '-') + '</td>' +
-                                '<td>' + value.created_at + '</td>' +
+                                '<td>' + (value.penerbit ? value.penerbit.nama : '-') + '</td>' +
+                                '<td>' + (value.melunasi ? value.melunasi.nama : '-') + '</td>' +
+                                '<td>' + (value.created_at ? new Date(value.created_at).toLocaleDateString('id-ID') : '-') + '</td>' +
                                 '<td>' +
+                                '<a href="/tagihan/' + value.id + '" class="btn btn-info">Detail</a>' +
                                 '<div class="d-grid">' +
                                 '<a href="/tagihan/' + value.id +
                                 '/edit" class="btn btn-warning my-1">Edit</a>' +

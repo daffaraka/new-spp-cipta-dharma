@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('pembayaran/verifikasi/{id}', [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
     Route::post('pembayaran/kuitansi/{id}', [PembayaranController::class, 'kirimKuitansi'])->name('pembayaran.kuitansi');
 
-    Route::post('filter-pembayaran', [BiayaController::class, 'filter'])->name('pembayaran.filter');
+    Route::post('filter-pembayaran', [PembayaranController::class, 'filter'])->name('pembayaran.filter');
 
     Route::get('laporan-petugas', [LaporanPetugasController::class, 'index'])->name('laporanPetugas.index');
     Route::get('laporan-petugas/create', [LaporanPetugasController::class, 'create'])->name('laporanPetugas.create');

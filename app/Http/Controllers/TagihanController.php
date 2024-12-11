@@ -64,7 +64,7 @@ class TagihanController extends Controller
         $data['judul'] = 'Edit Data Tagihan';
         $data['tagihan'] = $tagihan->with('siswa', 'biaya', 'penerbit')->first();
 
-        return view('admin.tagihan.tagihan-show',$data);
+        return view('admin.tagihan.tagihan-show', $data);
     }
 
     public function edit(Tagihan $tagihan)
@@ -110,10 +110,10 @@ class TagihanController extends Controller
     {
         // dd($request->all());
         if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return Tagihan::get();
+            return Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->get();
         } else {
             return response()->json(
-                Tagihan::with(['biaya','siswa', 'penerbit', 'melunasi'])
+                Tagihan::with(['biaya', 'siswa', 'penerbit', 'melunasi'])
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
                         $query->whereYear('created_at', $request->filter_tahun);
                     })
@@ -124,7 +124,6 @@ class TagihanController extends Controller
                             $query->where('angkatan', $request->filter_angkatan);
                         });
                     })
-
                     ->when($request->filter_kelas != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('kelas', $request->filter_kelas);

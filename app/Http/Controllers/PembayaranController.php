@@ -23,7 +23,7 @@ class PembayaranController extends Controller
     {
         $data['judul'] = 'Detil Data Pembayaran';
         $data['pembayaran'] = $pembayaran;
-        return view('admin.pembayaran.pembayaran-edit',$data);
+        return view('admin.pembayaran.pembayaran-edit', $data);
     }
 
     public function edit(Tagihan $pembayaran)
@@ -43,7 +43,8 @@ class PembayaranController extends Controller
     }
 
 
-    public function verifikasi($id) {
+    public function verifikasi($id)
+    {
         $pembayaran = Tagihan::find($id);
         $pembayaran->status = 'Lunas';
         $pembayaran->melunasi_id = auth()->user()->id;
@@ -52,7 +53,8 @@ class PembayaranController extends Controller
         return to_route('pembayaran.index')->with('success', 'pembayaran telah diverifikasi');
     }
 
-    public function kirimKuitansi($id) {
+    public function kirimKuitansi($id)
+    {
         $pembayaran = Tagihan::find($id);
         $pembayaran->melunasi_id = auth()->user()->id;
         $pembayaran->save();
@@ -65,11 +67,12 @@ class PembayaranController extends Controller
     {
         // dd($request->all());
         if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return Tagihan::get();
+            return Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])
+                ->whereNotNull('bukti_pelunasan')->get();
         } else {
             return response()->json(
-                Tagihan::with(['biaya','siswa', 'penerbit', 'melunasi'])
-                ->whereNotNull('bukti_pelunasan')
+                Tagihan::with(['biaya', 'siswa', 'penerbit', 'melunasi'])
+                    ->whereNotNull('bukti_pelunasan')
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
                         $query->whereYear('created_at', $request->filter_tahun);
                     })
