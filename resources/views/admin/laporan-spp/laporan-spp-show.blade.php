@@ -1,44 +1,76 @@
 @extends('admin.admin-layout')
 @section('content')
     <div class="mb-3">
-        <label for="">Nama petugas</label>
-        <input type="text" name="nama" class="form-control" value="{{ $petuga->nama }}" readonly>
+        <label for="">No Invoice</label>
+        <input type="text" name="no_invoice" class="form-control" value="{{ $laporan_siswa->no_invoice }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Email</label>
-        <input type="email" name="email" class="form-control" value="{{ $petuga->email }}" readonly>
+        <label for="">Nama Invoice</label>
+        <input type="text" name="nama_invoice" class="form-control" value="{{ $laporan_siswa->nama_invoice }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Tanggal Lahir</label>
-        <input type="date" name="tanggal_lahir" class="form-control" value="{{ $petuga->tanggal_lahir }}" readonly>
+        <label for="">Tanggal Terbit</label>
+        <input type="date" name="tanggal_terbit" class="form-control" value="{{ $laporan_siswa->tanggal_terbit }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Jenis Kelamin</label>
-        <input type="text" name="jenis_kelamin" class="form-control" value="{{ $petuga->jenis_kelamin }}" readonly>
+        <label for="">Tanggal Lunas</label>
+        <input type="date" name="tanggal_lunas" class="form-control" value="{{ $laporan_siswa->tanggal_lunas ?? '' }}" readonly>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="">Status</label>
+        <input type="text" name="status" class="form-control" value="{{ $laporan_siswa->status }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Alamat</label>
-        <input type="text" name="alamat" class="form-control" value="{{ $petuga->alamat }}" readonly>
+        <label for="">User Penerbit</label>
+        <input type="text" name="user_penerbit_id" class="form-control" value="{{ $laporan_siswa->penerbit->nama }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Agama</label>
-        <input type="text" name="agama" class="form-control" value="{{ $petuga->agama }}" readonly>
+        <label for="">User Melunasi</label>
+        <input type="text" name="user_melunasi_id" class="form-control" value="{{ $laporan_siswa->melunasi->nama ?? 'Belum Dilunasi' }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">No Telfon</label>
-        <input type="number" name="no_telp" class="form-control" value="{{ $petuga->no_telp }}" readonly>
+        <label for="">Biaya</label>
+        <input type="text" name="biaya_id" class="form-control" value="{{ $laporan_siswa->biaya->nama_biaya }}" readonly>
     </div>
 
     <div class="mb-3">
-        <label for="">Nama Wali</label>
-        <input type="text" name="nama_wali" class="form-control" value="{{ $petuga->nama_wali }}" readonly>
+        <label for="">User</label>
+        <input type="text" name="user_id" class="form-control" value="{{ $laporan_siswa->siswa->nama }}" readonly>
     </div>
+
+    <div class="mb-3">
+        <label for="">Bulan</label>
+        <input type="text" name="bulan" class="form-control" value="{{ $laporan_siswa->bulan }}" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="">Tahun</label>
+        <input type="text" name="tahun" class="form-control" value="{{ $laporan_siswa->tahun }}" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="">Status</label>
+        <div class="d-grid">
+            <button class="btn {{ $laporan_siswa->status == 'Belum Lunas' ? 'btn-danger' : 'btn-success' }}">{{ $laporan_siswa->status == 'Belum Lunas' ? 'Belum Lunas' : 'Lunas' }}</button>
+        </div>
+    <div class="mb-3">
+        <label for="">Bukti Pelunasan</label>
+        <a href="{{ url('storage/' . $laporan_siswa->bukti_pelunasan) }}" target="_blank" >
+            <div class="">
+                <img src="{{ url('storage/' . $laporan_siswa->bukti_pelunasan) }}" alt="" width="100" height="100">
+
+            </div>
+           </a>
+    </div>
+
 
     <a href="{{ url()->previous() }}" class="btn btn-primary">Kembali</a>
 @endsection

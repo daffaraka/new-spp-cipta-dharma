@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanSPPExport;
+use App\Imports\LaporanSPPImport;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanSPPController extends Controller
 {
@@ -35,46 +39,28 @@ class LaporanSPPController extends Controller
         ]);
 
 
-        User::create(
-            [
-                'nama' => $request->nama,
-                'nis' => $request->nis,
-                'nisn' => $request->nisn,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'nama_wali' => $request->nama_wali,
-                'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
-                'angkatan' => $request->angkatan,
-                'kelas' => $request->kelas,
-                'jenis_kelamin' => $request->jenis_kelamin,
-            ]
-        );
 
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa baru telah ditambahkan');
     }
 
 
-    public function show(User $petuga)
+    public function show(Tagihan $laporan_spp)
     {
-
-
-        return view('admin.petugas.petugas-show', compact('petuga'));
+        return view('admin.petugas.petugas-show', compact('laporan_spp'));
     }
 
 
-    public function edit(User $petugas)
+    public function edit(Tagihan $laporan_spp)
     {
         return view('admin.petugas.petugas-edit', compact('siswa'));
     }
 
 
-    public function destroy(User $petugas)
+    public function destroy(Tagihan $laporan_spp)
     {
-        $petugas->delete();
-        return redirect()->route('siswa.index')->with('success', 'Data siswa telah dihapus');
+        $laporan_spp->delete();
+        return redirect()->route('laporanPetugas.index')->with('success', 'Data spp telah dihapus');
     }
 
     public function filter(Request $request)
@@ -99,4 +85,29 @@ class LaporanSPPController extends Controller
             );
         }
     }
+
+
+    public function export()
+    {
+        $tgl = date('d-m-Y_H-i-s');
+        return Excel::download(new LaporanSPPExport, 'laporan_spp_' . $tgl . '.xlsx');
+    }
+
+
+    public function import()
+    {
+        Excel::import(new LaporanSPPImport, request()->file('file'));
+
+        return redirect()->back()->with('success', 'Data laporan SPP baru telah ditambahkan');
+    }
+
+
+    // public function print()
+    // {
+    //     $siswas = Tagihan::with('siswa')->latest()->get();
+    //     $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
+    //         ->setPaper('a4', 'landscape');
+    //     $tgl = date('d-m-Y_H-i`-s');
+    //     return $pdf->stream('siswa'.$tgl.'.pdf');
+    // }
 }

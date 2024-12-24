@@ -12,6 +12,7 @@ class LaporanPetugasController extends Controller
         $data['judul'] = 'Laporan Data Petugas';
         $data['laporan_petugas'] = User::role(['Petugas', 'KepalaSekolah'])->withCount('menerbitkan')->latest()->get();
 
+
         // dd($data);
         return view('admin.laporan-petugas.laporan-petugas-index', $data);
     }
@@ -69,10 +70,10 @@ class LaporanPetugasController extends Controller
     {
         // dd($request->all());
         if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return User::role(['Petugas', 'KepalaSekolah'])->latest()->get();
+            return User::with('roles')->withCount('menerbitkan')->role(['Petugas', 'KepalaSekolah'])->latest()->get();
         } else {
             return response()->json(
-                User::role(['Petugas', 'KepalaSekolah'])
+                User::with('roles')->withCount('menerbitkan')->role(['Petugas', 'KepalaSekolah'])
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
                         $query->whereYear('created_at', $request->filter_tahun);
                     })

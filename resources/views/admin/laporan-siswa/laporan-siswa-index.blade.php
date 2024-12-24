@@ -6,35 +6,28 @@
             <button class="btn btn-dark mb-5">Data yang disajikan adalah data siswa pada bulan ini</button>
 
         </div>
-        <div class="col-md-2">
-            <label for="filterTahun">Filter Tahun</label>
-            <select id="filterTahun" name="filter_tahun" class="form-control">
-                <option value="">Pilih Tahun</option>
+        <div class="col-md-4">
+            <label for="filterAngkatan">Filter Angkatan</label>
+            <select id="filterAngkatan" name="filter_angkatan" class="form-control">
+                <option value="">Pilih Angkatan</option>
                 @for ($year = 2020; $year <= date('Y'); $year++)
                     <option value="{{ $year }}">{{ $year }}</option>
                 @endfor
             </select>
         </div>
-        <div class="col-md-2">
-            <label for="filterBulan">Filter Bulan</label>
-            <select id="filterBulan" class="form-control" name="filter_bulan">
-                <option value="">Pilih Bulan</option>
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">November</option>
-                <option value="12">Desember</option>
+        <div class="col-md-4">
+            <label for="filterKelas">Filter Kelas</label>
+            <select id="filterKelas" class="form-control" name="filter_kelas">
+                <option value="">Pilih Kelas</option>
+                @foreach (range(1, 6) as $number)
+                    @foreach (range('A', 'D') as $letter)
+                        <option value="{{ $number . $letter }}">{{ $number . $letter }}</option>
+                    @endforeach
+                @endforeach
             </select>
         </div>
         <div class="col-4">
-            <button type="submit" class="btn btn-outline-primary mt-4" id="btnFilter">
+            <button class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
             </button>
 
@@ -44,13 +37,12 @@
         <thead class="thead-light">
             <tr>
                 <th>#</th>
-                <th>Nama petugas</th>
-                <th>Jabatan</th>
-                <th>Email</th>
-                <th>No Telfon</th>
-                <th>NIP</th>
-                <th>SPP Terbit</th>
-                <th>SPP Dilunasi</th>
+                <th>No Invoice</th>
+                <th>Nama Siswa</th>
+                <th>NIS</th>
+                <th>Angkatan</th>
+                <th>Kelas</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -58,24 +50,21 @@
             @foreach ($laporan_siswa as $index => $siswa)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $siswa->nama }}</td>
+                    <td>{{ $siswa->no_invoice }}</td>
+                    <td>{{ $siswa->siswa->nama }}</td>
+                    <td>{{ $siswa->siswa->nis }}</td>
+                    <td>{{ $siswa->siswa->angkatan }}</td>
+                    <td>{{ $siswa->siswa->kelas }}</td>
                     <td>
-                        <ul>
-                            @foreach ($siswa->roles as $role)
-                                <li>{{ $role->name }}</li>
-                            @endforeach
-                        </ul>
-
-
+                        @if ($siswa->status == 'Belum Lunas')
+                            <button class="btn btn-danger">Belum Lunas</button>
+                        @else
+                            <button class="btn btn-success">Lunas</button>
+                        @endif
                     </td>
-                    <td>{{ $siswa->email }}</td>
-                    <td>{{ $siswa->no_telp ?? '-' }}</td>
-                    <td>{{ $siswa->nip ?? '-'}}</td>
-                    <td>{{ $siswa->menerbitkan_count }}</td>
-                    <td>{{ $siswa->no_telp ?? '-' }}</td>
                     <td>
                         <div class="d-grid">
-                            <a href="{{ route('laporanSiswa.show', ['siswa' => $siswa->id]) }}"
+                            <a href="{{ route('laporanSiswa.show', ['laporan_siswa' => $siswa->id]) }}"
                                 class="btn btn-block btn-info my-1">Detail</a>
                         </div>
 
@@ -94,25 +83,27 @@
             $('#btnFilter').click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('laporanPetugas.filter') }}",
+                    url: "{{ route('laporanSiswa.filter') }}",
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
-                        "filter_tahun": $('#filterTahun').val(),
-                        "filter_bulan": $('#filterBulan').val(),
+                        "filter_angkatan": $('#filterAngkatan').val(),
+                        "filter_kelas": $('#filterKelas').val(),
                     },
                     success: function(data) {
                         $('#dataTables tbody').empty();
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
-                                '<td>' + value.nama + '</td>' +
-                                '<td>' + value.email + '</td>' +
-                                '<td>' + value.no_telp + '</td>' +
-                                '<td>' + value.roles.map(role => role.name).join(', ') + '</td>' +
-                                '<td>' +
-                                '<div class="d-grid">' +
-                                '<a href="/laporan-petugas/' + value.id + '" class="btn btn-block btn-info my-1">Detail</a>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.siswa.nama + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
+                                '<td>' + value.siswa.angkatan + '</td>' +
+                                '<td>' + value.siswa.kelas + '</td>' +
+                                '<td>' + (value.status == 'Belum Lunas' ? '<button class="btn btn-danger">Belum Lunas</button>' : '<button class="btn btn-success">Lunas</button>') + '</td>' +
+                                '<td> <div class="d-grid">' +
+                                '<a href="/laporan-siswa/' + value.id +
+                                '" class="btn btn-block btn-info my-1">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

@@ -38,9 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('siswa', SiswaController::class);
-    Route::get('export-siswa',[SiswaController::class,'export'])->name('siswa.export');
-    Route::get('print-siswa',[SiswaController::class,'print'])->name('siswa.print');
-    Route::post('import',[SiswaController::class,'import'])->name('siswa.import');
+    Route::get('export-siswa', [SiswaController::class, 'export'])->name('siswa.export');
+    Route::get('print-siswa', [SiswaController::class, 'print'])->name('siswa.print');
+    Route::post('import', [SiswaController::class, 'import'])->name('siswa.import');
     Route::post('filter-siswa', [SiswaController::class, 'filter'])->name('siswa.filter');
 
     Route::resource('tagihan', TagihanController::class);
@@ -63,14 +63,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('laporan-siswa', [LaporanSiswaController::class, 'index'])->name('laporanSiswa.index');
     Route::get('laporan-siswa/create', [laporanSiswaController::class, 'create'])->name('laporanSiswa.create');
-    Route::get('laporan-siswa/{siswa}', [laporanSiswaController::class, 'show'])->name('laporanSiswa.show');
+    Route::get('laporan-siswa/{laporan_siswa}', [laporanSiswaController::class, 'show'])->name('laporanSiswa.show');
     Route::post('filter-laporan-siswa', [laporanSiswaController::class, 'filter'])->name('laporanSiswa.filter');
 
 
     Route::get('laporan-spp', [LaporanSPPController::class, 'index'])->name('laporanSpp.index');
     Route::get('laporan-spp/create', [LaporanSPPController::class, 'create'])->name('laporanSpp.create');
-    Route::get('laporan-spp/{spp}', [LaporanSPPController::class, 'show'])->name('laporanSpp.show');
     Route::post('filter-laporan-spp', [LaporanSPPController::class, 'filter'])->name('laporanSpp.filter');
+    Route::get('laporan-spp/export', [LaporanSPPController::class, 'export'])->name('laporanSpp.export');
+    Route::get('laporan-spp/print', [LaporanSPPController::class, 'print'])->name('laporanSpp.print');
+    Route::get('laporan-spp/{laporan_spp}', [LaporanSPPController::class, 'show'])->name('laporanSpp.show');
+    Route::post('laporan-spp/import', [LaporanSPPController::class, 'import'])->name('laporanSpp.import');
 
 
 
@@ -79,9 +82,9 @@ Route::middleware('auth')->group(function () {
     ]);
 
 
-    Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
-    Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
-    Route::view('print', 'admin.tagihan.tagihan-print');
+    // Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
+    // Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
+    // Route::view('print', 'admin.tagihan.tagihan-print');
 });
 
 

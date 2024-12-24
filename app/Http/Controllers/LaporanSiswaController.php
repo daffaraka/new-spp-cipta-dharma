@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tagihan;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,8 @@ class LaporanSiswaController extends Controller
 {
     public function index()
     {
-        $data['judul'] = 'Laporan Data Siswa';
-        $data['laporan_siswa'] = User::role(['SiswaOrangTua'])->withCount('menerbitkan')->latest()->get();
+        // $data['judul'] = 'Laporan Data Siswa';
+        $data['laporan_siswa'] = Tagihan::whereMonth('created_at', date('m'))->with('siswa')->latest()->get();
 
         // dd($data);
         return view('admin.laporan-siswa.laporan-siswa-index', $data);
@@ -57,40 +58,42 @@ class LaporanSiswaController extends Controller
     }
 
 
-    public function show(User $petuga)
+    public function show(Tagihan $laporan_siswa)
     {
+        $laporan_siswa->with('siswa','biaya','penerbit','melunasi')->find($laporan_siswa->id);
 
-
-        return view('admin.petugas.petugas-show', compact('petuga'));
+        return view('admin.laporan-siswa.laporan-siswa-show', compact('laporan_siswa'));
     }
 
 
-    public function edit(User $petugas)
+    public function edit(Tagihan $petugas)
     {
         return view('admin.petugas.petugas-edit', compact('siswa'));
     }
 
 
-    public function destroy(User $petugas)
+    public function destroy(Tagihan $laporan_siswa)
     {
-        $petugas->delete();
+        $laporan_siswa->delete();
         return redirect()->route('siswa.index')->with('success', 'Data siswa telah dihapus');
     }
 
     public function filter(Request $request)
     {
         // dd($request->all());
-        if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
-            return User::role(['SiswaOrangTua'])->latest()->get();
+        if (empty($request->filter_angkatan) && empty($request->filter_kelas)) {
+            return response()->json(
+                Tagihan::whereMonth('created_at', date('m'))->with('siswa')->latest()->get()
+            );
         } else {
             return response()->json(
-                User::role(['SiswaOrangTua'])
-                    ->when(!empty($request->filter_tahun), function ($query) use ($request) {
-                        $query->whereYear('created_at', $request->filter_tahun);
+                Tagihan::with('siswa')
+                    ->when($request->filter_kelas != null, function ($query) use ($request) {
+                        return $query->whereHas('siswa', function ($query) use ($request) {
+                            $query->where('kelas', $request->filter_kelas);
+                        });
                     })
-                    ->when(!empty($request->filter_bulan), function ($query) use ($request) {
-                        $query->whereMonth('created_at', $request->filter_bulan);
-                    })->when($request->filter_angkatan != null, function ($query) use ($request) {
+                    ->when($request->filter_angkatan != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);
                         });

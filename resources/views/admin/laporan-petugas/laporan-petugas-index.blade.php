@@ -102,13 +102,20 @@
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.nama + '</td>' +
-                                '<td>' + value.email + '</td>' +
-                                '<td>' + value.no_telp + '</td>' +
-                                '<td>' + value.roles.map(role => role.name).join(', ') + '</td>' +
                                 '<td>' +
-                                '<div class="d-grid">' +
-                                '<a href="/laporan-petugas/' + value.id + '" class="btn btn-block btn-info my-1">Detail</a>' +
-                                '</div>' +
+                                    '<ul>' +
+                                        value.roles.map(role => '<li>' + role.name + '</li>').join('') +
+                                    '</ul>' +
+                                '</td>' +
+                                '<td>' + value.email + '</td>' +
+                                '<td>' + (value.no_telp ? value.no_telp : '-') + '</td>' +
+                                '<td>' + (value.nip ? value.nip : '-') + '</td>' +
+                                '<td>' + value.menerbitkan_count + '</td>' +
+                                '<td>' + (value.no_telp ? value.no_telp : '-') + '</td>' +
+                                '<td>' +
+                                    '<div class="d-grid">' +
+                                        '<a href="/laporan-petugas/' + value.id + '" class="btn btn-block btn-info my-1">Detail</a>' +
+                                    '</div>' +
                                 '</td>' +
                                 '</tr>');
                         });
