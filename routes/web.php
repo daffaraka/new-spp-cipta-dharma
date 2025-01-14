@@ -82,9 +82,10 @@ Route::middleware('auth')->group(function () {
     ]);
 
 
-    // Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
-    // Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
-    // Route::view('print', 'admin.tagihan.tagihan-print');
+    Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
+    Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
+    Route::get('detail-pelunasan/{id}', [PelunasanController::class, 'detailTagihan'])->name('pelunasan.detailTagihan');
+    Route::view('print', 'admin.tagihan.tagihan-print');
 });
 
 

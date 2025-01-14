@@ -94,20 +94,20 @@ class LaporanSPPController extends Controller
     }
 
 
-    public function import()
+    public function import(Request $request)
     {
-        Excel::import(new LaporanSPPImport, request()->file('file'));
-
+        // dd($request->all());
+        Excel::import(new LaporanSPPImport, $request->file('file'));
         return redirect()->back()->with('success', 'Data laporan SPP baru telah ditambahkan');
     }
 
 
-    // public function print()
-    // {
-    //     $siswas = Tagihan::with('siswa')->latest()->get();
-    //     $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
-    //         ->setPaper('a4', 'landscape');
-    //     $tgl = date('d-m-Y_H-i`-s');
-    //     return $pdf->stream('siswa'.$tgl.'.pdf');
-    // }
+    public function print()
+    {
+        $siswas = Tagihan::with('siswa')->latest()->get();
+        $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
+            ->setPaper('a4', 'landscape');
+        $tgl = date('d-m-Y_H-i`-s');
+        return $pdf->stream('siswa'.$tgl.'.pdf');
+    }
 }

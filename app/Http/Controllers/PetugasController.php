@@ -92,7 +92,7 @@ class PetugasController extends Controller
         ]);
 
 
-        $siswa->update(
+        $petugas->update(
             [
                 'nama' => $request->nama,
                 'nis' => $request->nis,

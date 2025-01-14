@@ -26,7 +26,7 @@ class PelunasanController extends Controller
 
         $file = $request->file('bukti_pelunasan');
         $fileName = $file->getClientOriginalName();
-        $fileSaved = $user->siswa->name.'-'.now()->format('Y-m-d H-i-s').'-'.$fileName;
+        $fileSaved = $user->siswa->nama.'-'.now()->format('Y-m-d H-i-s').'-'.$fileName;
 
         $file->move('bukti-pelunasan', $fileSaved);
 
@@ -36,5 +36,16 @@ class PelunasanController extends Controller
         $tagihan->status = 'Lunas';
         $tagihan->save();
         return redirect()->route('dashboard')->with('success','Bukti pelunasan sudah dikirim');
+    }
+
+
+
+    public function detailTagihan($id)
+    {
+        $data['judul'] = 'Informasi tagihan anda';
+        $data['tagihan'] =Tagihan::with(['biaya','siswa'])->find($id);
+
+
+        return view('admin.pelunasan.show-pelunasan',$data);
     }
 }

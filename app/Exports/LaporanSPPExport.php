@@ -13,9 +13,6 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class LaporanSPPExport implements FromCollection,WithHeadings,WithMapping, ShouldAutoSize,WithStyles
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
 
     private $counter = 0;
 
@@ -40,9 +37,13 @@ class LaporanSPPExport implements FromCollection,WithHeadings,WithMapping, Shoul
             'Bulan',
             'Tahun',
             'Total Bayar',
+            'Tanggal Terbit',
+            'Tanggal Lunas',
+            'Admin Penerbit',
+            'User Melunasi',
+            'Status',
         ];
     }
-
 
     public function map($tagihan) : array
     {
@@ -55,6 +56,10 @@ class LaporanSPPExport implements FromCollection,WithHeadings,WithMapping, Shoul
             $tagihan->bulan,
             $tagihan->tahun,
             'Rp. ' . number_format($tagihan->total_bayar, 0, ',', '.'),
+            $tagihan->tanggal_terbit,
+            $tagihan->tanggal_lunas,
+            $tagihan->penerbit->nama ?? '-',
+            $tagihan->melunasi->nama ?? '-',
         ];
     }
 
@@ -62,7 +67,15 @@ class LaporanSPPExport implements FromCollection,WithHeadings,WithMapping, Shoul
     {
         return [
             // Style the first row as bold text.
-            'A1:K1'    => ['font' => ['bold' => true]],
+            'A1:M1'    => [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FFD700',
+                    ],
+                ],
+            ],
         ];
     }
 }

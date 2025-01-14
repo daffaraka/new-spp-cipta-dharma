@@ -3,14 +3,15 @@
     <form action="{{ route('pelunasan.lunasi', $tagihan->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
+        <p>
+        </p>
         <div class="row">
             <div class="col-xxl-4 col-xl-4 col-lg-4 col-12">
                 <div class="mb-3">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvX7ghSY75PvK5S-RvhkFxNz88MWEALSBDvA&s"
-                        id="preview" width="100%" alt="">
+                    <img src="{{asset('bukti-pelunasan/'.$tagihan->bukti_pelunasan)}}"
+                        id="preview" width="100%" alt="" class="img-thumbnail shadow">
 
                 </div>
-                <input type="file" class="form-control" name="bukti_pelunasan" accept="image/*" id="selectImage" required>
             </div>
 
             <div class="col-xxl-8 col-xl-8 col-lg-8 col-12">
@@ -62,14 +63,13 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary my-3">Submit</button>
             </div>
         </div>
 
     </form>
 
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         selectImage.onchange = evt => {
             preview = document.getElementById('preview');
             preview.style.display = 'block';
@@ -78,6 +78,6 @@
                 preview.src = URL.createObjectURL(file)
             }
         }
-    </script>
+    </script> --}}
 
 @endsection

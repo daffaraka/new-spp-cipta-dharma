@@ -10,9 +10,6 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class LaporanSPPImport implements ToModel
 {
-    /**
-    * @param Collection $collection
-    */
     public function model(array $row)
     {
         return new Tagihan([
@@ -22,7 +19,11 @@ class LaporanSPPImport implements ToModel
             'kelas'    => $row[4],
             'bulan'    => $row[5],
             'tahun'    => date('Y', strtotime($row[6])),
-            'total_bayar'  => $row[7],
+            'total_bayar'  => 'Rp. ' . number_format($row[7], 0, ',', '.'),
+            'tanggal_terbit' => $row[8],
+            'tanggal_lunas' => $row[9],
+            'penerbit' => $row[10] ?? '-',
+            'melunasi' => $row[11] ?? '-',
         ]);
     }
 }

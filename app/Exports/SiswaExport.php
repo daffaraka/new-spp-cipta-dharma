@@ -14,9 +14,6 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
 
      private $counter = 0;
 
@@ -32,17 +29,19 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
     public function headings(): array
     {
         return [
-            'No',
-            'Nama Siswa',
+            '#',
+            'Nama',
             'NIS',
             'NISN',
+            'Email',
+            'Password',
+            'Tanggal Lahir',
+            'Nama Orang Tua',
+            'Alamat',
+            'Telepon',
             'Angkatan',
             'Kelas',
             'Jenis Kelamin',
-            'Nama Orang Tua',
-            'Alamat',
-            'Email',
-            'Telepon',
 
         ];
     }
@@ -55,13 +54,15 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             $siswa->nama,
             $siswa->nis,
             $siswa->nisn,
-            $siswa->angkatan,
-            $siswa->kelas,
-            $siswa->jenis_kelamin,
+            $siswa->email,
+            $siswa->password,
+            $siswa->tanggal_lahir,
             $siswa->nama_wali,
             $siswa->alamat,
-            $siswa->email,
-            $siswa->no_telp
+            $siswa->no_telp,
+            $siswa->angkatan,
+            $siswa->kelas,
+            $siswa->jenis_kelamin
         ];
     }
 

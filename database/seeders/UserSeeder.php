@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
 
 
         $jk = ['Laki-laki', 'Perempuan'];
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 1; $i < 50; $i++) {
             $user = User::create(
                 [
                     'nama' => 'User ' . $i,

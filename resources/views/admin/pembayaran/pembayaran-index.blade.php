@@ -78,7 +78,7 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $pembayaran->no_invoice }}</td>
-                    <td> <img src="{{ asset($pembayaran->bukti_pelunasan) }}" alt="{{$pembayaran->bukti_pelunasan}}"></td>
+                    <td> <img src="{{ asset($pembayaran->bukti_pelunasan) }}" alt="{{ $pembayaran->bukti_pelunasan }}"></td>
                     <td>{{ $pembayaran->nama_invoice }}</td>
                     <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
                     <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
@@ -105,10 +105,17 @@
                     <td>{{ \Carbon\Carbon::parse($pembayaran->created_at)->isoFormat('HH:mm:ss, dddd, D MMMM Y') }}</td>
 
                     <td>
-                        <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-warning">Detail</a>
-                        <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}" class="btn btn-info">Verifikasi</a>
-                        <a href="{{ route('pembayaran.kuitansi', $pembayaran->id) }}"
-                            class="btn btn-secondary">Kuitansi</a>
+                        <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-sm btn-warning">Detail</a>
+                        @if ($pembayaran->status == 'Belum Lunas')
+                            <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
+                                class="btn btn-sm btn-info">Verifikasi</a>
+                        @else
+                            <span class="btn btn-sm btn-success">Lunas</span>
+                        @endif
+
+
+                        <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                            class="btn btn-sm btn-secondary">Kuitansi</a>
 
                     </td>
                 </tr>
