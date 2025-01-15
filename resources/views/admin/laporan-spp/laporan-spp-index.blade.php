@@ -42,10 +42,10 @@
                     <a href="{{ route('laporanSpp.export') }}" class="btn btn-outline-success" id="btnExport">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
-                    <a href="{{ route('laporanSpp.import') }}" class="btn btn-warning" id="btnImport" data-bs-toggle="modal"
+                    {{-- <a href="{{ route('laporanSpp.import') }}" class="btn btn-warning" id="btnImport" data-bs-toggle="modal"
                         data-bs-target="#importModal">
                         <i class="fas fa-file-import"></i> Import Excel
-                    </a>
+                    </a> --}}
                     <a href="{{ route('laporanSpp.print') }}" class="btn btn-outline-dark" id="btnPrint">
                         <i class="fas fa-print"></i> Print
                     </a>
@@ -74,12 +74,12 @@
             @foreach ($laporan_spp as $index => $spp)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $spp->no_invoice }}</td>
-                    <td>{{ $spp->siswa->nis }}</td>
-                    <td>{{ $spp->siswa->nama }}</td>
-                    <td>{{ $spp->siswa->kelas }}</td>
-                    <td>{{ $spp->bulan }}</td>
-                    <td>{{ $spp->tahun }}</td>
+                    <td>{{ $spp->no_invoice  ?? '-'}}</td>
+                    <td>{{ $spp->siswa->nis ?? '-' }}</td>
+                    <td>{{ $spp->siswa->nama ?? '-' }}</td>
+                    <td>{{ $spp->siswa->kelas ?? '-' }}</td>
+                    <td>{{ $spp->bulan ?? '-' }}</td>
+                    <td>{{ $spp->tahun  ?? '-'}}</td>
                     <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
                     <td>
                         <div class="d-grid">

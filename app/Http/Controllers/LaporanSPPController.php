@@ -104,8 +104,8 @@ class LaporanSPPController extends Controller
 
     public function print()
     {
-        $siswas = Tagihan::with('siswa')->latest()->get();
-        $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
+        $laporan_spp = Tagihan::with('siswa')->latest()->get();
+        $pdf = PDF::loadview('admin.pdf.laporan-spp-pdf', compact('laporan_spp'))
             ->setPaper('a4', 'landscape');
         $tgl = date('d-m-Y_H-i`-s');
         return $pdf->stream('siswa'.$tgl.'.pdf');

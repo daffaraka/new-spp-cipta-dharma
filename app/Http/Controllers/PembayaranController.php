@@ -25,7 +25,7 @@ class PembayaranController extends Controller
     {
         $data['judul'] = 'Detil Data Pembayaran';
         $data['pembayaran'] = $pembayaran;
-        return view('admin.pembayaran.pembayaran-edit', $data);
+        return view('admin.pembayaran.pembayaran-show', $data);
     }
 
     public function edit(Tagihan $pembayaran)
@@ -59,9 +59,10 @@ class PembayaranController extends Controller
     {
         $pembayaran = Tagihan::find($id);
         $pembayaran->melunasi_id = auth()->user()->id;
+        $pembayaran->isSentKuitansi = 1;
         $pembayaran->save();
 
-        return to_route('pembayaran.index')->with('success', 'pembayaran telah diverifikasi');
+        return to_route('pembayaran.index')->with('success', 'Kuitansi Dikirim telah diverifikasi');
     }
 
 

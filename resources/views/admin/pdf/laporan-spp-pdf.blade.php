@@ -52,38 +52,32 @@
         }
     </style>
 
-    <table class="table table-light" >
+    <table class="table table-light">
         <thead class="thead-light">
             <tr>
                 <th>#</th>
-                <th>Nama Siswa</th>
+                <th>No Invoice</th>
                 <th>NIS</th>
-                <th>NISN</th>
-                <th>Email</th>
-                <th>Tanggal Lahir</th>
-                <th>Nama Wali</th>
-                <th>Alamat</th>
-                <th>No Telfon</th>
-                <th>Angkatan</th>
+                <th>Nama Siswa</th>
                 <th>Kelas</th>
-                <th>Jenis Kelamin</th>
+                <th>Bulan</th>
+                <th>Tahun</th>
+                <th>Total Bayar</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($siswas as $index => $siswa)
+            @foreach ($laporan_spp as $index => $spp)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $siswa->nama }}</td>
-                    <td>{{ $siswa->nis }}</td>
-                    <td>{{ $siswa->nisn }}</td>
-                    <td>{{ $siswa->email }}</td>
-                    <td>{{ $siswa->tanggal_lahir }}</td>
-                    <td>{{ $siswa->nama_wali }}</td>
-                    <td>{{ $siswa->alamat }}</td>
-                    <td>{{ $siswa->no_telp }}</td>
-                    <td>{{ $siswa->angkatan }}</td>
-                    <td>{{ $siswa->kelas }}</td>
-                    <td>{{ $siswa->jenis_kelamin }}</td>
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $spp->no_invoice ?? '-' }}</td>
+                        <td>{{ $spp->siswa->nis  ?? '-'}}</td>
+                        <td>{{ $spp->siswa->nama  ?? '-'}}</td>
+                        <td>{{ $spp->siswa->kelas  ?? '-'}}</td>
+                        <td>{{ $spp->bulan  ?? '-'}}</td>
+                        <td>{{ $spp->tahun  ?? '-' }}</td>
+                        <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
+                    </tr>
                 </tr>
             @endforeach
         </tbody>

@@ -30,6 +30,10 @@ class UserSeeder extends Seeder
                 'nama' => 'Admin',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('password'),
+                'alamat' => $faker->address,
+                'no_telp' => $faker->phoneNumber,
+                'jenis_kelamin' => $jk[array_rand($jk)],
+                // 'agama' => $agama[array_rand($agama)],
             ]
         );
 
@@ -39,7 +43,11 @@ class UserSeeder extends Seeder
             [
                 'nama' => 'Kepsek',
                 'email' => 'kepsek@gmail.com',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'alamat' => $faker->address,
+                'no_telp' => $faker->phoneNumber,
+                'jenis_kelamin' => $jk[array_rand($jk)],
+                // 'agama' => $agama[array_rand($agama)],
             ]
         );
 

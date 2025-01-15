@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nis')->unique()->nullable();
             $table->string('nisn')->unique()->nullable();
+            $table->string('nip')->unique()->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

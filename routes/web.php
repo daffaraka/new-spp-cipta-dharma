@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
     Route::get('detail-pelunasan/{id}', [PelunasanController::class, 'detailTagihan'])->name('pelunasan.detailTagihan');
     Route::view('print', 'admin.tagihan.tagihan-print');
+    Route::post('filter-agama-petugas', [PetugasController::class, 'filterAgama'])->name('petugas.filterAgama');
 });
 
 

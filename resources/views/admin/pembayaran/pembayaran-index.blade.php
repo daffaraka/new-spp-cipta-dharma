@@ -70,7 +70,8 @@
                 <th>Admin Penerbit</th>
                 <th>Admin Melunasi</th>
                 <th>Tanggal ditambahkan</th>
-                <th>Aksi</th> <!-- Kolom untuk aksi -->
+                <th>Verifikasi</th> <!-- Kolom untuk aksi -->
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -105,17 +106,22 @@
                     <td>{{ \Carbon\Carbon::parse($pembayaran->created_at)->isoFormat('HH:mm:ss, dddd, D MMMM Y') }}</td>
 
                     <td>
+                        <div class="d-flex gap-2">
+                            <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                                class="btn btn-sm btn-secondary">Kuitansi</a>
+                            @if ($pembayaran->status == 'Belum Lunas')
+                                <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-info">Verifikasi</a>
+                            @else
+                                <span class="btn btn-sm btn-success">Lunas</span>
+                            @endif
+                        </div>
+
+
+                    </td>
+                    <td>
                         <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-sm btn-warning">Detail</a>
-                        @if ($pembayaran->status == 'Belum Lunas')
-                            <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
-                                class="btn btn-sm btn-info">Verifikasi</a>
-                        @else
-                            <span class="btn btn-sm btn-success">Lunas</span>
-                        @endif
 
-
-                        <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
-                            class="btn btn-sm btn-secondary">Kuitansi</a>
 
                     </td>
                 </tr>

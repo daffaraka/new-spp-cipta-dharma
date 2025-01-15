@@ -9,6 +9,18 @@
 
                 </a>
 
+                @role(['SiswaOrangTua'])
+                    <div class="sb-sidenav-menu-heading">Data Master</div>
+                    <a class="nav-link" href="{{ route('siswa.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Pembayaran
+                    </a>
+                    <a class="nav-link" href="{{ route('siswa.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Riwayat Pembayaran
+                    </a>
+                @endrole
+
                 @role(['Petugas', 'Kepala Sekolah'])
                     <div class="sb-sidenav-menu-heading">Data Master</div>
                     <a class="nav-link" href="{{ route('siswa.index') }}">

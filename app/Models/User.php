@@ -22,6 +22,7 @@ class User extends Authenticatable
         'nama',
         'nis',
         'nisn',
+        'nip',
         'email',
         'password',
         'tanggal_lahir',
