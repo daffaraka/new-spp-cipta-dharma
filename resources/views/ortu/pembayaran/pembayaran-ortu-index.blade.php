@@ -2,50 +2,15 @@
 @section('content')
     <div class="row mb-3">
         <div class="col-md-2">
-            <label for="filterAngkatan">Filter Angkatan</label>
-            <select id="filterAngkatan" name="filter_angkatan" class="form-control">
-                <option value="">Pilih Angkatan</option>
-                @for ($year = 2020; $year <= date('Y'); $year++)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endfor
+            <label for="filterStatus">Filter Status</label>
+            <select id="filterStatus" name="filter_angkatan" class="form-control">
+                <option value="">Pilih Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+
             </select>
         </div>
-        <div class="col-md-2">
-            <label for="filterKelas">Filter Kelas</label>
-            <select id="filterKelas" class="form-control" name="filter_kelas">
-                <option value="">Pilih Kelas</option>
-                @foreach ($kelas as $k)
-                    <option value="{{ $k->kelas }}">{{ $k->kelas }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label for="filterTahun">Filter Tahun</label>
-            <select id="filterTahun" name="filter_tahun" class="form-control">
-                <option value="">Pilih Tahun</option>
-                @for ($year = 2020; $year <= date('Y'); $year++)
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endfor
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label for="filterBulan">Filter Bulan</label>
-            <select id="filterBulan" class="form-control" name="filter_bulan">
-                <option value="">Pilih Bulan</option>
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">November</option>
-                <option value="12">Desember</option>
-            </select>
-        </div>
+
         <div class="col-4">
             <button type="submit" class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
@@ -58,19 +23,12 @@
             <tr>
                 <th>No</th>
                 <th>No Invoice</th>
-                <th>Bukti</th>
-                <th>Nama Invoice</th>
-                <th>Siswa</th>
+                <th>Nama Siswa</th>
                 <th>Nominal</th>
                 <th>Nama Nominal</th>
-                <th>Bulan</th>
                 <th>Tahun</th>
-                <th>Tanggal Terbit</th>
-                <th>Tanggal Lunas</th>
-                <th>Admin Penerbit</th>
-                <th>Admin Melunasi</th>
-                <th>Tanggal ditambahkan</th>
-                <th>Verifikasi</th> <!-- Kolom untuk aksi -->
+                <th>Bulan</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -79,36 +37,28 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $pembayaran->no_invoice }}</td>
-                    <td> <img src="{{ asset($pembayaran->bukti_pelunasan) }}" alt="{{ $pembayaran->bukti_pelunasan }}"></td>
-                    <td>{{ $pembayaran->nama_invoice }}</td>
                     <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
                     <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
                     <td>{{ $pembayaran->biaya->nama_nominal }}</td>
-                    {{-- <td>
+                    <td>{{ $pembayaran->tahun }}</td>
+                    <td>{{ $pembayaran->bulan }}</td>
+                    <td>
                         @if ($pembayaran->status == 'Belum Lunas')
                             <span class="badge rounded-pill bg-danger">Belum Lunas</span>
                         @else
                             <span class="badge rounded-pill bg-success">Lunas</span>
                         @endif
-                    </td> --}}
-                    <td>
-                        {{ $pembayaran->bulan }}
                     </td>
-                    <td>
-                        {{ $pembayaran->tahun }}
-
-                    </td>
-                    <td>{{ $pembayaran->tanggal_terbit }}</td>
-                    <td>{{ $pembayaran->tanggal_lunas ?? '-' }}</td>
-                    <td>{{ $pembayaran->penerbit->nama ?? '-' }}</td>
-                    <td>{{ $pembayaran->melunasi->nama ?? '-' }}</td>
-
-                    <td>{{ \Carbon\Carbon::parse($pembayaran->created_at)->isoFormat('HH:mm:ss, dddd, D MMMM Y') }}</td>
-
                     <td>
                         <div class="d-flex gap-2">
-                            <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
-                                class="btn btn-sm btn-secondary">Kuitansi</a>
+
+                            @if ($pembayaran->status == 'Lunas' && $pembayaran->isSentKuitansi == 1)
+                                <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                                    class="btn btn-sm btn-secondary">Kuitansi</a>
+                            @else
+                                <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
+                            @endif
+
                             @if ($pembayaran->status == 'Belum Lunas')
                                 <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
                                     class="btn btn-sm btn-info">Verifikasi</a>
@@ -116,11 +66,6 @@
                                 <span class="btn btn-sm btn-success">Lunas</span>
                             @endif
                         </div>
-
-
-                    </td>
-                    <td>
-                        <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-sm btn-warning">Detail</a>
 
 
                     </td>

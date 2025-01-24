@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nip')->unique()->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('nama_wali')->nullable();
             $table->string('alamat')->nullable();
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('angkatan')->nullable();
             $table->string('kelas')->nullable();
             $table->string('jenis_kelamin')->nullable();
+            $table->string('id_telegram')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

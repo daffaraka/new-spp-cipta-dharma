@@ -32,6 +32,7 @@ class User extends Authenticatable
         'angkatan',
         'kelas',
         'jenis_kelamin',
+        'id_telegram',
     ];
 
     /**

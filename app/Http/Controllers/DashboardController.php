@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Models\User;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -21,7 +22,24 @@ class DashboardController extends Controller
             $data['total_perempuan'] = User::where('jenis_kelamin', 'Perempuan')->count();
 
 
+            $data['data_perJenisKelamin'] = User::select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
+                return [
+                    'jenis_kelamin' => $item->jenis_kelamin,
+                    'total' => $item->total];
+            });
 
+
+            // $data['data_SppPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->map(function ($item) {
+            //     return [
+            //         'bulan' => $item->bulan,
+            //         'nominal' => $item->biaya->nominal,
+            //     ];
+            // });
+
+
+            // dd($data['data_SppPerBulan']);
+
+            // dd($data['data_perJenisKelamin']);
 
             return view('admin.admin-dashboard', $data);
         } else {

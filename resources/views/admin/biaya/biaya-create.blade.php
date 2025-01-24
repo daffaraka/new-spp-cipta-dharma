@@ -27,7 +27,7 @@
 
             <div class="mb-3">
                 <label for="">Tahun</label>
-                <input type="date" name="tahun" class="form-control">
+                <input type="number" name="tahun" class="form-control">
             </div>
 
 
@@ -51,13 +51,13 @@
             </div>
 
             <div class="mb-3">
-                <label for="">Level</label>
-                <select name="level" id="" class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                <label for="">Kelas</label>
+                <select name="level" id="" class="form-control" autocomplete="on" value="{{ old('kelas', '') }}">
+                    @for ($kelas = 1; $kelas <= 6; $kelas++)
+                        @foreach (range('A', 'E') as $huruf)
+                            <option value="{{ $kelas . $huruf }}" {{ old('kelas', '') == $kelas . $huruf ? 'selected' : '' }}>{{ $kelas . ' - ' . $huruf }}</option>
+                        @endforeach
+                    @endfor
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

@@ -12,6 +12,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\LaporanPetugasController;
 use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\LaporanSPPController;
+use App\Http\Controllers\OrangTuaController;
 use App\Models\Siswa;
 
 /*
@@ -80,13 +81,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('petugas', PetugasController::class)->parameters([
         'petugas' => 'petugas'
     ]);
+    Route::post('filter-agama-petugas', [PetugasController::class, 'filterAgama'])->name('petugas.filterAgama');
 
 
+    // Orang Tua
     Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
     Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
     Route::get('detail-pelunasan/{id}', [PelunasanController::class, 'detailTagihan'])->name('pelunasan.detailTagihan');
-    Route::view('print', 'admin.tagihan.tagihan-print');
-    Route::post('filter-agama-petugas', [PetugasController::class, 'filterAgama'])->name('petugas.filterAgama');
+    Route::get('parents/pembayaran',[OrangTuaController::class,'pembayaran'])->name('ortu.pembayaran');
+    Route::view('print', 'admin.tagihan.tagihan-invoice-print');
 });
 
 

@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Biaya;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class BiayaSeeder extends Seeder
 {
@@ -14,37 +15,66 @@ class BiayaSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Biaya::create([
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
+        $level = [];
+
+        for ($i = 1; $i <= 6; $i++) {
+            foreach (range('A', 'E') as $huruf) {
+                array_push($level, $i . $huruf);
+            }
+        }
+        Biaya::create([
             'nama_biaya' => 'SPP',
-            'nominal' => 50000,
+            'nominal' => rand(10000, 200000),
             'nama_nominal' => 'SPP',
-            'tahun' => 2022,
-            'bulan' => 'Januari',
-            'level' => 'X',
+            'tahun' => $tahun[array_rand($tahun)],
+            'bulan' => $bulan[array_rand($bulan)],
+            'level' => $level[array_rand($level)],
         ]);
-        \App\Models\Biaya::create([
+        Biaya::create([
             'nama_biaya' => 'Uang Bangunan',
-            'nominal' => 200000,
+            'nominal' => rand(10000, 200000),
             'nama_nominal' => 'Uang Bangunan',
-            'tahun' => 2022,
-            'bulan' => 'Januari',
-            'level' => 'X',
+            'tahun' => $tahun[array_rand($tahun)],
+            'bulan' => $bulan[array_rand($bulan)],
+            'level' => $level[array_rand($level)],
         ]);
-        \App\Models\Biaya::create([
+        Biaya::create([
             'nama_biaya' => 'Uang Kegiatan',
-            'nominal' => 100000,
+            'nominal' => rand(10000, 200000),
             'nama_nominal' => 'Uang Kegiatan',
-            'tahun' => 2022,
-            'bulan' => 'Januari',
-            'level' => 'X',
+            'tahun' => $tahun[array_rand($tahun)],
+            'bulan' => $bulan[array_rand($bulan)],
+            'level' => $level[array_rand($level)],
         ]);
-        \App\Models\Biaya::create([
+        Biaya::create([
             'nama_biaya' => 'Uang Lain-Lain',
-            'nominal' => 50000,
+            'nominal' => rand(10000, 200000),
             'nama_nominal' => 'Uang Lain-Lain',
-            'tahun' => 2022,
-            'bulan' => 'Januari',
-            'level' => 'X',
+            'tahun' => $tahun[array_rand($tahun)],
+            'bulan' => $bulan[array_rand($bulan)],
+            'level' => $level[array_rand($level)],
         ]);
+
+        for ($i=0; $i < 10; $i++) {
+            Biaya::create([
+                'nama_biaya' => 'Uang Kegiatan ' . $i,
+                'nominal' => rand(10000, 200000),
+                'nama_nominal' => 'Uang Kegiatan ' . $i,
+                'tahun' => $tahun[array_rand($tahun)],
+                'bulan' => $bulan[array_rand($bulan)],
+                'level' => $level[array_rand($level)],
+            ]);
+            Biaya::create([
+                'nama_biaya' => 'Uang Lain-Lain ' . $i,
+                'nominal' => rand(10000, 200000),
+                'nama_nominal' => 'Uang Lain-Lain ' . $i,
+                'tahun' => $tahun[array_rand($tahun)],
+                'bulan' => $bulan[array_rand($bulan)],
+                'level' => $level[array_rand($level)],
+            ]);
+        }
     }
 }

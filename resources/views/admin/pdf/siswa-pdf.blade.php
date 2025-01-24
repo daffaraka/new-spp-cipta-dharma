@@ -55,7 +55,7 @@
     <table class="table table-light" >
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>Nama Siswa</th>
                 <th>NIS</th>
                 <th>NISN</th>

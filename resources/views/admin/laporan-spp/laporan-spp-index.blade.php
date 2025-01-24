@@ -59,7 +59,7 @@
     <table class="table table-light" id="dataTables">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>No Invoice</th>
                 <th>NIS</th>
                 <th>Nama Siswa</th>

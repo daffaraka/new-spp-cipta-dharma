@@ -38,7 +38,7 @@
     <table class="table table-light" id="dataTables">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>Nama petugas</th>
                 <th>Jabatan</th>
                 <th>Email</th>

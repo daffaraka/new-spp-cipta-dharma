@@ -11,7 +11,7 @@
 
                 @role(['SiswaOrangTua'])
                     <div class="sb-sidenav-menu-heading">Data Master</div>
-                    <a class="nav-link" href="{{ route('siswa.index') }}">
+                    <a class="nav-link" href="{{ route('ortu.pembayaran') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                         Pembayaran
                     </a>

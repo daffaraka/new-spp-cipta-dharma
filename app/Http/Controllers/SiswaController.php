@@ -32,6 +32,8 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->all());
         $this->validate($request, [
             'nama' => 'required',
             'nis' => 'required|unique:users',
@@ -45,10 +47,11 @@ class SiswaController extends Controller
             'angkatan' => 'required',
             'kelas' => 'required',
             'jenis_kelamin' => 'required',
+            'id_telegram' => 'required',
         ]);
 
 
-        User::create(
+        $user =  User::create(
             [
                 'nama' => $request->nama,
                 'nis' => $request->nis,
@@ -63,8 +66,11 @@ class SiswaController extends Controller
                 'angkatan' => $request->angkatan,
                 'kelas' => $request->kelas,
                 'jenis_kelamin' => $request->jenis_kelamin,
+                'id_telegram' => $request->id_telegram,
             ]
         );
+
+        $user->assignRole('SiswaOrangTua');
 
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa baru telah ditambahkan');

@@ -10,6 +10,27 @@
         </div>
 
         <div class="mb-3">
+            <label for="">Kelas</label>
+            <select name="kelas" id="" class="form-control" required>
+                @for ($kelas = 1; $kelas <= 6; $kelas++)
+                    @foreach (range('A', 'E') as $huruf)
+                        <option value="{{ $kelas . $huruf }}" {{ $siswa->kelas == $kelas . $huruf ? 'selected' : '' }}>{{ $kelas . ' - ' . $huruf }}</option>
+                    @endforeach
+                @endfor
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="">Angkatan</label>
+            <select name="angkatan" id="" class="form-control" required>
+                @for ($kelas = 2015; $kelas <= 2024; $kelas++)
+                    <option value="{{ $kelas }}" {{ $siswa->angkatan == $kelas ? 'selected' : '' }}>{{ $kelas  }}</option>
+                @endfor
+            </select>
+        </div>
+
+
+        <div class="mb-3">
             <label for="">NIS</label>
             <input type="text" name="nis" class="form-control" value="{{ $siswa->nis }}" required>
         </div>
@@ -55,17 +76,12 @@
         </div>
         <div class="mb-3">
             <label for="">Kelas</label>
-            <select  name="kelas" class="form-control" required>
-                <option value="10A" @if($siswa->kelas == '10A') selected @endif>10A</option>
-                <option value="10B" @if($siswa->kelas == '10B') selected @endif>10B</option>
-                <option value="10C" @if($siswa->kelas == '10C') selected @endif>10C</option>
-                <option value="11A" @if($siswa->kelas == '11A') selected @endif>11A</option>
-                <option value="11B" @if($siswa->kelas == '11B') selected @endif>11B</option>
-                <option value="11C" @if($siswa->kelas == '11C') selected @endif>11C</option>
-                <option value="12A" @if($siswa->kelas == '12A') selected @endif>12A</option>
-                <option value="12B" @if($siswa->kelas == '12B') selected @endif>12B</option>
-                <option value="12C" @if($siswa->kelas == '12C') selected @endif>12C</option>
-
+            <select name="kelas" id="" class="form-control" autocomplete="on" value="{{ old('kelas', '') }}">
+                @for ($kelas = 1; $kelas <= 6; $kelas++)
+                    @foreach (range('A', 'E') as $huruf)
+                        <option value="{{ $kelas . $huruf }}" {{ old('kelas', '') == $kelas . $huruf ? 'selected' : '' }}>{{ $kelas . ' - ' . $huruf }}</option>
+                    @endforeach
+                @endfor
             </select>
         </div>
         <div class="mb-3">
@@ -96,6 +112,12 @@
             <label for="">Nama Wali</label>
             <input type="text" name="nama_wali" class="form-control" value="{{ $siswa->nama_wali }}" required>
         </div>
+
+        <div class="mb-3">
+            <label for="">ID Telegram</label>
+            <input type="text" name="id_telegram" class="form-control" value="{{ $siswa->id_telegram }}" required>
+        </div>
+
 
 
         <button type="submit" class="btn btn-primary">Submit</button>

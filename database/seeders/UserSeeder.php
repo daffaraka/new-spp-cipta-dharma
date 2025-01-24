@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $agama = ['Islam', 'Kristen', 'Katholik', 'Hindu', 'Budha'];
         $jk = ['Laki-laki', 'Perempuan'];
         $angkatan = [2019,2020,2021, 2022, 2023, 2024];
-        $kelas = ['10A', '10B', '11A', '11B', '12A', '12B'];
+        $kelas = ['1A', '1B', '1C','1D','1E', '2A', '2B', '2C','2D','2E', '3A', '3B', '3C','3D','3E', '4A', '4B', '4C','4D','4E', '5A', '5B', '5C','5D','5E', '6A', '6B', '6C','6D','6E'];
 
 
         $admin =  User::create(
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
 
 
         $jk = ['Laki-laki', 'Perempuan'];
-        for ($i = 1; $i < 50; $i++) {
+        for ($i = 1; $i < 30; $i++) {
             $user = User::create(
                 [
                     'nama' => 'User ' . $i,
@@ -70,6 +70,7 @@ class UserSeeder extends Seeder
                     'no_telp' => $faker->phoneNumber,
                     'angkatan' => $angkatan[array_rand($angkatan)],
                     'kelas' => $kelas[array_rand($kelas)],
+                    'id_telegram' => null,
                     'created_at' => now(),
                 ]
             );

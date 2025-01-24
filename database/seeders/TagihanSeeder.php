@@ -22,7 +22,7 @@ class TagihanSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $namaInvoice = 'Tagihan Bulanan ' . $i;
-            $bulan = \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->format('F');
+            $bulan = array_rand(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
             $use = User::pluck('id')->toArray();
             $biaya = Biaya::pluck('id')->toArray();
             $buktiLunas = [null, 'Ada'];

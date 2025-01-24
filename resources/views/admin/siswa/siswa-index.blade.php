@@ -55,19 +55,12 @@
     <table class="table table-light" id="dataTables">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>Nama Siswa</th>
-                <th>NIS</th>
-                <th>NISN</th>
-                <th>Email</th>
-                <th>Tanggal Lahir</th>
-                <th>Nama Wali</th>
-                <th>Alamat</th>
-                <th>No Telfon</th>
                 <th>Angkatan</th>
                 <th>Kelas</th>
                 <th>Jenis Kelamin</th>
-
+                <th>Alamat</th>
                 <th>Aksi</th> <!-- Kolom untuk aksi -->
             </tr>
         </thead>
@@ -76,19 +69,16 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $siswa->nama }}</td>
-                    <td>{{ $siswa->nis }}</td>
-                    <td>{{ $siswa->nisn }}</td>
-                    <td>{{ $siswa->email }}</td>
-                    <td>{{ $siswa->tanggal_lahir }}</td>
-                    <td>{{ $siswa->nama_wali }}</td>
-                    <td>{{ $siswa->alamat }}</td>
-                    <td>{{ $siswa->no_telp }}</td>
                     <td>{{ $siswa->angkatan }}</td>
                     <td>{{ $siswa->kelas }}</td>
                     <td>{{ $siswa->jenis_kelamin }}</td>
+                    <td>{{ $siswa->alamat }}</td>
                     <td>
                         <div class="d-grid">
-                            <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-block btn-info my-1">Detail</a>
+                            <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                 data-id = "{{ $siswa->id }}">Detail</button>
+
+                            {{-- <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-block btn-info my-1">Detail</a> --}}
                             <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-block btn-warning my-1">Edit</a>
 
                             <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST" style="display:inline;">
@@ -141,21 +131,72 @@
     </div>
 
 
-    <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
+    <div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="my-modal-title">Title</h5>
+                    <h5 class="modal-title" id="my-modal-title">Detail Siswa</h5>
                     <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Content</p>
+                    <div class="form-group mb-3">
+                        <label for="detail-nama">Nama</label>
+                        <input type="text" id="detail-nama" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nis">NIS</label>
+                        <input type="text" id="detail-nis" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nisn">NISN</label>
+                        <input type="text" id="detail-nisn" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="detail-email">Email</label>
+                        <input type="email" id="detail-email" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-tanggal-lahir">Tanggal Lahir</label>
+                        <input type="date" id="detail-tanggal-lahir" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nama-wali">Nama Wali</label>
+                        <input type="text" id="detail-nama-wali" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-alamat">Alamat</label>
+                        <input type="text" id="detail-alamat" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-no-telp">No Telp</label>
+                        <input type="text" id="detail-no-telp" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-angkatan">Angkatan</label>
+                        <input type="text" id="detail-angkatan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-kelas">Kelas</label>
+                        <input type="text" id="detail-kelas" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-jenis-kelamin">Jenis Kelamin</label>
+                        <input type="text" id="detail-jenis-kelamin" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-id-telegram">ID Telegram</label>
+                        <input type="text" id="detail-id-telegram" class="form-control" readonly>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    Footer
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -180,16 +221,10 @@
                         $('#dataTables tbody').append('<tr>' +
                             '<td>' + (index + 1) + '</td>' +
                             '<td>' + value.nama + '</td>' +
-                            '<td>' + value.nis + '</td>' +
-                            '<td>' + value.nisn + '</td>' +
-                            '<td>' + value.email + '</td>' +
-                            '<td>' + value.tanggal_lahir + '</td>' +
-                            '<td>' + value.nama_wali + '</td>' +
-                            '<td>' + value.alamat + '</td>' +
-                            '<td>' + value.no_telp + '</td>' +
                             '<td>' + value.angkatan + '</td>' +
                             '<td>' + value.kelas + '</td>' +
                             '<td>' + value.jenis_kelamin + '</td>' +
+                            '<td>' + value.alamat + '</td>' +
                             '<td>' +
                             '<div class="d-grid">' +
                             '<a href="/siswa/' + value.id +
@@ -207,6 +242,36 @@
                             '</tr>');
                     });
 
+                }
+            });
+        });
+
+
+
+        $('.btnDetailSiswa').click(function(e) {
+            var dataId = $(this).data('id');
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('siswa.show', ['siswa' => ':id']) }}".replace(':id', dataId),
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": dataId
+                },
+                dataType: "json",
+                success: function(response) {
+                    $('#detail-nama').val(response.nama);
+                    $('#detail-nis').val(response.nis);
+                    $('#detail-nisn').val(response.nisn);
+                    $('#detail-email').val(response.email);
+                    $('#detail-tanggal-lahir').val(response.tanggal_lahir);
+                    $('#detail-nama-wali').val(response.nama_wali);
+                    $('#detail-alamat').val(response.alamat);
+                    $('#detail-no-telp').val(response.no_telp);
+                    $('#detail-angkatan').val(response.angkatan);
+                    $('#detail-kelas').val(response.kelas);
+                    $('#detail-jenis-kelamin').val(response.jenis_kelamin);
+                    $('#detail-id-telegram').val(response.id_telegram);
                 }
             });
         });
