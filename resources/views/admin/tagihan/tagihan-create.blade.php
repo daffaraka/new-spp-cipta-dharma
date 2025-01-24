@@ -10,8 +10,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="">Nama Invoice</label>
-            <input type="text" name="nama_invoice" class="form-control" required>
+            <label for="">Keterangan</label>
+            <input type="text" name="keterangan" class="form-control" required>
         </div>
 
         <div class="mb-3">
@@ -58,7 +58,7 @@
             <input type="number" name="tahun" class="form-control" required>
         </div>
 
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="">Tanggal Terbit</label>
             <input type="date" name="tanggal_terbit" class="form-control">
             <p class="fw-bold"> Jika dikosongi otomatis di isi hari ini </p>
@@ -77,7 +77,7 @@
                 <option value="Lunas">Lunas</option>
 
             </select>
-        </div>
+        </div> --}}
 
         <button type="submit" class="btn btn-primary my-3">Submit</button>
     </form>

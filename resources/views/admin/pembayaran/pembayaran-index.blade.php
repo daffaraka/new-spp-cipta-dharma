@@ -59,7 +59,7 @@
                 <th>No</th>
                 <th>No Invoice</th>
                 <th>Bukti</th>
-                <th>Nama Invoice</th>
+                <th>Keterangan</th>
                 <th>Siswa</th>
                 <th>Nominal</th>
                 <th>Nama Nominal</th>
@@ -80,7 +80,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $pembayaran->no_invoice }}</td>
                     <td> <img src="{{ asset($pembayaran->bukti_pelunasan) }}" alt="{{ $pembayaran->bukti_pelunasan }}"></td>
-                    <td>{{ $pembayaran->nama_invoice }}</td>
+                    <td>{{ $pembayaran->keterangan }}</td>
                     <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
                     <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
                     <td>{{ $pembayaran->biaya->nama_nominal }}</td>
@@ -150,7 +150,7 @@
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.no_invoice + '</td>' +
-                                '<td>' + value.nama_invoice + '</td>' +
+                                '<td>' + value.keterangan + '</td>' +
                                 '<td>' + value.siswa.nama + '-' + value.siswa
                                 .kelas + '</td>' +
                                 '<td> Rp. ' + value.biaya.nominal + '</td>' +

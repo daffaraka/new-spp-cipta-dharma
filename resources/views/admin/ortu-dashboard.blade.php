@@ -11,7 +11,7 @@
                         <div class="col-xl-4 col-md-12 col-sm-12">
                             <div class="card my-3">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $tagihan->nama_invoice }} - <span
+                                    <h5 class="card-title">{{ $tagihan->keterangan }} - <span
                                             class="badge p-1 px-2 rounded-pill bg-danger">{{ $tagihan->status }}</span> </h5>
                                     <p class="card-text">{{ $tagihan->tanggal_terbit }}</p>
 
@@ -48,7 +48,7 @@
                     <div class="col-xl-4 col-md-12 col-sm-12">
                         <div class="card my-3">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $tagihan->nama_invoice }} - <span
+                                <h5 class="card-title">{{ $tagihan->keterangan }} - <span
                                         class="badge p-1 px-2 rounded-pill bg-success">{{ $tagihan->status }}</span> </h5>
                                 <p class="card-text">{{ $tagihan->tanggal_terbit }}</p>
 

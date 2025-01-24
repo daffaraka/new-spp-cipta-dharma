@@ -6,8 +6,8 @@
     </div>
 
     <div class="mb-3">
-        <label for="">Nama Invoice</label>
-        <input type="text" name="nama_invoice" class="form-control" value="{{ $laporan_siswa->nama_invoice }}" readonly>
+        <label for="">Keterangan</label>
+        <input type="text" name="keterangan" class="form-control" value="{{ $laporan_siswa->keterangan }}" readonly>
     </div>
 
     <div class="mb-3">

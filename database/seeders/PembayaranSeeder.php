@@ -21,15 +21,18 @@ class PembayaranSeeder extends Seeder
 
         $user = User::pluck('id')->toArray();
         $biaya = Biaya::pluck('id')->toArray();
+        $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
         for ($i = 1; $i <= 50; $i++) {
             $tagihan = new Tagihan();
             $tagihan->no_invoice = "INV" . sprintf('%03d', $i);
-            $tagihan->nama_invoice = "Tagihan Bulanan " . $i;
+            $tagihan->keterangan = "Tagihan Bulanan " . $i;
             $tagihan->user_id = $user[array_rand($user)];
             $tagihan->biaya_id = $biaya[array_rand($biaya)];
-            $tagihan->bulan = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->format('F');
-            $tagihan->tahun = date('Y');
+            $tagihan->bulan =  $bulan[array_rand($bulan)];
+            $tagihan->tahun = $tahun[array_rand($tahun)];
             $tagihan->tanggal_terbit = Carbon::now();
             $tagihan->tanggal_lunas = null;
             $tagihan->user_penerbit_id = 1;

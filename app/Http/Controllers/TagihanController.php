@@ -44,7 +44,7 @@ class TagihanController extends Controller
 
         $tagihan = new Tagihan();
         $tagihan->no_invoice = $request->no_invoice;
-        $tagihan->nama_invoice = $request->nama_invoice;
+        $tagihan->keterangan = $request->keterangan;
         $tagihan->user_id = $request->user_id;
         $tagihan->biaya_id = $request->biaya_id;
         $tagihan->bulan = $request->bulan;
@@ -115,10 +115,10 @@ class TagihanController extends Controller
             return response()->json(
                 Tagihan::with(['biaya', 'siswa', 'penerbit', 'melunasi'])
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
-                        $query->whereYear('created_at', $request->filter_tahun);
+                        $query->whereTahun($request->filter_tahun);
                     })
                     ->when(!empty($request->filter_bulan), function ($query) use ($request) {
-                        $query->whereMonth('created_at', $request->filter_bulan);
+                        $query->whereBulan($request->filter_bulan);
                     })->when($request->filter_angkatan != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);

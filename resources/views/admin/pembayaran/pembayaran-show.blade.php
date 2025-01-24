@@ -18,7 +18,7 @@
         <div class="col">
             <div class="mb-3">
                 <label for="">Nama Tagihan</label>
-                <input type="text" name="nama_tagihan" class="form-control" value="{{ $pembayaran->nama_invoice }}"
+                <input type="text" name="nama_tagihan" class="form-control" value="{{ $pembayaran->keterangan }}"
                     readonly>
             </div>
 

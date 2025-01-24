@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tagihans', function (Blueprint $table) {
             $table->id();
             $table->string('no_invoice');
-            $table->string('nama_invoice');
+            $table->string('keterangan');
             $table->date('tanggal_terbit')->nullable();
             $table->date('tanggal_lunas')->nullable();
             $table->string('bulan');

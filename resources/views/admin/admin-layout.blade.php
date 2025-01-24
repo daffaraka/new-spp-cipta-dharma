@@ -64,7 +64,7 @@
     <div id="layoutSidenav">
         @include('admin.partials.sidebar')
         <div id="layoutSidenav_content">
-            <main>
+            <main style="min-height: 100vh;">
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">{{ $judul ?? 'Dashboard' }}</h1>
                     <ol class="breadcrumb mb-4">

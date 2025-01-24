@@ -22,7 +22,7 @@
 
                 <div class="mb-3">
                     <label for="">Nama Tagihan</label>
-                    <input type="text" name="nama_tagihan" class="form-control" value="{{ $tagihan->nama_invoice }}"
+                    <input type="text" name="nama_tagihan" class="form-control" value="{{ $tagihan->keterangan }}"
                         readonly>
                 </div>
 

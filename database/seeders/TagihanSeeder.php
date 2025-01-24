@@ -19,19 +19,20 @@ class TagihanSeeder extends Seeder
     public function run()
     {
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $use = User::pluck('id')->toArray();
+        $biaya = Biaya::pluck('id')->toArray();
+        $buktiLunas = [null, 'Ada'];
         for ($i = 1; $i <= 10; $i++) {
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $namaInvoice = 'Tagihan Bulanan ' . $i;
-            $bulan = array_rand(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
-            $use = User::pluck('id')->toArray();
-            $biaya = Biaya::pluck('id')->toArray();
-            $buktiLunas = [null, 'Ada'];
-            Tagihan::insert([
+            $tagihan = Tagihan::insert([
                 'no_invoice' => $noInvoice,
-                'nama_invoice' => $namaInvoice,
+                'keterangan' => $namaInvoice,
                 'user_id' => $use[array_rand($use)],
                 'biaya_id' => $biaya[array_rand($biaya)],
-                'bulan' => $bulan,
+                'bulan' => $bulan[array_rand($bulan)],
                 'tahun' => $tahun[array_rand($tahun)],
                 'tanggal_terbit' => \Carbon\Carbon::now(),
                 'tanggal_lunas' => null,

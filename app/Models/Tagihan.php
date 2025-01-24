@@ -12,7 +12,7 @@ class Tagihan extends Model
     protected $fillable =
     [
         'no_invoice',
-        'nama_invoice',
+        'keterangan',
         'tanggal_terbit',
         'tanggal_lunas',
         'bukti_pelunasan',

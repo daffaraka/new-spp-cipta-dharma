@@ -95,7 +95,7 @@
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.no_invoice + '</td>' +
-                                '<td>' + value.nama_invoice + '</td>' +
+                                '<td>' + value.keterangan + '</td>' +
                                 '<td>' + value.siswa.nama + '-' + value.siswa
                                 .kelas + '</td>' +
                                 '<td> Rp. ' + value.biaya.nominal + '</td>' +

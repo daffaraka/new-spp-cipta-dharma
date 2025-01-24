@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label for="">Nama Tagihan</label>
-            <input type="text" name="nama_invoice" class="form-control" value="{{ $tagihan->nama_invoice }}" required>
+            <input type="text" name="keterangan" class="form-control" value="{{ $tagihan->keterangan }}" required>
         </div>
 
         <div class="mb-3">
@@ -37,6 +37,30 @@
 
 
         <div class="mb-3">
+            <label for="">Bulan</label>
+            <select name="bulan" id="" class="form-control">
+                <option value="Januari" {{ $tagihan->bulan == 'Januari' ? 'selected' : '' }}>Januari</option>
+                <option value="Februari" {{ $tagihan->bulan == 'Februari' ? 'selected' : '' }}>Februari</option>
+                <option value="Maret" {{ $tagihan->bulan == 'Maret' ? 'selected' : '' }}>Maret</option>
+                <option value="April" {{ $tagihan->bulan == 'April' ? 'selected' : '' }}>April</option>
+                <option value="Mei" {{ $tagihan->bulan == 'Mei' ? 'selected' : '' }}>Mei</option>
+                <option value="Juni" {{ $tagihan->bulan == 'Juni' ? 'selected' : '' }}>Juni</option>
+                <option value="Juli" {{ $tagihan->bulan == 'Juli' ? 'selected' : '' }}>Juli</option>
+                <option value="Agustus" {{ $tagihan->bulan == 'Agustus' ? 'selected' : '' }}>Agustus</option>
+                <option value="September" {{ $tagihan->bulan == 'September' ? 'selected' : '' }}>September</option>
+                <option value="Oktober" {{ $tagihan->bulan == 'Oktober' ? 'selected' : '' }}>Oktober</option>
+                <option value="November" {{ $tagihan->bulan == 'November' ? 'selected' : '' }}>November</option>
+                <option value="Desember" {{ $tagihan->bulan == 'Desember' ? 'selected' : '' }}>Desember</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="">Tahun</label>
+            <input type="number" name="tahun" class="form-control" value="{{ $tagihan->tahun }}" required>
+        </div>
+
+
+        <div class="mb-3">
             <label for="">Tanggal Terbit</label>
             <input type="date" name="tanggal_terbit"  class="form-control" value="{{ $tagihan->tanggal_terbit ?? date('Y-m-d') }}">
             <label> Jika dikosongi otomatis di isi hari ini </label>
@@ -51,7 +75,12 @@
 
         <div class="mb-3">
             <label for="">Status Pelunasan</label>
-            <select type="date" name="status"  class="form-control" value="{{ $tagihan->status }}">
+            <select type="date" name="status"  class="form-control" >
+                <option value="Belum Lunas" {{ $tagihan->status == 'Belum Lunas' ? 'selected' : '' }}>Belum Lunas</option>
+                <option value="Diajukan" {{ $tagihan->status == 'Diajukan' ? 'selected' : '' }}>Diajukan</option>
+                <option value="Lunas" {{ $tagihan->status == 'Lunas' ? 'selected' : '' }}>Lunas</option>
+
+            </select>
             <label> Boleh dikosongi </label>
         </div>
 
