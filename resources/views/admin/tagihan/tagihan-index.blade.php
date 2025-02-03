@@ -1,8 +1,23 @@
 @extends('admin.admin-layout')
 @section('content')
-    <div class="my-3">
-        <a href="{{ route('tagihan.create') }}" class="btn btn-primary">Tambah Data Tagihan</a>
+    <div class="d-flex justify-content-between my-3">
+        <div class="">
+            <a href="{{ route('tagihan.create') }}" class="btn btn-primary">Tambah Data Tagihan</a>
 
+        </div>
+
+        <div>
+            {{-- <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </a> --}}
+            <a href="#" class="btn btn-warning disabled" id="btnImport" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="fas fa-file-import"></i> Import Excel
+            </a>
+            {{-- <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
+                <i class="fas fa-print"></i> Print
+            </a> --}}
+
+        </div>
     </div>
 
     <div class="row mb-3">
@@ -105,6 +120,8 @@
                             <button type="submit" class="btn btn-danger"
                                 onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
                         </form>
+
+                        <a href="" class="btn btn-dark mx-1">Kirim Invoice</a>
                     </td>
                 </tr>
             @endforeach
@@ -141,7 +158,9 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-bukti-pelunasan">Bukti Pelunasan</label>
-                        <input type="text" id="detail-bukti-pelunasan" class="form-control" readonly>
+                        <br>
+                        <a href="" id="detail-bukti-pelunasan-link" target="_blank"> Click to view
+                        </a>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-status">Status</label>
@@ -214,7 +233,7 @@
                                     ) +
                                     '</td>' +
                                     '<td>' +
-                                    '<div class="d-flex">' +
+                                    '<div class="d-flex gap-1">' +
                                     '<a href="/tagihan/' + value.id +
                                     '" class="btn btn-info my-1">Detail</a>' +
                                     '<a href="/tagihan/' + value.id +
@@ -250,20 +269,20 @@
                         $('#detail-keterangan').val(response.keterangan);
                         $('#detail-tanggal-terbit').val(response.tanggal_terbit);
                         $('#detail-tanggal-lunas').val(response.tanggal_lunas);
-                        $('#detail-bukti-pelunasan').val(response.bukti_pelunasan);
+                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ? "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
                         $('#detail-status').val(response.status);
                         $('#detail-user-penerbit-id').val(response.user_penerbit ? response.user_penerbit
-                            .id : '');
+                            .id : '-');
                         $('#detail-user-penerbit-nama').val(response.user_penerbit ? response.user_penerbit
-                            .nama : '');
+                            .nama : '-');
                         $('#detail-user-melunasi-id').val(response.user_melunasi ? response.user_melunasi
-                            .id : '');
+                            .id : '-');
                         $('#detail-user-melunasi-nama').val(response.user_melunasi ? response.user_melunasi
-                            .nama : '');
-                        $('#detail-biaya-id').val(response.biaya ? response.biaya.id : '');
-                        $('#detail-biaya-nama').val(response.biaya ? response.biaya.nama_biaya : '');
-                        $('#detail-user-id').val(response.user ? response.user.id : '');
-                        $('#detail-user-nama').val(response.user ? response.user.nama : '');
+                            .nama : '-');
+                        $('#detail-biaya-id').val(response.biaya ? response.biaya.id : '-');
+                        $('#detail-biaya-nama').val(response.biaya ? response.biaya.nama_biaya : '-');
+                        $('#detail-user-id').val(response.user ? response.user.id : '-');
+                        $('#detail-user-nama').val(response.user ? response.user.nama : '-');
                         $('#detail-bulan').val(response.bulan);
                         $('#detail-tahun').val(response.tahun);
                     }

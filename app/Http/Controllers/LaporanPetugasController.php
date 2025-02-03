@@ -58,11 +58,11 @@ class LaporanPetugasController extends Controller
     }
 
 
-    public function show(User $petuga)
+    public function show(User $petugas)
     {
 
 
-        return view('admin.petugas.petugas-show', compact('petuga'));
+        return view('admin.petugas.petugas-show', compact('petugas'));
     }
 
 

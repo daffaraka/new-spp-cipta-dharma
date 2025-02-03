@@ -61,10 +61,13 @@ class TagihanController extends Controller
 
     public function show(Tagihan $tagihan)
     {
-        $data['judul'] = 'Edit Data Tagihan';
-        $data['tagihan'] = $tagihan->with('siswa', 'biaya', 'penerbit')->first();
+        // $data['judul'] = 'Edit Data Tagihan';
+        // $data['tagihan'] = $tagihan->with('siswa', 'biaya', 'penerbit')->first();
 
-        return view('admin.tagihan.tagihan-show', $data);
+        // return view('admin.tagihan.tagihan-show', $data);
+
+        $tagihan->load(['siswa', 'biaya', 'penerbit', 'melunasi']);
+        return response()->json($tagihan);
     }
 
     public function edit(Tagihan $tagihan)

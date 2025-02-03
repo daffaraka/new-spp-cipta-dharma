@@ -7,9 +7,12 @@
 
     <div class="mb-3">
         <label for="">Jabatan petugas</label> <br>
-        @foreach ($petugas->roles as $role)
-            <button class="btn btn-primary">{{ $role->name }}</button>
+        <div class="my-1">
+            @foreach ($petugas->roles as $role)
+            <button class="btn btn-sm btn-primary">{{ $role->name }}</button>
         @endforeach
+        </div>
+
     </div>
 
 

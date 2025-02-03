@@ -15,7 +15,8 @@ class PembayaranController extends Controller
         $data['judul'] = 'Pembayaran';
         $data['pembayarans'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->whereNotNull('bukti_pelunasan')->latest()->get();
 
-        $data['kelas'] = User::role('SiswaOrangTua')->select('id', 'kelas')->get()->unique();
+        // $data['kelas'] = User::role('SiswaOrangTua')->select('id', 'kelas')->get()->unique();
+
 
         // dd($data['pembayarans']);
         return view('admin.pembayaran.pembayaran-index', $data);

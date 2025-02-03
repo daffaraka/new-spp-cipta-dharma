@@ -88,8 +88,13 @@ Route::middleware('auth')->group(function () {
     Route::get('pelunasan/{id}', [PelunasanController::class, 'tagihan'])->name('pelunasan.tagihan');
     Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
     Route::get('detail-pelunasan/{id}', [PelunasanController::class, 'detailTagihan'])->name('pelunasan.detailTagihan');
-    Route::get('parents/pembayaran',[OrangTuaController::class,'pembayaran'])->name('ortu.pembayaran');
+    Route::get('parents/pembayaran', [OrangTuaController::class, 'pembayaran'])->name('ortu.pembayaran');
+    Route::get('parents/riwayat-pembayaran', [OrangTuaController::class, 'riwayatPembayaran'])->name('ortu.riwayatPembayaran');
     Route::view('print', 'admin.tagihan.tagihan-invoice-print');
+
+    Route::post('filter-riwayat-pembayaran', [OrangTuaController::class, 'filterRiwayatPembayaran'])->name('ortu.filterRiwayatPembayaran');
+    Route::post('filter-status-pembayaran', [OrangTuaController::class, 'filterStatusPembayaran'])->name('ortu.filterStatusPembayaran');
+
 });
 
 

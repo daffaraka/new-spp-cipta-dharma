@@ -74,7 +74,7 @@
                     <td>{{ $siswa->jenis_kelamin }}</td>
                     <td>{{ $siswa->alamat }}</td>
                     <td>
-                        <div class="d-grid">
+                        <div class="d-flex gap-1">
                             <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal" data-bs-target="#detailModal"
                                  data-id = "{{ $siswa->id }}">Detail</button>
 

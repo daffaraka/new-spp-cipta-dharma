@@ -12,11 +12,11 @@
                 @role(['SiswaOrangTua'])
                     <div class="sb-sidenav-menu-heading">Data Master</div>
                     <a class="nav-link" href="{{ route('ortu.pembayaran') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-credit-card"></i></div>
                         Pembayaran
                     </a>
-                    <a class="nav-link" href="{{ route('siswa.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    <a class="nav-link" href="{{ route('ortu.riwayatPembayaran') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
                         Riwayat Pembayaran
                     </a>
                 @endrole
@@ -65,15 +65,15 @@
                     </div>
 
                     {{-- <div class="sb-sidenav-menu-heading">Riwayat</div> --}}
-                    <a class="nav-link collapsed" href="{{ route('tagihan.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
-                        Riwayat Tagihan
-                    </a>
+
                     <a class="nav-link collapsed" href="{{ route('petugas.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
                         Data Petugas
                     </a>
                 @endrole
+
+
+
             </div>
         </div>
         <div class="sb-sidenav-footer">

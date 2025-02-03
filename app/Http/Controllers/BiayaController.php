@@ -52,7 +52,10 @@ class BiayaController extends Controller
 
     public function show(Biaya $biaya)
     {
-        //
+        // $biaya = Biaya::find($biaya);
+
+
+        return response()->json($biaya);
     }
 
 
