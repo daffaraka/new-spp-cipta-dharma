@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('nis')->unique()->nullable();
             $table->string('nisn')->unique()->nullable();
             $table->string('nip')->unique()->nullable();
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->date('tanggal_lahir')->nullable();
+            $table->string('agama');
             $table->string('nama_wali')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_telp')->nullable();
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->string('kelas')->nullable();
             $table->string('jenis_kelamin')->nullable();
             $table->string('id_telegram')->nullable();
+            $table->enum('status',[1,0])->default('aktif');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -25,10 +25,6 @@
         <label for="">Password</label>
         <input type="password" name="password" class="form-control" value="{{ $petugas->password }}" readonly>
     </div>
-    <div class="mb-3">
-        <label for="">Tanggal Lahir</label>
-        <input type="date" name="tanggal_lahir" class="form-control" value="{{ $petugas->tanggal_lahir }}" readonly>
-    </div>
 
     <div class="mb-3">
         <label for="">Jenis Kelamin</label>

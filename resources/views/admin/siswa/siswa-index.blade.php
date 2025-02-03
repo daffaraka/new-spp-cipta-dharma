@@ -159,10 +159,7 @@
                         <label for="detail-email">Email</label>
                         <input type="email" id="detail-email" class="form-control" readonly>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="detail-tanggal-lahir">Tanggal Lahir</label>
-                        <input type="date" id="detail-tanggal-lahir" class="form-control" readonly>
-                    </div>
+
                     <div class="form-group mb-3">
                         <label for="detail-nama-wali">Nama Wali</label>
                         <input type="text" id="detail-nama-wali" class="form-control" readonly>
@@ -264,7 +261,6 @@
                     $('#detail-nis').val(response.nis);
                     $('#detail-nisn').val(response.nisn);
                     $('#detail-email').val(response.email);
-                    $('#detail-tanggal-lahir').val(response.tanggal_lahir);
                     $('#detail-nama-wali').val(response.nama_wali);
                     $('#detail-alamat').val(response.alamat);
                     $('#detail-no-telp').val(response.no_telp);

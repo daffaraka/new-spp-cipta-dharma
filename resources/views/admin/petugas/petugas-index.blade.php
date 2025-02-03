@@ -28,14 +28,10 @@
         <thead class="thead-light">
             <tr>
                 <th>No</th>
-                <th>Nama petugas</th>
+                <th>Nama Lengkap</th>
                 <th>NIP</th>
-                {{-- <th>Jabatan</th> --}}
-                <th>Username</th>
-                <th>Email</th>
+                <th>Jabatan</th>
                 <th>Jenis Kelamin</th>
-                <th>Alamat</th>
-                <th>No Telfon</th>
                 <th>Role</th>
                 <th>Status</th>
                 <th>Aksi</th> <!-- Kolom untuk aksi -->
@@ -45,14 +41,10 @@
             @foreach ($petugas as $index => $petugas)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $petugas->nama ?? '-'}}</td>
-                    <td>{{ $petugas->nip ?? '-'}}</td>
-                    {{-- <td>{{ $petugas->jabatan->nama_jabatan ?? '-' }}</td> --}}
-                    <td>{{ $petugas->username }}</td>
-                    <td>{{ $petugas->email }}</td>
+                    <td>{{ $petugas->nama ?? '-' }}</td>
+                    <td>{{ $petugas->nip ?? '-' }}</td>
+                    <td>{{ $petugas->jabatan->nama_jabatan ?? '-' }}</td>
                     <td>{{ $petugas->jenis_kelamin ?? '-' }}</td>
-                    <td>{{ $petugas->alamat ?? '-' }}</td>
-                    <td>{{ $petugas->no_telp ?? '-' }}</td>
                     <td>
                         <ul>
                             @foreach ($petugas->roles as $role)
@@ -62,9 +54,19 @@
 
 
                     </td>
-                    <td></td>
+                    <td>{{ $petugas->status ?? '-' }}</td>
                     <td>
-                        <div class="d-grid">
+                        <div class="d-flex gap-1">
+                            <a href="{{ route('petugas.edit', ['petugas' => $petugas->id]) }}"
+                                class="btn btn-block btn-warning my-1">Edit</a>
+                            <form action="{{ route('petugas.destroy', ['petugas' => $petugas->id]) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-block btn-danger my-1"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus petugas ini?')">Hapus</button>
+                            </form>
+
                             <a href="{{ route('petugas.show', ['petugas' => $petugas->id]) }}"
                                 class="btn btn-block btn-info my-1">Detail</a>
                         </div>
@@ -94,24 +96,25 @@
                         $('#dataTables tbody').append('<tr>' +
                             '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
-                            '<td>' + value.nama + '</td>' +
+                            '<td>' + (value.nama ? value.nama : '-') + '</td>' +
                             '<td>' + (value.nip ? value.nip : '-') + '</td>' +
-                            // '<td>' + (value.jabatan ? value.jabatan.nama_jabatan : '-') + '</td>' +
-                            '<td>' + (value.username  ? value.username : '-')+ '</td>' +
-                            '<td>' + value.email + '</td>' +
+                            '<td>' + (value.jabatan && value.jabatan.nama_jabatan ? value.jabatan.nama_jabatan : '-') + '</td>' +
                             '<td>' + (value.jenis_kelamin ? value.jenis_kelamin : '-') + '</td>' +
-                            '<td>' + (value.alamat ? value.alamat : '-') + '</td>' +
-                            '<td>' + (value.no_telp ? value.no_telp : '-') + '</td>' +
                             '<td>' +
                             '<ul>' +
                             value.roles.map(role => '<li>' + role.name + '</li>').join('') +
                             '</ul>' +
                             '</td>' +
-                            '<td></td>' +
+                            '<td>' + (value.status ? value.status : '-') + '</td>' +
                             '<td>' +
-                            '<div class="d-grid">' +
-                            '<a href="/petugas/' + value.id +
-                            '" class="btn btn-block btn-info my-1">Detail</a>' +
+                            '<div class="d-flex gap-1">' +
+                            '<a href="/petugas/' + value.id + '/edit" class="btn btn-block btn-warning my-1">Edit</a>' +
+                            '<form action="/petugas/' + value.id + '" method="POST" style="display:inline;">' +
+                            '<input type="hidden" name="_token" value="{{ csrf_token() }}">' +
+                            '<input type="hidden" name="_method" value="DELETE">' +
+                            '<button type="submit" class="btn btn-block btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus petugas ini?\')">Hapus</button>' +
+                            '</form>' +
+                            '<a href="/petugas/' + value.id + '" class="btn btn-block btn-info my-1">Detail</a>' +
                             '</div>' +
                             '</td>' +
                             '</tr>');

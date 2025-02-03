@@ -33,7 +33,8 @@ class UserSeeder extends Seeder
                 'alamat' => $faker->address,
                 'no_telp' => $faker->phoneNumber,
                 'jenis_kelamin' => $jk[array_rand($jk)],
-                // 'agama' => $agama[array_rand($agama)],
+                'username' => 'admin',
+                'agama' => $agama[array_rand($agama)],
             ]
         );
 
@@ -47,7 +48,8 @@ class UserSeeder extends Seeder
                 'alamat' => $faker->address,
                 'no_telp' => $faker->phoneNumber,
                 'jenis_kelamin' => $jk[array_rand($jk)],
-                // 'agama' => $agama[array_rand($agama)],
+                'username' => 'kepsek',
+                'agama' => $agama[array_rand($agama)],
             ]
         );
 
@@ -60,11 +62,12 @@ class UserSeeder extends Seeder
                 [
                     'nama' => 'User ' . $i,
                     'email' => 'user' . $i . '@gmail.com',
+                    'username' => 'username' . $i,
+                    'agama' => $agama[array_rand($agama)],
                     'nis' => $faker->unique()->numerify('######'),
                     'nisn' => $faker->unique()->numerify('##########'),
                     'jenis_kelamin' => $jk[array_rand($jk)],
                     'password' => bcrypt('password'),
-                    'tanggal_lahir' => $faker->date('Y-m-d'),
                     'nama_wali' => $faker->name,
                     'alamat' => $faker->address,
                     'no_telp' => $faker->phoneNumber,

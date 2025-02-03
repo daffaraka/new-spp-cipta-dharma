@@ -29,7 +29,6 @@ class LaporanSPPController extends Controller
             'nisn' => 'required|unique:users',
             'email' => 'required|unique:users',
             'password' => 'required',
-            'tanggal_lahir' => 'required',
             'nama_wali' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',

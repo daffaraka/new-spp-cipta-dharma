@@ -60,7 +60,6 @@
                 <th>NIS</th>
                 <th>NISN</th>
                 <th>Email</th>
-                <th>Tanggal Lahir</th>
                 <th>Nama Wali</th>
                 <th>Alamat</th>
                 <th>No Telfon</th>
@@ -77,7 +76,6 @@
                     <td>{{ $siswa->nis }}</td>
                     <td>{{ $siswa->nisn }}</td>
                     <td>{{ $siswa->email }}</td>
-                    <td>{{ $siswa->tanggal_lahir }}</td>
                     <td>{{ $siswa->nama_wali }}</td>
                     <td>{{ $siswa->alamat }}</td>
                     <td>{{ $siswa->no_telp }}</td>

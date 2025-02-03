@@ -49,11 +49,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" class="form-control" required autocomplete="on" value="{{ old('tanggal_lahir', '') }}">
-        </div>
-
-        <div class="mb-3">
             <label for="">Jenis Kelamin</label>
             <select type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-control" required autocomplete="on" value="{{ old('jenis_kelamin', '') }}">
                 <option value="Laki-laki" {{ old('jenis_kelamin', '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
