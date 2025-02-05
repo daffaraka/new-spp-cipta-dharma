@@ -46,7 +46,7 @@ class LaporanSPPController extends Controller
 
     public function show(Tagihan $laporan_spp)
     {
-        return view('admin.petugas.petugas-show', compact('laporan_spp'));
+        return view('admin.laporan-spp.laporan-spp-show', compact('laporan_spp'));
     }
 
 
@@ -71,10 +71,10 @@ class LaporanSPPController extends Controller
             return response()->json(
                 Tagihan::with('siswa')
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
-                        $query->whereYear('created_at', $request->filter_tahun);
+                        $query->whereTahun($request->filter_tahun);
                     })
                     ->when(!empty($request->filter_bulan), function ($query) use ($request) {
-                        $query->whereMonth('created_at', $request->filter_bulan);
+                        $query->whereBulan($request->filter_bulan);
                     })->when($request->filter_angkatan != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);
@@ -107,6 +107,6 @@ class LaporanSPPController extends Controller
         $pdf = PDF::loadview('admin.pdf.laporan-spp-pdf', compact('laporan_spp'))
             ->setPaper('a4', 'landscape');
         $tgl = date('d-m-Y_H-i`-s');
-        return $pdf->stream('siswa'.$tgl.'.pdf');
+        return $pdf->stream('siswa' . $tgl . '.pdf');
     }
 }

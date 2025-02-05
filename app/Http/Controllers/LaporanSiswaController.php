@@ -58,7 +58,7 @@ class LaporanSiswaController extends Controller
 
     public function show(Tagihan $laporan_siswa)
     {
-        $laporan_siswa->with('siswa','biaya','penerbit','melunasi')->find($laporan_siswa->id);
+        $laporan_siswa->with('siswa', 'biaya', 'penerbit', 'melunasi')->find($laporan_siswa->id);
 
         return view('admin.laporan-siswa.laporan-siswa-show', compact('laporan_siswa'));
     }
@@ -79,13 +79,20 @@ class LaporanSiswaController extends Controller
     public function filter(Request $request)
     {
         // dd($request->all());
-        if (empty($request->filter_angkatan) && empty($request->filter_kelas)) {
+        if (empty($request->filter_angkatan) && empty($request->filter_kelas) && empty($request->filter_status) && empty($request->filter_tahun) && empty($request->filter_bulan)) {
             return response()->json(
                 Tagihan::whereMonth('created_at', date('m'))->with('siswa')->latest()->get()
             );
         } else {
+            // dd($request->all());
             return response()->json(
                 Tagihan::with('siswa')
+                    ->when(!empty($request->filter_tahun), function ($query) use ($request) {
+                        $query->whereTahun($request->filter_tahun);
+                    })
+                    ->when(!empty($request->filter_bulan), function ($query) use ($request) {
+                        $query->whereBulan($request->filter_bulan);
+                    })
                     ->when($request->filter_kelas != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('kelas', $request->filter_kelas);
@@ -95,6 +102,9 @@ class LaporanSiswaController extends Controller
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);
                         });
+                    })
+                    ->when(!empty($request->filter_status), function ($query) use ($request) {
+                        $query->where('status', $request->filter_status);
                     })
                     ->get()
             );

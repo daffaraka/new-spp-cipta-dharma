@@ -22,7 +22,7 @@ class PembayaranSeeder extends Seeder
         $user = User::pluck('id')->toArray();
         $biaya = Biaya::pluck('id')->toArray();
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
-
+        $userMenerbitkan = User::role(['Petugas', 'KepalaSekolah'])->pluck('id')->toArray();
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
         for ($i = 1; $i <= 50; $i++) {
@@ -35,7 +35,7 @@ class PembayaranSeeder extends Seeder
             $tagihan->tahun = $tahun[array_rand($tahun)];
             $tagihan->tanggal_terbit = Carbon::now();
             $tagihan->tanggal_lunas = null;
-            $tagihan->user_penerbit_id = 1;
+            $tagihan->user_penerbit_id = $userMenerbitkan[array_rand($userMenerbitkan)];
             $tagihan->bukti_pelunasan = [null, 'Ada'][rand(0, 1)];
             $tagihan->save();
         }

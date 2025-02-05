@@ -58,9 +58,11 @@ class LaporanPetugasController extends Controller
 
     public function show(User $petugas)
     {
-
-
-        return view('admin.petugas.petugas-show', compact('petugas'));
+        $petugas->load(['roles','menerbitkan','melunasi']);
+        $petugas->menerbitkan_count = $petugas->menerbitkan->where('status', 'Diterbitkan')->count();
+        $petugas->melunasi_count = $petugas->melunasi->where('status', 'Diterbitkan')->count();
+        dd($petugas);
+        return view('admin.laporan-petugas.laporan-petugas-show', compact('petugas'));
     }
 
 

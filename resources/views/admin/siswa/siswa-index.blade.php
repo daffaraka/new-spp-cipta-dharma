@@ -75,8 +75,8 @@
                     <td>{{ $siswa->alamat }}</td>
                     <td>
                         <div class="d-flex gap-1">
-                            <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal" data-bs-target="#detailModal"
-                                 data-id = "{{ $siswa->id }}">Detail</button>
+                            <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal"
+                                data-bs-target="#detailModal" data-id = "{{ $siswa->id }}">Detail</button>
 
                             {{-- <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-block btn-info my-1">Detail</a> --}}
                             <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-block btn-warning my-1">Edit</a>
@@ -137,7 +137,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="my-modal-title">Detail Siswa</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -223,9 +223,9 @@
                             '<td>' + value.jenis_kelamin + '</td>' +
                             '<td>' + value.alamat + '</td>' +
                             '<td>' +
-                            '<div class="d-grid">' +
-                            '<a href="/siswa/' + value.id +
-                            '" class="btn btn-block btn-info my-1">Detail</a>' +
+                            '<div class="d-flex gap-1">' +
+                            '<button class="btn btn-block btn-info my-1 btnDetailSiswa" data-id="' +
+                            value.id + '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
                             '<a href="/siswa/' + value.id +
                             '/edit" class="btn btn-block btn-warning my-1">Edit</a>' +
                             '<form action="/siswa/' + value.id +
@@ -245,8 +245,9 @@
 
 
 
-        $('.btnDetailSiswa').click(function(e) {
+        $(document).on('click', '.btnDetailSiswa', function(e) {
             var dataId = $(this).data('id');
+
 
             $.ajax({
                 type: "GET",

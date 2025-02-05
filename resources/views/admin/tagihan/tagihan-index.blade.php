@@ -10,7 +10,8 @@
             {{-- <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
                 <i class="fas fa-file-excel"></i> Export Excel
             </a> --}}
-            <a href="#" class="btn btn-warning disabled" id="btnImport" data-bs-toggle="modal" data-bs-target="#importModal">
+            <a href="#" class="btn btn-warning disabled" id="btnImport" data-bs-toggle="modal"
+                data-bs-target="#importModal">
                 <i class="fas fa-file-import"></i> Import Excel
             </a>
             {{-- <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
@@ -34,8 +35,10 @@
             <label for="filterKelas">Filter Kelas</label>
             <select id="filterKelas" class="form-control" name="filter_kelas">
                 <option value="">Pilih Kelas</option>
-                @foreach ($kelas as $k)
-                    <option value="{{ $k->kelas }}">{{ $k->kelas }}</option>
+                @foreach (range(1, 6) as $number)
+                    @foreach (range('A', 'D') as $letter)
+                        <option value="{{ $number . $letter }}">{{ $number . $letter }}</option>
+                    @endforeach
                 @endforeach
             </select>
         </div>
@@ -234,8 +237,9 @@
                                     '</td>' +
                                     '<td>' +
                                     '<div class="d-flex gap-1">' +
-                                    '<a href="/tagihan/' + value.id +
-                                    '" class="btn btn-info my-1">Detail</a>' +
+                                    '<button class="btn btn-block btn-info my-1 btnDetailTagihan" data-id="' +
+                                    value.id +
+                                    '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
                                     '<a href="/tagihan/' + value.id +
                                     '/edit" class="btn btn-warning my-1">Edit</a>' +
                                     '<form action="/tagihan/' + value.id +
@@ -243,6 +247,8 @@
                                     '@csrf' +
                                     '@method('DELETE')' +
                                     '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
+                                    '<a href="" class="btn btn-dark mx-1">Kirim Invoice</a>' +
+
                                     '</form>' +
                                     '</div>' +
                                     '</td>' +
@@ -254,7 +260,7 @@
             });
 
 
-            $('.btnDetailTagihan').click(function(e) {
+            $(document).on('click', '.btnDetailTagihan', function(e) {
                 var dataId = $(this).data('id');
 
                 $.ajax({
@@ -269,7 +275,8 @@
                         $('#detail-keterangan').val(response.keterangan);
                         $('#detail-tanggal-terbit').val(response.tanggal_terbit);
                         $('#detail-tanggal-lunas').val(response.tanggal_lunas);
-                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ? "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
+                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
+                            "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
                         $('#detail-status').val(response.status);
                         $('#detail-user-penerbit-id').val(response.user_penerbit ? response.user_penerbit
                             .id : '-');

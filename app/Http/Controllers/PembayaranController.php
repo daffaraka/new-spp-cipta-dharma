@@ -78,21 +78,21 @@ class PembayaranController extends Controller
                 Tagihan::with(['biaya', 'siswa', 'penerbit', 'melunasi'])
                     ->whereNotNull('bukti_pelunasan')
                     ->when(!empty($request->filter_tahun), function ($query) use ($request) {
-                        $query->whereYear('created_at', $request->filter_tahun);
+                        $query->whereTahun($request->filter_tahun);
                     })
                     ->when(!empty($request->filter_bulan), function ($query) use ($request) {
-                        $query->whereMonth('created_at', $request->filter_bulan);
+                        $query->whereBulan($request->filter_bulan);
                     })->when($request->filter_angkatan != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);
                         });
                     })
-
                     ->when($request->filter_kelas != null, function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('kelas', $request->filter_kelas);
                         });
                     })
+                    ->latest()
                     ->get()
             );
         }

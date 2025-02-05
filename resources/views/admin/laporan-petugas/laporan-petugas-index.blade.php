@@ -67,7 +67,7 @@
                     <td>{{ $petugas->no_telp ?? '-' }}</td>
                     <td>{{ $petugas->nip ?? '-' }}</td>
                     <td>{{ $petugas->menerbitkan_count }}</td>
-                    <td>{{ $petugas->no_telp ?? '-' }}</td>
+                    <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
                     <td>
                         <div class="d-grid">
                             <a href="{{ route('laporanPetugas.show', ['petugas' => $petugas->id]) }}"

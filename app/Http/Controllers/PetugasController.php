@@ -68,7 +68,7 @@ class PetugasController extends Controller
         $petugas->roles();
 
 
-        return view('admin.petugas.petugas-show', compact('petugas'));
+        return response()->json($petugas);
     }
 
 

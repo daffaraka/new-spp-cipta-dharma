@@ -6,7 +6,7 @@
             <button class="btn btn-dark mb-5">Data yang disajikan adalah data siswa pada bulan ini</button>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="filterAngkatan">Filter Angkatan</label>
             <select id="filterAngkatan" name="filter_angkatan" class="form-control">
                 <option value="">Pilih Angkatan</option>
@@ -15,7 +15,7 @@
                 @endfor
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="filterKelas">Filter Kelas</label>
             <select id="filterKelas" class="form-control" name="filter_kelas">
                 <option value="">Pilih Kelas</option>
@@ -26,7 +26,42 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-4">
+        <div class="col-md-2">
+            <label for="filterStatus">Filter Status</label>
+            <select id="filterStatus" class="form-control" name="filter_status">
+                <option value="">Pilih Status</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+                <option value="Lunas">Lunas</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="filterTahun">Filter Tahun</label>
+            <select id="filterTahun" name="filter_tahun" class="form-control">
+                <option value="">Pilih Tahun</option>
+                @for ($year = 2020; $year <= date('Y'); $year++)
+                    <option value="{{ $year }}">{{ $year }}</option>
+                @endfor
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="filterBulan">Filter Bulan</label>
+            <select id="filterBulan" class="form-control" name="filter_bulan">
+                <option value="">Pilih Bulan</option>
+                <option value="Januari">Januari</option>
+                <option value="Februari">Februari</option>
+                <option value="Maret">Maret</option>
+                <option value="April">April</option>
+                <option value="Mei">Mei</option>
+                <option value="Juni">Juni</option>
+                <option value="Juli">Juli</option>
+                <option value="Agustus">Agustus</option>
+                <option value="September">September</option>
+                <option value="Oktober">Oktober</option>
+                <option value="November">November</option>
+                <option value="Desember">Desember</option>
+            </select>
+        </div>
+        <div class="col-2">
             <button class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
             </button>
@@ -89,6 +124,9 @@
                         "_token": "{{ csrf_token() }}",
                         "filter_angkatan": $('#filterAngkatan').val(),
                         "filter_kelas": $('#filterKelas').val(),
+                        "filter_status": $('#filterStatus').val(),
+                        "filter_tahun": $('#filterTahun').val(),
+                        "filter_bulan": $('#filterBulan').val(),
                     },
                     success: function(data) {
                         $('#dataTables tbody').empty();
@@ -100,7 +138,10 @@
                                 '<td>' + value.siswa.nis + '</td>' +
                                 '<td>' + value.siswa.angkatan + '</td>' +
                                 '<td>' + value.siswa.kelas + '</td>' +
-                                '<td>' + (value.status == 'Belum Lunas' ? '<button class="btn btn-danger">Belum Lunas</button>' : '<button class="btn btn-success">Lunas</button>') + '</td>' +
+                                '<td>' + (value.status == 'Belum Lunas' ?
+                                    '<button class="btn btn-danger">Belum Lunas</button>' :
+                                    '<button class="btn btn-success">Lunas</button>'
+                                ) + '</td>' +
                                 '<td> <div class="d-grid">' +
                                 '<a href="/laporan-siswa/' + value.id +
                                 '" class="btn btn-block btn-info my-1">Detail</a>' +

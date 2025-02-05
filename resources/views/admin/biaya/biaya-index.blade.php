@@ -63,9 +63,9 @@
                         <td>{{ $biaya->level }}</td>
                         {{-- <td>{{ \Carbon\Carbon::parse($biaya->created_at)->isoFormat('HH:mm:ss, dddd, D MMMM Y') }}</td> --}}
                         <td>
-                            <button class="btn btn-block btn-info my-1 btnDetailBiaya" data-bs-toggle="modal" data-bs-target="#detailModal"
-                                data-id="{{ $biaya->id }}">Detail</button>
-                                <a href="{{ route('biaya.edit', $biaya->id) }}" class="btn btn-warning">Edit</a>
+                            <button class="btn btn-block btn-info my-1 btnDetailBiaya" data-bs-toggle="modal"
+                                data-bs-target="#detailModal" data-id="{{ $biaya->id }}">Detail</button>
+                            <a href="{{ route('biaya.edit', $biaya->id) }}" class="btn btn-warning">Edit</a>
 
                             <form action="{{ route('biaya.destroy', $biaya->id) }}" method="POST" style="display:inline;">
                                 @csrf
@@ -152,8 +152,9 @@
                                     '<td>' + value.bulan + '</td>' +
                                     '<td>' + value.level + '</td>' +
                                     '<td>' +
-                                    '<a href="biaya/' + value.id +
-                                    '" class="btn  btn-info mx-1">Detail</a>' +
+                                    '<button class="btn btn-block btn-info my-1 btnDetailBiaya" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' +
+                                    value.id +
+                                    '">Detail</button>' +
                                     '<a href="biaya/' + value.id +
                                     '/edit" class="btn btn-warning mx-1">Edit</a>' +
 
@@ -172,7 +173,7 @@
 
 
 
-                $('.btnDetailBiaya').click(function(e) {
+                $(document).on('click', '.btnDetailBiaya', function(e) {
                     var dataId = $(this).data('id');
 
                     $.ajax({
@@ -184,7 +185,8 @@
                         dataType: "json",
                         success: function(response) {
                             $('#detail-nama-biaya').val(response.nama_biaya);
-                            $('#detail-nominal').val(response.nominal ? 'Rp. ' + response.nominal.toLocaleString('id-ID') : '');
+                            $('#detail-nominal').val(response.nominal ? 'Rp. ' + response.nominal
+                                .toLocaleString('id-ID') : '');
                             $('#detail-nama-nominal').val(response.nama_nominal);
                             $('#detail-tahun').val(response.tahun);
                             $('#detail-bulan').val(response.bulan);
