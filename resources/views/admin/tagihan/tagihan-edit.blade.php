@@ -4,14 +4,10 @@
         @csrf
 
 
-        <div class="mb-3">
-            <label for="">Nomor Invoice</label>
-            <input type="text" name="no_invoice" class="form-control" value="{{ $tagihan->no_invoice }}" required>
-        </div>
 
 
         <div class="mb-3">
-            <label for="">Nama Tagihan</label>
+            <label for="">Keterangan</label>
             <input type="text" name="keterangan" class="form-control" value="{{ $tagihan->keterangan }}" required>
         </div>
 
