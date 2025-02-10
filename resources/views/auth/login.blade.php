@@ -1,47 +1,123 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="../../../">
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="dist/assets/image/logosdciptadharma.jpg" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="admin/demo1/dist/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="admin/demo1/dist/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
+</head>
+<body id="kt_body" class="bg-body">
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png">
+            <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
+                <a href="/" class="mb-5">
+                    <img alt="Logo" src="{{ asset('dist/assets/image/logosdciptadharma.jpg') }}" class width="180" height="auto" />
                 </a>
-            @endif
 
-            <x-primary-button class="ml-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+                <div class="w-lg-500px bg-white rounded shadow-sm p-10 p-lg-15 mx-auto">
+                    <!-- Session Status -->
+                    @if (session('status'))
+                        <div class="alert alert-info mb-4">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    <form class="form w-100" method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="text-center mb-10">
+                            <h1 class="text-dark mb-3 fs-1">Sign In To E-SPP Cipta Dharma</h1>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="fv-row mb-10">
+                            <label for="email" class="form-label fs-4 fw-bolder text-dark">Email</label>
+                            <input id="email" class="form-control fs-5 form-control-lg form-control-solid @error('email') is-invalid @enderror"
+                                   type="email"
+                                   name="email"
+                                   value="{{ old('email') }}"
+                                   required
+                                   autocomplete="off" />
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <!-- Password -->
+                        <div class="fv-row mb-10">
+                            <div class="d-flex flex-stack mb-2">
+                                <label for="password" class="form-label fw-bolder text-dark fs-4 mb-0">Password</label>
+                                @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}" class="link-primary fs-5 fw-bolder">
+                                        Forgot Password?
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="position-relative">
+                                <input id="password"
+                                       class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror"
+                                       type="password"
+                                       name="password"
+                                       required
+                                       autocomplete="current-password" />
+                                <button type="button" onclick="togglePassword()" class="btn btn-sm btn-icon position-absolute top-50 end-0 translate-middle-y me-2" style="background: none; border: none;">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </button>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="fv-row mb-10">
+                            <label class="form-check form-check-custom form-check-solid">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember_me" />
+                                <span class="form-check-label fw-bold text-gray-700 fs-6">
+                                    Remember me
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-lg btn-primary w-100 mb-5">
+                                <span class="indicator-label">Log in</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="d-flex flex-center flex-column-auto p-10">
+                <div class="text-muted">Copyright &copy; {{ date('Y') }} Your Website</div>
+            </div>
         </div>
-    </form>
-</x-guest-layout>
+    </div>
+
+    <script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.className = 'bi bi-eye-slash';
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.className = 'bi bi-eye';
+        }
+    }
+    </script>
+
+    <script src="admin/demo1/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="admin/demo1/assets/js/scripts.bundle.js"></script>
+</body>
+</html>
