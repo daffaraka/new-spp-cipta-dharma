@@ -35,15 +35,15 @@ class OrangTuaController extends Controller
     public function filterStatusPembayaran(Request $request)
     {
 
-        if (empty($request->status)) {
+        if (empty($request->filter_status)) {
             return response()->json(
-                User::with('roles')->role(['SiswaOrangTua'])->latest()->get()
+                Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->latest()->get()
             );
         } else {
             return response()->json(
-                User::with('roles')->role(['SiswaOrangTua'])->latest()
+                Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)
                     ->when($request->filled('filter_status'), function ($query) use ($request) {
-                        return $query->where('jenis_kelamin', $request->filter_jk);
+                        return $query->where('status', $request->filter_status);
                     })
                     ->get()
             );
@@ -56,7 +56,7 @@ class OrangTuaController extends Controller
 
         if (empty($request->filter_tahun) && empty($request->filter_bulan)) {
             return response()->json(
-                User::with('roles')->role(['SiswaOrangTua'])->latest()->get()
+                Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->latest()->get()
             );
         } else {
             return response()->json(
@@ -67,6 +67,7 @@ class OrangTuaController extends Controller
                     ->when($request->filled('filter_bulan'), function ($query) use ($request) {
                         $query->whereMonth('created_at', $request->filter_bulan);
                     })
+                    ->where('user_id', auth()->user()->id)->latest()
                     ->get()
             );
         }

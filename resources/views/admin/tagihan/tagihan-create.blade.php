@@ -1,5 +1,11 @@
 @extends('admin.admin-layout')
 @section('content')
+    <style>
+        .select2-container .select2-selection--single {
+           height: 40px;
+           padding: 5px 6px;
+        }
+    </style>
     <form action="{{ route('tagihan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -23,9 +29,11 @@
 
         <div class="mb-3">
             <strong><label for="" class="my-1">Ditujukan kepada</label></strong>
-            <select type="text" name="user_id" id="user_id" class="form-control my-1" required>
+            <select type="text" name="user_id" id="user_id"
+                class="livesearch js-example-basic-multiple js-states form-control my-1" required>
                 @foreach ($siswas as $item)
-                    <option value="{{ $item->id }}">{{$item->id}} - {{ $item->nama }} - Kelas {{ $item->kelas }} </option>
+                    <option value="{{ $item->id }}">{{ $item->nis }} - {{ $item->nama }} - Kelas
+                        {{ $item->kelas }} </option>
                 @endforeach
             </select>
         </div>
@@ -103,4 +111,12 @@
         });
     });
 </script> --}}
+@endpush
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.livesearch').select2();
+        });
+    </script>
 @endpush

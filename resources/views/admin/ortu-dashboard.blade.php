@@ -3,34 +3,54 @@
     <div class="row">
 
         <div class="col-12">
+            <div class="card shadow border border-3">
+                <div class="card-body p-4">
+                    <h5 class="card-title">Tagihan yang belum anda bayarkan</h5>
+                    @if ($tagihanBelumLunas != null)
+                        <div class="row">
+                            <table class="table table-light" id="dataTables">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>No Invoice</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Nominal</th>
+                                        <th>Nama Nominal</th>
+                                        <th>Tahun</th>
+                                        <th>Bulan</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tagihanBelumLunas as $index => $tagihan)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $tagihan->no_invoice }}</td>
+                                            <td>{{ $tagihan->siswa->nama }}</td>
+                                            <td>{{ 'Rp. ' . number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
+                                            <td>{{ $tagihan->biaya->nama_biaya }}</td>
+                                            <td>{{ $tagihan->tahun }}</td>
+                                            <td>{{ $tagihan->bulan }}</td>
+                                            <td>{{ $tagihan->status }}</td>
+                                            <td>
+                                                <a href="{{ route('pelunasan.tagihan', $tagihan->id) }}"
+                                                    class="btn btn-info">Lunasi</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
 
-            <h5 class="card-title">Tagihan yang belum anda bayarkan</h5>
-            @if ($tagihanBelumLunas != null)
-                <div class="row">
-                    @foreach ($tagihanBelumLunas->tagihans as $tagihan)
-                        <div class="col-xl-4 col-md-12 col-sm-12">
-                            <div class="card my-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $tagihan->keterangan }} - <span
-                                            class="badge p-1 px-2 rounded-pill bg-danger">{{ $tagihan->status }}</span> </h5>
-                                    <p class="card-text">{{ $tagihan->tanggal_terbit }}</p>
 
-                                    <div class="d-flex">
-                                        <a href="{{ route('pelunasan.tagihan', $tagihan->id) }}"
-                                            class="btn btn-success me-3">Lunasi</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="card">
-                    <div class="card-body">
+                    @else
                         <h5 class="card-title">Tidak ada tagihan</h5>
-                    </div>
+                    @endif
+
+
                 </div>
-            @endif
+            </div>
 
         </div>
 
@@ -39,29 +59,49 @@
 
     <div class="mt-5"></div>
     <hr>
-    <div class="col-12 mt-5">
-
-        <h5 class="card-title">Riwayat Pelunasan Terbaru</h5>
-        @if ($tagihan_Lunas != null)
-            <div class="row">
-                @foreach ($tagihan_Lunas as $tagihan)
-                    <div class="col-xl-4 col-md-12 col-sm-12">
-                        <div class="card my-3">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $tagihan->keterangan }} - <span
-                                        class="badge p-1 px-2 rounded-pill bg-success">{{ $tagihan->status }}</span> </h5>
-                                <p class="card-text">{{ $tagihan->tanggal_terbit }}</p>
-
-                                <div class="d-flex">
-                                    <a href="{{ route('pelunasan.detailTagihan', $tagihan->id) }}"
-                                        class="btn btn-primary me-3">Detail</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+    <div class="col-12 my-5">
+        <div class="card shadow border border-3">
+            <div class="card-body p-4">
+                <h5 class="card-title">Riwayat Pelunasan Terbaru</h5>
+                @if ($tagihan_Lunas != null)
+                    <table class="table table-light" id="dataTables">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No Invoice</th>
+                                <th>Nama Siswa</th>
+                                <th>Nominal</th>
+                                <th>Nama Nominal</th>
+                                <th>Tahun</th>
+                                <th>Bulan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($tagihan_Lunas as $index => $tagihan)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $tagihan->no_invoice }}</td>
+                                    <td>{{ $tagihan->siswa->nama }}</td>
+                                    <td>{{ 'Rp. ' . number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
+                                    <td>{{ $tagihan->biaya->nama_biaya }}</td>
+                                    <td>{{ $tagihan->tahun }}</td>
+                                    <td>{{ $tagihan->bulan }}</td>
+                                    <td>{{ $tagihan->status }}</td>
+                                    <td>
+                                        <a href="{{ route('pelunasan.detailTagihan', $tagihan->id) }}"
+                                            class="btn btn-primary">Detail</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
-        @endif
+        </div>
+
+
 
 
     </div>

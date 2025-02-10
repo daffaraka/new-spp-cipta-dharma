@@ -25,7 +25,8 @@ class DashboardController extends Controller
             $data['data_perJenisKelamin'] = User::select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
                 return [
                     'jenis_kelamin' => $item->jenis_kelamin,
-                    'total' => $item->total];
+                    'total' => $item->total
+                ];
             });
 
 
@@ -44,10 +45,8 @@ class DashboardController extends Controller
             return view('admin.admin-dashboard', $data);
         } else {
 
-            $data['tagihanBelumLunas'] = User::with('tagihans')->whereHas('tagihans', function ($tagihan) {
-                $tagihan->whereStatus('Belum Lunas');
-            })
-                ->find($auth_id);
+            $data['tagihanBelumLunas'] = Tagihan::whereStatus('Belum Lunas')->where('user_id', $auth_id)->get();
+
 
             $data['tagihan_Lunas'] = Tagihan::whereStatus('Lunas')->where('user_id', $auth_id)->take(5)->get();
 

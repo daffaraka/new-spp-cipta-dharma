@@ -51,7 +51,11 @@ class Tagihan extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->no_invoice = 'INV-'.str_pad((Tagihan::latest('id')->first()->id + 1), 6, '0', STR_PAD_LEFT);
+            if (Tagihan::count() > 0) {
+                $model->no_invoice = 'INV-'.str_pad((Tagihan::latest('id')->first()->id + 1), 6, '0', STR_PAD_LEFT);
+            } else {
+                $model->no_invoice = 'INV-000001';
+            }
         });
     }
 }

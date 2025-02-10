@@ -3,11 +3,11 @@
     <div class="row mb-3">
         <div class="col-md-2">
             <label for="filterStatus">Filter Status</label>
-            <select id="filterStatus" name="filter_angkatan" class="form-control">
+            <select id="filterStatus" name="filter_status" class="form-control">
                 <option value="">Pilih Status</option>
                 <option value="Lunas">Lunas</option>
+                <option value="Sedang Diverifikasi">Sedang Diverifikasi</option>
                 <option value="Belum Lunas">Belum Lunas</option>
-
             </select>
         </div>
 
@@ -45,26 +45,31 @@
                     <td>
                         @if ($pembayaran->status == 'Belum Lunas')
                             <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                        @elseif ($pembayaran->status == 'Sedang Diverifikasi')
+                            <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
                         @else
                             <span class="badge rounded-pill bg-success">Lunas</span>
                         @endif
                     </td>
                     <td>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-1">
 
-                            @if ($pembayaran->status == 'Lunas' && $pembayaran->isSentKuitansi == 1)
+                            {{-- @if ($pembayaran->status == 'Lunas' && $pembayaran->isSentKuitansi == 1)
                                 <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
                                     class="btn btn-sm btn-secondary">Kuitansi</a>
                             @else
                                 <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
-                            @endif
+                            @endif --}}
+
 
                             @if ($pembayaran->status == 'Belum Lunas')
-                                <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
-                                    class="btn btn-sm btn-info">Verifikasi</a>
-                            @else
-                                <span class="btn btn-sm btn-success">Lunas</span>
+                                <div class="d-flex">
+                                    <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
+                                        class="btn btn-success me-3">Bayar</a>
+                                </div>
                             @endif
+
+
                         </div>
 
 
@@ -80,14 +85,11 @@
             $('#btnFilter').click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('pembayaran.filter') }}",
+                    url: "{{ route('ortu.filterStatusPembayaran') }}",
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
-                        "filter_tahun": $('#filterTahun').val(),
-                        "filter_bulan": $('#filterBulan').val(),
-                        "filter_angkatan": $('#filterAngkatan').val(),
-                        "filter_kelas": $('#filterKelas').val()
+                        "filter_status": $('#filterStatus').val(),
                     },
                     success: function(data) {
                         $('#dataTables tbody').empty();
@@ -95,36 +97,25 @@
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.no_invoice + '</td>' +
-                                '<td>' + value.keterangan + '</td>' +
                                 '<td>' + value.siswa.nama + '-' + value.siswa
                                 .kelas + '</td>' +
-                                '<td> Rp. ' + value.biaya.nominal + '</td>' +
+                                '<td> Rp. ' + value.biaya.nominal.toLocaleString(
+                                    'id-ID') + '</td>' +
                                 '<td>' + value.biaya.nama_nominal + '</td>' +
-                                '<td>' + value.bulan + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
-                                '<td>' + value.tanggal_terbit + '</td>' +
-                                '<td>' + (value.tanggal_lunas || '-') + '</td>' +
-                                '<td>' + (value.penerbit ? value.penerbit.nama :
-                                    '-') + '</td>' +
-                                '<td>' + (value.melunasi ? value.melunasi.nama :
-                                    '-') + '</td>' +
-                                '<td>' + (value.created_at ? new Date(value
-                                        .created_at).toLocaleDateString('id-ID') :
-                                    '-') + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' + (value.status == 'Belum Lunas' ?
+                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
+                                    '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                ) + '</td>' +
                                 '<td>' +
-                                '<a href="/pembayaran/' + value.id +
-                                '" class="btn btn-info">Detail</a>' +
-                                '<div class="d-grid">' +
-                                '<a href="/pembayaran/' + value.id +
-                                '/edit" class="btn btn-warning my-1">Edit</a>' +
-                                '<form action="/pembayaran/' + value.id +
-                                '" method="POST" style="display:inline;">' +
-                                '@csrf' +
-                                '@method('DELETE')' +
-                                '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data pembayaran keluar ini?\')">Hapus</button>' +
-                                '</form>' +
+                                '<div class="d-flex gap-1">' +
+                                (value.status == 'Lunas' && value.isSentKuitansi ==
+                                    1 ?
+                                    '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' :
+                                    '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
+                                )
                                 '</div>' +
-                                '</td>' +
                                 '</tr>');
                         });
                     }

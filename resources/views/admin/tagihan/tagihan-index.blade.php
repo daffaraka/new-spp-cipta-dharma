@@ -104,6 +104,8 @@
                     <td>
                         @if ($tagihan->status == 'Belum Lunas')
                             <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                        @elseif ($tagihan->status = 'Sedang Diverifikasi')
+                        <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
                         @else
                             <span class="badge rounded-pill bg-success">Lunas</span>
                         @endif
@@ -124,7 +126,8 @@
                                 onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
                         </form>
 
-                        <a href="" class="btn btn-dark mx-1">Kirim Invoice</a>
+
+                        <a href="" class="btn btn-dark mx-1 {{$tagihan->status == 'Belum Lunas' ? 'disabled' : ''}}">Kirim Invoice</a>
                     </td>
                 </tr>
             @endforeach
@@ -138,7 +141,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="my-modal-title">Detail Tagihan</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -275,7 +278,7 @@
                                     '@csrf' +
                                     '@method('DELETE')' +
                                     '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
-                                    '<a href="" class="btn btn-dark mx-1">Kirim Invoice</a>' +
+                                    '<a href="" class="btn btn-dark">Kirim Invoice</a>' +
 
                                     '</form>' +
                                     '</div>' +
@@ -311,7 +314,7 @@
                         $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
                             .nama : '-');
                         $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
-                        $('#detail-user').val(response.user ? response.user.nama : '-');
+                        $('#detail-user').val(response.user ? response.siswa.nama : '-');
                         $('#detail-bulan').val(response.bulan);
                         $('#detail-tahun').val(response.tahun);
                     }

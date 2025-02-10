@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            TagihanSeeder::class,
-            PembayaranSeeder::class
+            // TagihanSeeder::class,
+            // PembayaranSeeder::class
+            MassTagihanSeeder::class
         ]);
     }
 }

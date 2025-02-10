@@ -33,7 +33,7 @@ class PelunasanController extends Controller
         $tagihan = Tagihan::find($id);
         // dd($tagihan);
         $tagihan->bukti_pelunasan = $fileSaved;
-        $tagihan->status = 'Lunas';
+        $tagihan->status = 'Sedang Diverifikasi';
         $tagihan->save();
         return redirect()->route('dashboard')->with('success','Bukti pelunasan sudah dikirim');
     }
