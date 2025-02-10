@@ -4,27 +4,38 @@ namespace App\Imports;
 
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class SiswaImport implements ToModel
+class SiswaImport implements ToModel, WithStartRow
 {
     /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
+
+    public function startRow(): int
+    {
+        return 2;
+    }
     public function model(array $row)
     {
-        return new User([
-            'nama'     => $row[1],
-            'nis'      => $row[2],
-            'nisn'     => $row[3],
-            'angkatan' => $row[4],
-            'kelas'    => $row[5],
-            'jenis_kelamin' => $row[6],
-            'nama_wali' => $row[7],
-            'alamat'   => $row[8],
-            'email'    => $row[9],
-            'no_telp'  => $row[10],
+        $user = new User([
+            'username' => $row[1] ?? '',
+            'nama'     => $row[2] ?? '',
+            'nis'      => $row[3] ?? '',
+            'nisn'     => $row[4] ?? '',
+            'email'    => $row[5] ?? '',
+            'password' => $row[6] ?? '',
+            'nama_wali' => $row[7] ?? '',
+            'alamat'   => $row[8] ?? '',
+            'no_telp'  => $row[9] ?? '',
+            'angkatan' => $row[10] ?? '',
+            'kelas'    => $row[11] ?? '',
+            'jenis_kelamin' => $row[12] ?? '',
+            'agama'    => $row[13] ?? '',
         ]);
+        $user->assignRole('SiswaOrangTua');
+        return $user;
     }
 }

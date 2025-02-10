@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\user;
+use App\Models\Tagihan;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -12,15 +12,32 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
+class TagihanExport implements FromCollection,WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
+    /**
+    * @return \Illuminate\Support\Collection
+    */
 
     private $counter = 0;
 
     use Exportable;
+
+
     public function collection()
     {
-        $siswa = User::role('SiswaOrangTua')->get();
+        $siswa = Tagihan::select([
+            'no_invoice',
+            'keterangan',
+            'tanggal_terbit',
+            'tanggal_lunas',
+            'status',
+            'user_penerbit_id',
+            'user_melunasi_id',
+            'biaya_id',
+            'user_id',
+            'bulan',
+            'tahun',
+        ])->with(['penerbit','melunasi','biaya','siswa'])->get();
 
         return $siswa;
     }
@@ -30,19 +47,16 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
     {
         return [
             '#',
-            'Username',
-            'Nama',
-            'NIS',
-            'NISN',
-            'Email',
-            'Password',
-            'Nama Orang Tua',
-            'Alamat',
-            'Telepon',
-            'Angkatan',
-            'Kelas',
-            'Jenis Kelamin',
-            'Agama',
+            'Keterangan',
+            'Tanggal Terbit',
+            'Tanggal Lunas',
+            'Status',
+            'Admin Penerbit',
+            'Admin Melunasi',
+            'Biaya',
+            'Siswa',
+            'Bulan',
+            'Tahun',
         ];
     }
 
@@ -51,19 +65,16 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
     {
         return [
             ++$this->counter,
-            $siswa->username,
-            $siswa->nama,
-            $siswa->nis,
-            $siswa->nisn,
-            $siswa->email,
-            $siswa->password,
-            $siswa->nama_wali,
-            $siswa->alamat,
-            $siswa->no_telp,
-            $siswa->angkatan,
-            $siswa->kelas,
-            $siswa->jenis_kelamin,
-            $siswa->agama,
+            $siswa->keterangan,
+            $siswa->tanggal_terbit->isoFormat('dd-MMM-yyyy'),
+            $siswa->tanggal_lunas->isoFormat('dd-MMM-yyyy'),
+            $siswa->status,
+            $siswa->penerbit->nama,
+            $siswa->melunasi->nama,
+            $siswa->biaya->nama_biaya,
+            $siswa->siswa->nama,
+            $siswa->bulan,
+            $siswa->tahun,
         ];
     }
 
@@ -94,5 +105,6 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             // Style the first row as bold text.
             'A1:K1'    => ['font' => ['bold' => true]],
         ];
+
     }
 }

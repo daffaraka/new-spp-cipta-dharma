@@ -7,9 +7,9 @@
         </div>
 
         <div>
-            {{-- <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
+            <a href="{{ route('siswa.export') }}" class="btn btn-outline-success disabled" id="btnExport">
                 <i class="fas fa-file-excel"></i> Export Excel
-            </a> --}}
+            </a>
             <a href="#" class="btn btn-warning disabled" id="btnImport" data-bs-toggle="modal"
                 data-bs-target="#importModal">
                 <i class="fas fa-file-import"></i> Import Excel
@@ -97,7 +97,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $tagihan->no_invoice }}</td>
                     <td>{{ $tagihan->keterangan }}</td>
-                    <td>{{ $tagihan->siswa->nis }}</td>
+                    <td>{{ $tagihan->siswa->nis ?? '-' }}</td>
                     <td>{{ 'Rp. ' . number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
                     <td>{{ $tagihan->bulan }}</td>
                     <td>{{ $tagihan->tahun }}</td>
@@ -170,20 +170,20 @@
                         <input type="text" id="detail-status" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="detail-user-penerbit-id">User Penerbit</label>
-                        <input type="text" id="detail-user-penerbit-id" class="form-control" readonly>
+                        <label for="detail-user-penerbit">User Penerbit</label>
+                        <input type="text" id="detail-user-penerbit" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="detail-user-melunasi-id">User Melunasi</label>
-                        <input type="text" id="detail-user-melunasi-id" class="form-control" readonly>
+                        <label for="detail-user-melunasi">User Melunasi</label>
+                        <input type="text" id="detail-user-melunasi" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="detail-biaya-id">Biaya</label>
-                        <input type="text" id="detail-biaya-id" class="form-control" readonly>
+                        <label for="detail-biaya">Biaya</label>
+                        <input type="text" id="detail-biaya" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-user-id">User</label>
-                        <input type="text" id="detail-user-id" class="form-control" readonly>
+                        <input type="text" id="detail-user" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-bulan">Bulan</label>
@@ -197,6 +197,34 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Close
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">
+                            Import Data Tagihan
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{-- <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="file" class="form-control" accept=".xls,.xlsx,.csv">
+                            <button type="submit" class="btn btn-primary mt-3">Import</button>
+                        </form> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -278,18 +306,12 @@
                         $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
                             "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
                         $('#detail-status').val(response.status);
-                        $('#detail-user-penerbit-id').val(response.user_penerbit ? response.user_penerbit
-                            .id : '-');
-                        $('#detail-user-penerbit-nama').val(response.user_penerbit ? response.user_penerbit
+                        $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
                             .nama : '-');
-                        $('#detail-user-melunasi-id').val(response.user_melunasi ? response.user_melunasi
-                            .id : '-');
-                        $('#detail-user-melunasi-nama').val(response.user_melunasi ? response.user_melunasi
+                        $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
                             .nama : '-');
-                        $('#detail-biaya-id').val(response.biaya ? response.biaya.id : '-');
-                        $('#detail-biaya-nama').val(response.biaya ? response.biaya.nama_biaya : '-');
-                        $('#detail-user-id').val(response.user ? response.user.id : '-');
-                        $('#detail-user-nama').val(response.user ? response.user.nama : '-');
+                        $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
+                        $('#detail-user').val(response.user ? response.user.nama : '-');
                         $('#detail-bulan').val(response.bulan);
                         $('#detail-tahun').val(response.tahun);
                     }

@@ -8,6 +8,8 @@ use App\Models\Biaya;
 use App\Models\Siswa;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
+use App\Exports\TagihanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TagihanController extends Controller
 {
@@ -73,7 +75,7 @@ class TagihanController extends Controller
     public function edit(Tagihan $tagihan)
     {
         $data['judul'] = 'Edit Data Tagihan';
-        $data['siswas'] = User::select('id', 'nama')->get();
+        $data['siswas'] = User::role('SiswaOrangTua')->select('id', 'nama','kelas','nis')->get();
         $data['biayas'] = Biaya::select('id', 'nama_biaya', 'nominal')->get();
         $data['tagihan'] = $tagihan;
         return view('admin.tagihan.tagihan-edit', $data);
@@ -109,6 +111,22 @@ class TagihanController extends Controller
     }
 
 
+    public function export()
+    {
+        $tgl = date('d-m-Y_H-i-s');
+        return Excel::download(new TagihanExport, 'data_tagihan_'.$tgl.'.xlsx');
+    }
+
+
+    public function import()
+    {
+        Excel::import(new TagihanExport, request()->file('file'));
+
+    return redirect()->back()->with('success', 'Data tagihan baru telah ditambahkan');
+    }
+
+
+
     public function filter(Request $request)
     {
         // dd($request->all());
@@ -135,5 +153,15 @@ class TagihanController extends Controller
                     ->get()
             );
         }
+    }
+
+
+    public function sendInvoice($tagihan)
+    {
+        $tagihan->isSentKuitansi = 1;
+        $tagihan->save();
+
+
+        return response()->json(['success' => 'Kuitansi telah dikirim']);
     }
 }

@@ -44,4 +44,14 @@ class Tagihan extends Model
     {
         return $this->belongsTo(User::class, 'user_melunasi_id');
     }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->no_invoice = 'INV-'.str_pad((Tagihan::latest('id')->first()->id + 1), 6, '0', STR_PAD_LEFT);
+        });
+    }
 }

@@ -4,19 +4,15 @@
         @csrf
 
 
+
         <div class="mb-3">
-            <label for="">Nomor Invoice</label>
-            <input type="text" name="no_invoice" class="form-control" required>
+            <strong><label for="" class="my-1">Keterangan</label></strong>
+            <input type="text" name="keterangan" class="form-control my-1" required>
         </div>
 
         <div class="mb-3">
-            <label for="">Keterangan</label>
-            <input type="text" name="keterangan" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="">Biaya</label>
-            <select type="text" name="biaya_id" id="biaya_id" class="form-control" required>
+            <strong><label for="" class="my-1">Biaya</label></strong>
+            <select type="text" name="biaya_id" id="biaya_id" class="form-control my-1" required>
                 @foreach ($biayas as $item)
                     <option value="{{ $item->id }}">{{ $item->nama_biaya }} -
                         Rp.{{ number_format($item->nominal) }} </option>
@@ -26,8 +22,8 @@
 
 
         <div class="mb-3">
-            <label for="">Ditujukan kepada</label>
-            <select type="text" name="user_id" id="user_id" class="form-control" required>
+            <strong><label for="" class="my-1">Ditujukan kepada</label></strong>
+            <select type="text" name="user_id" id="user_id" class="form-control my-1" required>
                 @foreach ($siswas as $item)
                     <option value="{{ $item->id }}">{{$item->id}} - {{ $item->nama }} - Kelas {{ $item->kelas }} </option>
                 @endforeach
@@ -36,8 +32,8 @@
 
 
         <div class="mb-3">
-            <label for="">Bulan</label>
-            <select name="bulan" id="" class="form-control">
+            <strong><label for="" class="my-1">Bulan</label></strong>
+            <select name="bulan" id="" class="form-control my-1">
                 <option value="Januari">Januari</option>
                 <option value="Februari">Februari</option>
                 <option value="Maret">Maret</option>
@@ -54,24 +50,24 @@
         </div>
 
         <div class="mb-3">
-            <label for="">Tahun</label>
-            <input type="number" name="tahun" class="form-control" required>
+            <strong><label for="" class="my-1">Tahun</label></strong>
+            <input type="number" name="tahun" class="form-control my-1" required>
         </div>
 
         {{-- <div class="mb-3">
-            <label for="">Tanggal Terbit</label>
+            <strong><label for="">Tanggal Terbit</label></strong>
             <input type="date" name="tanggal_terbit" class="form-control">
             <p class="fw-bold"> Jika dikosongi otomatis di isi hari ini </p>
         </div>
 
         <div class="mb-3">
-            <label for="">Tanggal Lunas</label>
+            <strong><label for="">Tanggal Lunas</label></strong>
             <input type="date" name="tanggal_lunas" class="form-control">
             <label> Boleh dikosongi </label>
         </div>
 
         <div class="mb-3">
-            <label for="">Status Pelunasan</label>
+            <strong><label for="">Status Pelunasan</label></strong>
             <select name="status" class="form-control">
                 <option value="Belum Lunas">Belum Lunas</option>
                 <option value="Lunas">Lunas</option>
