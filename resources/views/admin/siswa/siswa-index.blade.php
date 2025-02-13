@@ -6,6 +6,15 @@
 
         </div>
         <div>
+
+            <form action="{{ route('siswa.update_chatid') }}" method="POST" class="d-inline">
+                @csrf
+                <button class="btn n btn-secondary">
+                    Update ID Chat Telegram
+                </button>
+                </form>
+
+
             <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
                 <i class="fas fa-file-excel"></i> Export Excel
             </a>

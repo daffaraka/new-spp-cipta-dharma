@@ -13,6 +13,7 @@ use App\Http\Controllers\LaporanPetugasController;
 use App\Http\Controllers\LaporanSiswaController;
 use App\Http\Controllers\LaporanSPPController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\TelegramController;
 use App\Models\Siswa;
 
 /*
@@ -43,6 +44,17 @@ Route::middleware('auth')->group(function () {
     Route::get('print-siswa', [SiswaController::class, 'print'])->name('siswa.print');
     Route::post('import', [SiswaController::class, 'import'])->name('siswa.import');
     Route::post('filter-siswa', [SiswaController::class, 'filter'])->name('siswa.filter');
+
+    // Telegram
+    Route::post('siswa/update_chatid', [TelegramController::class, 'updateChatId'])->name('siswa.update_chatid');
+
+    Route::get('/send_tagihan', [TelegramController::class, 'send_tagihan']);
+    Route::get('/invoice', function () {
+        return view('invoice_template');
+    });
+    // Telegram
+
+
 
     Route::resource('tagihan', TagihanController::class);
     Route::post('filter-tagihan', [TagihanController::class, 'filter'])->name('tagihan.filter');
