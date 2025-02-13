@@ -77,62 +77,73 @@
         </div>
     </div>
 
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>No Invoice</th>
-                <th>Keterangan</th>
-                <th>NIS</th>
-                <th>Nominal</th>
-                <th>Bulan</th>
-                <th>Tahun</th>
-                <th>Status</th>
-                <th>Aksi</th> <!-- Kolom untuk aksi -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($tagihans as $index => $tagihan)
+
+
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $tagihan->no_invoice }}</td>
-                    <td>{{ $tagihan->keterangan }}</td>
-                    <td>{{ $tagihan->siswa->nis ?? '-' }}</td>
-                    <td>{{ 'Rp. ' . number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
-                    <td>{{ $tagihan->bulan }}</td>
-                    <td>{{ $tagihan->tahun }}</td>
-                    <td>
-                        @if ($tagihan->status == 'Belum Lunas')
-                            <span class="badge rounded-pill bg-danger">Belum Lunas</span>
-                        @elseif ($tagihan->status = 'Sedang Diverifikasi')
-                        <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
-                        @else
-                            <span class="badge rounded-pill bg-success">Lunas</span>
-                        @endif
-                    </td>
-
-
-                    <td>
-                        {{-- <a href="{{ route('tagihan.kirim', $tagihan->id) }}" class="btn btn-outline-secondary">Kirim Invoice</a> --}}
-                        <button class="btn btn-block btn-info my-1 btnDetailTagihan" data-bs-toggle="modal"
-                            data-bs-target="#detailModal" data-id="{{ $tagihan->id }}">Detail</button>
-
-                        <a href="{{ route('tagihan.edit', $tagihan->id) }}" class="btn btn-warning">Edit</a>
-
-                        <form action="{{ route('tagihan.destroy', $tagihan->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
-                        </form>
-
-
-                        <a href="" class="btn btn-dark mx-1 {{$tagihan->status == 'Belum Lunas' ? 'disabled' : ''}}">Kirim Invoice</a>
-                    </td>
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>Keterangan</th>
+                    <th>NIS</th>
+                    <th>Nominal</th>
+                    <th>Bulan</th>
+                    <th>Tahun</th>
+                    <th>Status</th>
+                    <th>Aksi</th> <!-- Kolom untuk aksi -->
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($tagihans as $index => $tagihan)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $tagihan->no_invoice }}</td>
+                        <td>{{ $tagihan->keterangan }}</td>
+                        <td>{{ $tagihan->siswa->nis ?? '-' }}</td>
+                        <td>{{ 'Rp. ' . number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
+                        <td>{{ $tagihan->bulan }}</td>
+                        <td>{{ $tagihan->tahun }}</td>
+                        <td>
+                            @if ($tagihan->status == 'Belum Lunas')
+                                <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                            @elseif ($tagihan->status == 'Sedang Diverifikasi')
+                                <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                            @else
+                                <span class="badge rounded-pill bg-success">Lunas</span>
+                            @endif
+                        </td>
+
+
+                        <td>
+                            {{-- <a href="{{ route('tagihan.kirim', $tagihan->id) }}" class="btn btn-outline-secondary">Kirim Invoice</a> --}}
+                            <button class="btn btn-block btn-info my-1 btnDetailTagihan" data-bs-toggle="modal"
+                                data-bs-target="#detailModal" data-id="{{ $tagihan->id }}">Detail</button>
+
+                            <a href="{{ route('tagihan.edit', $tagihan->id) }}" class="btn btn-warning">Edit</a>
+
+                            <form action="{{ route('tagihan.destroy', $tagihan->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
+                            </form>
+
+
+                            @if ($tagihan->status == 'Lunas')
+                                <a href="{{route('tagihan.sendInvoice',['tagihan' => $tagihan->id])}}"
+                                    class="btn btn-dark mx-1 {{ $tagihan->status == 'Belum Lunas' ? 'disabled' : '' }}">Kirim
+                                    Invoice</a>
+                            @endif
+
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </div>
 
 
     <div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
@@ -278,8 +289,11 @@
                                     '@csrf' +
                                     '@method('DELETE')' +
                                     '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
-                                    '<a href="" class="btn btn-dark">Kirim Invoice</a>' +
-
+                                    (value.status == 'Belum Lunas' ?
+                                        '<a href="/tagihan/kirim/' + value.id +
+                                        '" class="btn btn-dark">Kirim Invoice</a>' :
+                                        '<a href="" class="btn btn-dark disabled">Kirim Invoice</a>'
+                                        ) +
                                     '</form>' +
                                     '</div>' +
                                     '</td>' +

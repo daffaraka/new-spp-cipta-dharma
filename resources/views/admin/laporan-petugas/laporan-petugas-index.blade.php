@@ -35,52 +35,54 @@
 
         </div>
     </div>
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>Nama petugas</th>
-                <th>Jabatan</th>
-                <th>Email</th>
-                <th>No Telfon</th>
-                <th>NIP</th>
-                <th>SPP Terbit</th>
-                <th>SPP Dilunasi</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($laporan_petugas as $index => $petugas)
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $petugas->nama }}</td>
-                    <td>
-                        <ul>
-                            @foreach ($petugas->roles as $role)
-                                <li>{{ $role->name }}</li>
-                            @endforeach
-                        </ul>
-
-
-                    </td>
-                    <td>{{ $petugas->email }}</td>
-                    <td>{{ $petugas->no_telp ?? '-' }}</td>
-                    <td>{{ $petugas->nip ?? '-' }}</td>
-                    <td>{{ $petugas->menerbitkan_count }}</td>
-                    <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
-                    <td>
-                        <div class="d-grid">
-                            <a href="{{ route('laporanPetugas.show', ['petugas' => $petugas->id]) }}"
-                                class="btn btn-block btn-info my-1">Detail</a>
-                        </div>
-
-                    </td>
+                    <th>No</th>
+                    <th>Nama petugas</th>
+                    <th>Jabatan</th>
+                    <th>Email</th>
+                    <th>No Telfon</th>
+                    <th>NIP</th>
+                    <th>SPP Terbit</th>
+                    <th>SPP Dilunasi</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($laporan_petugas as $index => $petugas)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $petugas->nama }}</td>
+                        <td>
+                            <ul>
+                                @foreach ($petugas->roles as $role)
+                                    <li>{{ $role->name }}</li>
+                                @endforeach
+                            </ul>
 
 
-        </tbody>
-    </table>
+                        </td>
+                        <td>{{ $petugas->email }}</td>
+                        <td>{{ $petugas->no_telp ?? '-' }}</td>
+                        <td>{{ $petugas->nip ?? '-' }}</td>
+                        <td>{{ $petugas->menerbitkan_count }}</td>
+                        <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
+                        <td>
+                            <div class="d-grid">
+                                <a href="{{ route('laporanPetugas.show', ['petugas' => $petugas->id]) }}"
+                                    class="btn btn-block btn-info my-1">Detail</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endforeach
+
+
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @push('scripts')

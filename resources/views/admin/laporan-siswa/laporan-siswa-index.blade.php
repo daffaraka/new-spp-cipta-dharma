@@ -68,48 +68,51 @@
 
         </div>
     </div>
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>No Invoice</th>
-                <th>Nama Siswa</th>
-                <th>NIS</th>
-                <th>Angkatan</th>
-                <th>Kelas</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($laporan_siswa as $index => $siswa)
+
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $siswa->no_invoice }}</td>
-                    <td>{{ $siswa->siswa->nama }}</td>
-                    <td>{{ $siswa->siswa->nis }}</td>
-                    <td>{{ $siswa->siswa->angkatan }}</td>
-                    <td>{{ $siswa->siswa->kelas }}</td>
-                    <td>
-                        @if ($siswa->status == 'Belum Lunas')
-                            <button class="btn btn-danger">Belum Lunas</button>
-                        @else
-                            <button class="btn btn-success">Lunas</button>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="d-grid">
-                            <a href="{{ route('laporanSiswa.show', ['laporan_siswa' => $siswa->id]) }}"
-                                class="btn btn-block btn-info my-1">Detail</a>
-                        </div>
-
-                    </td>
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>Nama Siswa</th>
+                    <th>NIS</th>
+                    <th>Angkatan</th>
+                    <th>Kelas</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($laporan_siswa as $index => $siswa)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $siswa->no_invoice }}</td>
+                        <td>{{ $siswa->siswa->nama }}</td>
+                        <td>{{ $siswa->siswa->nis }}</td>
+                        <td>{{ $siswa->siswa->angkatan }}</td>
+                        <td>{{ $siswa->siswa->kelas }}</td>
+                        <td>
+                            @if ($siswa->status == 'Belum Lunas')
+                                <button class="btn btn-danger">Belum Lunas</button>
+                            @else
+                                <button class="btn btn-success">Lunas</button>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="d-grid">
+                                <a href="{{ route('laporanSiswa.show', ['laporan_siswa' => $siswa->id]) }}"
+                                    class="btn btn-block btn-info my-1">Detail</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endforeach
 
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @push('scripts')

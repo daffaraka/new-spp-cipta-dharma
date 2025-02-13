@@ -19,6 +19,8 @@ class TagihanController extends Controller
         $data['judul'] = 'Tagihan';
         $data['tagihans'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->latest()->paginate(10);
         $data['kelas'] = User::role('SiswaOrangTua')->select('id', 'kelas')->get()->unique();
+
+       
         return view('admin.tagihan.tagihan-index', $data);
     }
 
@@ -160,8 +162,6 @@ class TagihanController extends Controller
     {
         $tagihan->isSentKuitansi = 1;
         $tagihan->save();
-
-
         return response()->json(['success' => 'Kuitansi telah dikirim']);
     }
 }

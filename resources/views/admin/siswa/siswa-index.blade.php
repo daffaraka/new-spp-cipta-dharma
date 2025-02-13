@@ -51,52 +51,56 @@
 
         </div>
     </div>
-
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>Nama Siswa</th>
-                <th>Angkatan</th>
-                <th>Kelas</th>
-                <th>Jenis Kelamin</th>
-                <th>Alamat</th>
-                <th>Aksi</th> <!-- Kolom untuk aksi -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($siswas as $index => $siswa)
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $siswa->nama }}</td>
-                    <td>{{ $siswa->angkatan }}</td>
-                    <td>{{ $siswa->kelas }}</td>
-                    <td>{{ $siswa->jenis_kelamin }}</td>
-                    <td>{{ $siswa->alamat }}</td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal"
-                                data-bs-target="#detailModal" data-id = "{{ $siswa->id }}">Detail</button>
-
-                            {{-- <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-block btn-info my-1">Detail</a> --}}
-                            <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-block btn-warning my-1">Edit</a>
-
-                            <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-block my-1"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus siswa ini?')">Hapus</button>
-                            </form>
-                        </div>
-
-                    </td>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Angkatan</th>
+                    <th>Kelas</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th> <!-- Kolom untuk aksi -->
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($siswas as $index => $siswa)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $siswa->nama }}</td>
+                        <td>{{ $siswa->angkatan }}</td>
+                        <td>{{ $siswa->kelas }}</td>
+                        <td>{{ $siswa->jenis_kelamin }}</td>
+                        <td>{{ $siswa->alamat }}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-block btn-info my-1 btnDetailSiswa" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal" data-id = "{{ $siswa->id }}">Detail</button>
 
-            {{-- {{ $siswas->links() }} --}}
+                                {{-- <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-block btn-info my-1">Detail</a> --}}
+                                <a href="{{ route('siswa.edit', $siswa->id) }}"
+                                    class="btn btn-block btn-warning my-1">Edit</a>
 
-        </tbody>
-    </table>
+                                <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-block my-1"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus siswa ini?')">Hapus</button>
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endforeach
+
+                {{-- {{ $siswas->links() }} --}}
+
+            </tbody>
+        </table>
+    </div>
+
 
 
     <!-- Button trigger modal -->
@@ -225,7 +229,8 @@
                             '<td>' +
                             '<div class="d-flex gap-1">' +
                             '<button class="btn btn-block btn-info my-1 btnDetailSiswa" data-id="' +
-                            value.id + '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
+                            value.id +
+                            '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
                             '<a href="/siswa/' + value.id +
                             '/edit" class="btn btn-block btn-warning my-1">Edit</a>' +
                             '<form action="/siswa/' + value.id +
