@@ -59,10 +59,11 @@
                     <td>
                         <div class="d-flex gap-1">
                             @if ($riwayat->status == 'Belum Lunas')
-                                <a href="{{ route('pembayaran.verifikasi', $riwayat->id) }}"
-                                    class="btn btn-sm btn-danger">Belum Lunas</a>
+                                <button type="button" class="btn btn-sm btn-danger">Belum Lunas</button>
+                            @elseif ($riwayat->status == 'Sedang Diverifikasi')
+                                <button type="button" class="btn btn-sm btn-warning">Sedang Diverifikasi</button>
                             @else
-                                <span class="btn btn-sm btn-success">Lunas</span>
+                                <button type="button" class="btn btn-sm btn-success">Lunas</button>
                             @endif
 
                             @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == 1)

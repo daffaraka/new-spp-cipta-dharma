@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('export-tagihan', [TagihanController::class, 'export'])->name('tagihan.export');
     // Route::get('print-siswa', [SiswaController::class, 'print'])->name('siswa.print');
     Route::post('import-tagihan', [TagihanController::class, 'import'])->name('tagihan.import');
+    Route::get('/{tagihan}/kirim-invoice',[TagihanController::class,'sendInvoice'])->name('tagihan.sendInvoice');
 
     Route::resource('biaya', BiayaController::class);
     Route::post('filter-biaya', [BiayaController::class, 'filter'])->name('biaya.filter');

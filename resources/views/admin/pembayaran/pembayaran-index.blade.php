@@ -55,48 +55,52 @@
 
         </div>
     </div>
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>No Invoice</th>
-                <th>NIS</th>
-                <th>Siswa</th>
-                <th>Nominal</th>
-                <th>Bulan</th>
-                <th>Tahun</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($pembayarans as $index => $pembayaran)
+
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $pembayaran->no_invoice }}</td>
-                    <td>{{ $pembayaran->siswa->nis }}</td>
-                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
-                    <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
-                    <td>{{ $pembayaran->bulan }}</td>
-                    <td>{{ $pembayaran->tahun }}</td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
-                                class="btn btn-sm btn-secondary">Kuitansi</a>
-                            @if ($pembayaran->status == 'Belum Lunas')
-                                <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
-                                    class="btn btn-sm btn-info">Verifikasi</a>
-                            @else
-                                <span class="btn btn-sm btn-success">Lunas</span>
-                            @endif
-
-                            <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-sm btn-warning">Detail</a>
-                        </div>
-                    </td>
-
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>NIS</th>
+                    <th>Siswa</th>
+                    <th>Nominal</th>
+                    <th>Bulan</th>
+                    <th>Tahun</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($pembayarans as $index => $pembayaran)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $pembayaran->no_invoice }}</td>
+                        <td>{{ $pembayaran->siswa->nis }}</td>
+                        <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
+                        <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
+                        <td>{{ $pembayaran->bulan }}</td>
+                        <td>{{ $pembayaran->tahun }}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                                    class="btn btn-sm btn-secondary">Kuitansi</a>
+                                @if ($pembayaran->status == 'Belum Lunas')
+                                    <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
+                                        class="btn btn-sm btn-info">Verifikasi</a>
+                                @else
+                                    <span class="btn btn-sm btn-success">Lunas</span>
+                                @endif
+
+                                <a href="{{ route('pembayaran.show', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-warning">Detail</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection
 @push('scripts')
     <script>
@@ -120,18 +124,20 @@
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.no_invoice + '</td>' +
                                 '<td>' + value.siswa.nis + '</td>' +
-                                '<td>' + value.siswa.nama + ' - <b>' + value.siswa.kelas + '</b></td>' +
-                                '<td> Rp. ' + value.biaya.nominal.toLocaleString('id-ID') + '</td>' +
+                                '<td>' + value.siswa.nama + ' - <b>' + value.siswa
+                                .kelas + '</b></td>' +
+                                '<td> Rp. ' + value.biaya.nominal.toLocaleString(
+                                    'id-ID') + '</td>' +
                                 '<td>' + value.bulan + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
                                 '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' +
                                 (value.status == 'Belum Lunas' ?
-                                    '<a href="{{ route("pembayaran.verifikasi", ' + value.id + ') }}" class="btn btn-sm btn-info">Verifikasi</a>' :
+                                    '<a href="{{ route('pembayaran.verifikasi', ' + value.id + ') }}" class="btn btn-sm btn-info">Verifikasi</a>' :
                                     '<span class="btn btn-sm btn-success">Lunas</span>'
                                 ) +
-                                '<a href="{{ route("pembayaran.show", ' + value.id + ') }}" class="btn btn-sm btn-warning">Detail</a>' +
+                                '<a href="{{ route('pembayaran.show', ' + value.id + ') }}" class="btn btn-sm btn-warning">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

@@ -56,44 +56,48 @@
             </div>
         </div>
     </div>
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>No Invoice</th>
-                <th>NIS</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Bulan</th>
-                <th>Tahun</th>
-                <th>Total Bayar</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($laporan_spp as $index => $spp)
+
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $spp->no_invoice  ?? '-'}}</td>
-                    <td>{{ $spp->siswa->nis ?? '-' }}</td>
-                    <td>{{ $spp->siswa->nama ?? '-' }}</td>
-                    <td>{{ $spp->siswa->kelas ?? '-' }}</td>
-                    <td>{{ $spp->bulan ?? '-' }}</td>
-                    <td>{{ $spp->tahun  ?? '-'}}</td>
-                    <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
-                    <td>
-                        <div class="d-grid">
-                            <a href="{{ route('laporanSpp.show', ['laporan_spp' => $spp->id]) }}"
-                                class="btn btn-block btn-info my-1">Detail</a>
-                        </div>
-
-                    </td>
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>NIS</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Bulan</th>
+                    <th>Tahun</th>
+                    <th>Total Bayar</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($laporan_spp as $index => $spp)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $spp->no_invoice ?? '-' }}</td>
+                        <td>{{ $spp->siswa->nis ?? '-' }}</td>
+                        <td>{{ $spp->siswa->nama ?? '-' }}</td>
+                        <td>{{ $spp->siswa->kelas ?? '-' }}</td>
+                        <td>{{ $spp->bulan ?? '-' }}</td>
+                        <td>{{ $spp->tahun ?? '-' }}</td>
+                        <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
+                        <td>
+                            <div class="d-grid">
+                                <a href="{{ route('laporanSpp.show', ['laporan_spp' => $spp->id]) }}"
+                                    class="btn btn-block btn-info my-1">Detail</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endforeach
 
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+    </div>
 
 
     <div id="importModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"

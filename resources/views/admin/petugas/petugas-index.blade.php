@@ -23,61 +23,63 @@
 
         </div>
     </div>
-
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>Nama Lengkap</th>
-                <th>NIP</th>
-                <th>Jabatan</th>
-                <th>Jenis Kelamin</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Aksi</th> <!-- Kolom untuk aksi -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($petugas as $index => $petugas)
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $petugas->nama ?? '-' }}</td>
-                    <td>{{ $petugas->nip ?? '-' }}</td>
-                    <td>{{ $petugas->jabatan->nama_jabatan ?? '-' }}</td>
-                    <td>{{ $petugas->jenis_kelamin ?? '-' }}</td>
-                    <td>
-                        <ul>
-                            @foreach ($petugas->roles as $role)
-                                <li>{{ $role->name }}</li>
-                            @endforeach
-                        </ul>
-
-
-                    </td>
-                    <td>{{ $petugas->status ?? '-' }}</td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            <a href="{{ route('petugas.edit', ['petugas' => $petugas->id]) }}"
-                                class="btn btn-block btn-warning my-1">Edit</a>
-                            <form action="{{ route('petugas.destroy', ['petugas' => $petugas->id]) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-block btn-danger my-1"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus petugas ini?')">Hapus</button>
-                            </form>
-
-                            <button class="btn btn-block btn-info my-1 btnDetailPetugas" data-bs-toggle="modal"
-                                data-bs-target="#detailModal" data-id = "{{ $petugas->id }}">Detail</button>
-                        </div>
-
-                    </td>
+                    <th>No</th>
+                    <th>Nama Lengkap</th>
+                    <th>NIP</th>
+                    <th>Jabatan</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Aksi</th> <!-- Kolom untuk aksi -->
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($petugas as $index => $petugas)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $petugas->nama ?? '-' }}</td>
+                        <td>{{ $petugas->nip ?? '-' }}</td>
+                        <td>{{ $petugas->jabatan->nama_jabatan ?? '-' }}</td>
+                        <td>{{ $petugas->jenis_kelamin ?? '-' }}</td>
+                        <td>
+                            <ul>
+                                @foreach ($petugas->roles as $role)
+                                    <li>{{ $role->name }}</li>
+                                @endforeach
+                            </ul>
 
 
-        </tbody>
-    </table>
+                        </td>
+                        <td>{{ $petugas->status ?? '-' }}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('petugas.edit', ['petugas' => $petugas->id]) }}"
+                                    class="btn btn-block btn-warning my-1">Edit</a>
+                                <form action="{{ route('petugas.destroy', ['petugas' => $petugas->id]) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-block btn-danger my-1"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus petugas ini?')">Hapus</button>
+                                </form>
+
+                                <button class="btn btn-block btn-info my-1 btnDetailPetugas" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal" data-id = "{{ $petugas->id }}">Detail</button>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endforeach
+
+
+            </tbody>
+        </table>
+    </div>
+
 
 
     <div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
