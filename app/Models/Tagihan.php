@@ -22,7 +22,8 @@ class Tagihan extends Model
         'biaya_id',
         'user_id',
         'bulan',
-        'tahun'
+        'tahun',
+        'isSentKuitansi'
     ];
 
     public function siswa()

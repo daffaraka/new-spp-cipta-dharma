@@ -82,13 +82,14 @@
                         <td>{{ $pembayaran->tahun }}</td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
-                                    class="btn btn-sm btn-secondary">Kuitansi</a>
-                                @if ($pembayaran->status == 'Belum Lunas')
+                                @if ($pembayaran->isSentKuitansi == true)
+                                    <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                                        class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
+                                @endif
+
+                                @if ($pembayaran->bukti_pelunasan != null && $pembayaran->status == 'Sedang Diverifikasi')
                                     <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
                                         class="btn btn-sm btn-info">Verifikasi</a>
-                                @else
-                                    <span class="btn btn-sm btn-success">Lunas</span>
                                 @endif
 
                                 <a href="{{ route('pembayaran.show', $pembayaran->id) }}"

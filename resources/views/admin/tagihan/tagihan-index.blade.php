@@ -132,8 +132,9 @@
 
 
                             @if ($tagihan->status == 'Lunas')
-                                <a href="{{route('tagihan.sendInvoice',['tagihan' => $tagihan->id])}}"
-                                    class="btn btn-dark mx-1 {{ $tagihan->status == 'Belum Lunas' ? 'disabled' : '' }}">Kirim
+                                <a href="{{ route('tagihan.sendInvoice', ['tagihan' => $tagihan->id]) }}"
+                                    class="btn btn-dark mx-1 {{ $tagihan->status == 'Belum Lunas' ? 'disabled' : '' }} btnSendInvoice"
+                                    data-id="{{ $tagihan->id }}">Kirim
                                     Invoice</a>
                             @endif
 
@@ -293,7 +294,7 @@
                                         '<a href="/tagihan/kirim/' + value.id +
                                         '" class="btn btn-dark">Kirim Invoice</a>' :
                                         '<a href="" class="btn btn-dark disabled">Kirim Invoice</a>'
-                                        ) +
+                                    ) +
                                     '</form>' +
                                     '</div>' +
                                     '</td>' +
@@ -332,6 +333,31 @@
                         $('#detail-bulan').val(response.bulan);
                         $('#detail-tahun').val(response.tahun);
                     }
+                });
+            });
+
+
+            $(document).click('click','.btnSendInvoice', function(e) {
+                e.preventDefault();
+
+                var dataId = $(this).data('id');
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('tagihan.sendInvoice', ['tagihan' => ':id'])}}".replace(':id', dataId),
+                    data: {
+                        "id" : dataId
+                    },
+                    dataType: "dataType",
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Invoice Berhasil dikirimkan ke email siswa');
+                        } else {
+                            alert('Gagal mengirimkan invoice. Silakan coba lagi.');
+                        }
+
+                        $('#dataTables').DataTable().ajax.reload();
+                    }
+
                 });
             });
         </script>
