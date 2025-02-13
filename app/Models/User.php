@@ -33,7 +33,8 @@ class User extends Authenticatable
         'kelas',
         'jenis_kelamin',
         'id_telegram',
-        'agama'
+        'agama',
+        'chat_id',
     ];
 
     /**
