@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_melunasi_id')->nullable();
             $table->enum('status',['Belum Lunas','Sedang Diverifikasi','Lunas'])->default('Belum Lunas');
             $table->string('bukti_pelunasan')->nullable();
-            $table->boolean('isSentKuitansi')->default(false);
+            $table->enum('isSentKuitansi',[0,1])->default(0);
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onDelete('cascade');
             $table->foreignId('biaya_id')->constrained()->onDelete('cascade')->onDelete('cascade');

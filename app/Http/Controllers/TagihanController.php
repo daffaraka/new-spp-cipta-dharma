@@ -153,9 +153,6 @@ class TagihanController extends Controller
 
     public function show(Tagihan $tagihan)
     {
-        // $data['judul'] = 'Edit Data Tagihan';
-        // $data['tagihan'] = $tagihan->with('siswa', 'biaya', 'penerbit')->first();
-
         // return view('admin.tagihan.tagihan-show', $data);
 
         $tagihan->load(['siswa', 'biaya', 'penerbit', 'melunasi']);
@@ -165,7 +162,7 @@ class TagihanController extends Controller
     public function edit(Tagihan $tagihan)
     {
         $data['judul'] = 'Edit Data Tagihan';
-        $data['siswas'] = User::role('SiswaOrangTua')->select('id', 'nama','kelas','nis')->get();
+        $data['siswas'] = User::role('SiswaOrangTua')->select('id', 'nama', 'kelas', 'nis')->get();
         $data['biayas'] = Biaya::select('id', 'nama_biaya', 'nominal')->get();
         $data['tagihan'] = $tagihan;
         return view('admin.tagihan.tagihan-edit', $data);
@@ -204,7 +201,7 @@ class TagihanController extends Controller
     public function export()
     {
         $tgl = date('d-m-Y_H-i-s');
-        return Excel::download(new TagihanExport, 'data_tagihan_'.$tgl.'.xlsx');
+        return Excel::download(new TagihanExport, 'data_tagihan_' . $tgl . '.xlsx');
     }
 
 
@@ -212,7 +209,7 @@ class TagihanController extends Controller
     {
         Excel::import(new TagihanExport, request()->file('file'));
 
-    return redirect()->back()->with('success', 'Data tagihan baru telah ditambahkan');
+        return redirect()->back()->with('success', 'Data tagihan baru telah ditambahkan');
     }
 
 
@@ -246,16 +243,44 @@ class TagihanController extends Controller
     }
 
 
-    public function sendInvoice($tagihan)
+    public function sendInvoice(Tagihan $tagihan)
     {
 
+
         try {
-            $tagihan->isSentKuitansi = 1;
+            $tagihan->isSentKuitansi = "1";
             $tagihan->save();
             return response()->json(['success' => 'Kuitansi telah dikirim']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Gagal mengirim kuitansi', 'message' => $e->getMessage()], 500);
         }
+    }
 
+
+    public function lihatKuitansi(Tagihan $tagihan)
+    {
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $options->setDpi(150);
+        $dompdf = new Dompdf($options);
+
+        $dataTagihan = $tagihan;
+
+
+        $html = view('invoice_template', [
+            'tagihan' => $dataTagihan,
+            'bootstrap' => public_path('css/bootstrap.min.css')
+        ])->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->setBasePath(public_path());
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        return response()->stream(
+            fn() => print($dompdf->output()),
+            200,
+            ['Content-Type' => 'application/pdf']
+        );
     }
 }

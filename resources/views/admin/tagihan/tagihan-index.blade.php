@@ -132,10 +132,16 @@
 
 
                             @if ($tagihan->status == 'Lunas')
-                                <a href="{{ route('tagihan.sendInvoice', ['tagihan' => $tagihan->id]) }}"
-                                    class="btn btn-dark mx-1 {{ $tagihan->status == 'Belum Lunas' ? 'disabled' : '' }} btnSendInvoice"
-                                    data-id="{{ $tagihan->id }}">Kirim
-                                    Invoice</a>
+                                @if ($tagihan->isSentKuitansi == '0')
+                                    <button
+                                        class=" btn btn-dark mx-1 btnSendKuitansi {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
+                                        data-id="{{ $tagihan->id }}">Kirim
+                                        Invoice</button>
+                                @else
+                                    <a href="{{ route('tagihan.lihatKuitansi', $tagihan->id) }}"
+                                        class=" btn btn-outline-dark mx-1 btnLihatKuitansi {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
+                                        data-id="{{ $tagihan->id }}">Lihat Kutansi</a>
+                                @endif
                             @endif
 
                         </td>
@@ -337,25 +343,26 @@
             });
 
 
-            $(document).click('click','.btnSendInvoice', function(e) {
+            $(document).on('click', '.btnSendKuitansi', function(e) {
                 e.preventDefault();
 
                 var dataId = $(this).data('id');
                 $.ajax({
                     type: "GET",
-                    url: "{{route('tagihan.sendInvoice', ['tagihan' => ':id'])}}".replace(':id', dataId),
+                    url: "{{ route('tagihan.sendInvoice', ['tagihan' => ':id']) }}".replace(':id', dataId),
                     data: {
-                        "id" : dataId
+                        "id": dataId
                     },
-                    dataType: "dataType",
-                    success: function (response) {
+                    dataType: "json",
+                    success: function(response) {
                         if (response.success) {
                             alert('Invoice Berhasil dikirimkan ke email siswa');
                         } else {
                             alert('Gagal mengirimkan invoice. Silakan coba lagi.');
                         }
 
-                        $('#dataTables').DataTable().ajax.reload();
+                        location.reload();
+
                     }
 
                 });

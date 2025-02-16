@@ -33,12 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Dashboard
     Route::get('/', function () {
         return to_route('dashboard');
     });
-
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Siswa
     Route::resource('siswa', SiswaController::class);
     Route::get('export-siswa', [SiswaController::class, 'export'])->name('siswa.export');
     Route::get('print-siswa', [SiswaController::class, 'print'])->name('siswa.print');
@@ -56,34 +57,36 @@ Route::middleware('auth')->group(function () {
 
 
 
+    // Tagihan
     Route::resource('tagihan', TagihanController::class);
     Route::post('filter-tagihan', [TagihanController::class, 'filter'])->name('tagihan.filter');
     Route::get('export-tagihan', [TagihanController::class, 'export'])->name('tagihan.export');
-    // Route::get('print-siswa', [SiswaController::class, 'print'])->name('siswa.print');
     Route::post('import-tagihan', [TagihanController::class, 'import'])->name('tagihan.import');
     Route::get('/{tagihan}/kirim-invoice',[TagihanController::class,'sendInvoice'])->name('tagihan.sendInvoice');
-
+    Route::get('lihat-kuitansi/{tagihan}', [TagihanController::class, 'lihatKuitansi'])->name('tagihan.lihatKuitansi');
+    // Biaya
     Route::resource('biaya', BiayaController::class);
     Route::post('filter-biaya', [BiayaController::class, 'filter'])->name('biaya.filter');
 
+    // Pembayaran
     Route::resource('pembayaran', PembayaranController::class);
     Route::get('pembayaran/verifikasi/{id}', [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
     Route::post('pembayaran/kuitansi/{id}', [PembayaranController::class, 'kirimKuitansi'])->name('pembayaran.kuitansi');
-
     Route::post('filter-pembayaran', [PembayaranController::class, 'filter'])->name('pembayaran.filter');
 
+    // Laporan Petugas
     Route::get('laporan-petugas', [LaporanPetugasController::class, 'index'])->name('laporanPetugas.index');
     Route::get('laporan-petugas/create', [LaporanPetugasController::class, 'create'])->name('laporanPetugas.create');
     Route::get('laporan-petugas/{petugas}', [LaporanPetugasController::class, 'show'])->name('laporanPetugas.show');
     Route::post('filter-laporan-petugas', [LaporanPetugasController::class, 'filter'])->name('laporanPetugas.filter');
 
-
+    // Laporan Siswa
     Route::get('laporan-siswa', [LaporanSiswaController::class, 'index'])->name('laporanSiswa.index');
     Route::get('laporan-siswa/create', [laporanSiswaController::class, 'create'])->name('laporanSiswa.create');
     Route::get('laporan-siswa/{laporan_siswa}', [laporanSiswaController::class, 'show'])->name('laporanSiswa.show');
     Route::post('filter-laporan-siswa', [laporanSiswaController::class, 'filter'])->name('laporanSiswa.filter');
 
-
+    // Laporan SPP
     Route::get('laporan-spp', [LaporanSPPController::class, 'index'])->name('laporanSpp.index');
     Route::get('laporan-spp/create', [LaporanSPPController::class, 'create'])->name('laporanSpp.create');
     Route::post('filter-laporan-spp', [LaporanSPPController::class, 'filter'])->name('laporanSpp.filter');
@@ -93,7 +96,7 @@ Route::middleware('auth')->group(function () {
     Route::post('laporan-spp/import', [LaporanSPPController::class, 'import'])->name('laporanSpp.import');
 
 
-
+    // Petugas
     Route::resource('petugas', PetugasController::class)->parameters([
         'petugas' => 'petugas'
     ]);
@@ -107,7 +110,6 @@ Route::middleware('auth')->group(function () {
     Route::get('ortu/pembayaran', [OrangTuaController::class, 'pembayaran'])->name('ortu.pembayaran');
     Route::get('ortu/riwayat-pembayaran', [OrangTuaController::class, 'riwayatPembayaran'])->name('ortu.riwayatPembayaran');
     Route::view('print', 'admin.tagihan.tagihan-invoice-print');
-
     Route::post('filter-riwayat-pembayaran', [OrangTuaController::class, 'filterRiwayatPembayaran'])->name('ortu.filterRiwayatPembayaran');
     Route::post('filter-status-pembayaran', [OrangTuaController::class, 'filterStatusPembayaran'])->name('ortu.filterStatusPembayaran');
 
