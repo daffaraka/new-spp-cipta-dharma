@@ -79,7 +79,6 @@
                             </td>
                         </tr>
                     @endforeach
-                    {{ $biayas->links() }}
                 </tbody>
             </table>
 

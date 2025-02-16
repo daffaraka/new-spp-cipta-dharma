@@ -131,18 +131,18 @@
                             </form>
 
 
-                            @if ($tagihan->status == 'Lunas')
-                                @if ($tagihan->isSentKuitansi == '0')
-                                    <button
-                                        class=" btn btn-dark mx-1 btnSendKuitansi {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
-                                        data-id="{{ $tagihan->id }}">Kirim
-                                        Invoice</button>
-                                @else
-                                    <a href="{{ route('tagihan.lihatKuitansi', $tagihan->id) }}"
-                                        class=" btn btn-outline-dark mx-1 btnLihatKuitansi {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
-                                        data-id="{{ $tagihan->id }}">Lihat Kutansi</a>
-                                @endif
+                            @if ($tagihan->status == 'Belum Lunas')
+                                <button
+                                    class=" btn btn-dark mx-1 btnSendInvoice {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
+                                    data-id="{{ $tagihan->id }}">Kirim
+                                    Invoice</button>
+                            @else
+                                <a href="{{ route('tagihan.lihatKuitansi', $tagihan->id) }}"
+                                    class=" btn btn-outline-dark mx-1 btnLihatKuitansi {{ $tagihan->isSentKuitanti != '1' ? '' : 'disabled' }} "
+                                    data-id="{{ $tagihan->id }}">Lihat Kutansi</a>
                             @endif
+
+
 
                         </td>
                     </tr>
@@ -164,6 +164,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="detail-nis">NIS </label>
+                        <input type="text" id="detail-nis" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nama-siswa">Nama Siswa</label>
+                        <input type="text" id="detail-nama-siswa" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nominal">Nominal</label>
+                        <input type="text" id="detail-nominal" class="form-control" readonly>
+                    </div>
                     <div class="form-group mb-3">
                         <label for="detail-no-invoice">No Invoice</label>
                         <input type="text" id="detail-no-invoice" class="form-control" readonly>
@@ -201,10 +213,6 @@
                     <div class="form-group mb-3">
                         <label for="detail-biaya">Biaya</label>
                         <input type="text" id="detail-biaya" class="form-control" readonly>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="detail-user-id">User</label>
-                        <input type="text" id="detail-user" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-bulan">Bulan</label>
@@ -281,7 +289,10 @@
                                     '<td>' +
                                     (value.status == 'Belum Lunas' ?
                                         '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                        '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                        (value.status == 'Sedang Diverifikasi' ?
+                                            '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                            '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                        )
                                     ) +
                                     '</td>' +
                                     '<td>' +
@@ -295,13 +306,12 @@
                                     '" method="POST" style="display:inline;">' +
                                     '@csrf' +
                                     '@method('DELETE')' +
-                                    '<button type="submit" class="btn btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
-                                    (value.status == 'Belum Lunas' ?
-                                        '<a href="/tagihan/kirim/' + value.id +
-                                        '" class="btn btn-dark">Kirim Invoice</a>' :
-                                        '<a href="" class="btn btn-dark disabled">Kirim Invoice</a>'
-                                    ) +
+                                    '<button type="submit" class="btn btn-danger m-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
                                     '</form>' +
+                                    (value.status == 'Belum Lunas' ?
+                                        '<button class="btn btn-dark my-1 btnSendInvoice ' + (value.isSentKuitansi != '1' ? '' : 'disabled') + '" data-id="' + value.id + '">Kirim Invoice</button>' :
+                                        '<a href="' + "{{ route('tagihan.lihatKuitansi', '" + value.id + "')}}" + '" class="btn btn-outline-dark mx-1 btnLihatKuitansi ' + (value.isSentKuitansi != '1' ? '' : 'disabled') + '" data-id="' + value.id + '">Lihat Kutansi</a>'
+                                    ) +
                                     '</div>' +
                                     '</td>' +
                                     '</tr>');
@@ -323,6 +333,9 @@
                     },
                     dataType: "json",
                     success: function(response) {
+                        $('#detail-nis').val(response.siswa.nis);
+                        $('#detail-nama-siswa').val(response.siswa.nama);
+                        $('#detail-nominal').val(response.biaya.nominal);
                         $('#detail-no-invoice').val(response.no_invoice);
                         $('#detail-keterangan').val(response.keterangan);
                         $('#detail-tanggal-terbit').val(response.tanggal_terbit);
@@ -335,7 +348,6 @@
                         $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
                             .nama : '-');
                         $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
-                        $('#detail-user').val(response.user ? response.siswa.nama : '-');
                         $('#detail-bulan').val(response.bulan);
                         $('#detail-tahun').val(response.tahun);
                     }
@@ -343,7 +355,7 @@
             });
 
 
-            $(document).on('click', '.btnSendKuitansi', function(e) {
+            $(document).on('click', '.btnSendInvoice', function(e) {
                 e.preventDefault();
 
                 var dataId = $(this).data('id');

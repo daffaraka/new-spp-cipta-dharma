@@ -67,6 +67,7 @@
                     <th>Nominal</th>
                     <th>Bulan</th>
                     <th>Tahun</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -80,6 +81,15 @@
                         <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
                         <td>{{ $pembayaran->bulan }}</td>
                         <td>{{ $pembayaran->tahun }}</td>
+                        <td>
+                            @if ($pembayaran->status == 'Belum Lunas')
+                                <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                            @elseif ($pembayaran->status == 'Sedang Diverifikasi')
+                                <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                            @else
+                                <span class="badge rounded-pill bg-success">Lunas</span>
+                            @endif
+                        </td>
                         <td>
                             <div class="d-flex gap-1">
                                 @if ($pembayaran->isSentKuitansi == true)
@@ -132,13 +142,25 @@
                                 '<td>' + value.bulan + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
                                 '<td>' +
+                                    (value.status == 'Belum Lunas' ?
+                                        '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
+                                        (value.status == 'Sedang Diverifikasi' ?
+                                            '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                            '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                        )
+                                    ) +
+                                    '</td>' +
+                                '<td>' +
                                 '<div class="d-flex gap-1">' +
-                                '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' +
-                                (value.status == 'Belum Lunas' ?
-                                    '<a href="{{ route('pembayaran.verifikasi', ' + value.id + ') }}" class="btn btn-sm btn-info">Verifikasi</a>' :
-                                    '<span class="btn btn-sm btn-success">Lunas</span>'
+                                (value.isSentKuitansi == 1 ?
+                                    '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' :
+                                    ''
                                 ) +
-                                '<a href="{{ route('pembayaran.show', ' + value.id + ') }}" class="btn btn-sm btn-warning">Detail</a>' +
+                                (value.bukti_pelunasan != null && value.status == 'Sedang Diverifikasi' ?
+                                    '<a href="/pembayaran/verifikasi/' + value.id + '" class="btn btn-sm btn-info">Verifikasi</a>' :
+                                    ''
+                                ) +
+                                '<a href="/pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

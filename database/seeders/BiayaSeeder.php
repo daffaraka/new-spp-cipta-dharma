@@ -58,7 +58,7 @@ class BiayaSeeder extends Seeder
             'level' => $level[array_rand($level)],
         ]);
 
-        for ($i=0; $i < 10; $i++) {
+        for ($i=0; $i < 30; $i++) {
             Biaya::create([
                 'nama_biaya' => 'Uang Kegiatan ' . $i,
                 'nominal' => rand(10000, 200000),

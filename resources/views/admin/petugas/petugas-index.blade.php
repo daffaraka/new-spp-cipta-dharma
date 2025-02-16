@@ -183,8 +183,9 @@
 
 
         $(document).on('click', '.btnDetailPetugas', function(e) {
-            var dataId = $(this).data('id');
 
+            // e.preventDefault();
+            var dataId = $(this).data('id');
 
             $.ajax({
                 type: "GET",

@@ -31,6 +31,7 @@
             <select id="filterStatus" class="form-control" name="filter_status">
                 <option value="">Pilih Status</option>
                 <option value="Belum Lunas">Belum Lunas</option>
+                <option value="Sedang Diverifikasi">Sedang Diverifikasi</option>
                 <option value="Lunas">Lunas</option>
             </select>
         </div>
@@ -95,6 +96,8 @@
                         <td>
                             @if ($siswa->status == 'Belum Lunas')
                                 <button class="btn btn-danger">Belum Lunas</button>
+                            @elseif ($siswa->status == 'Sedang Diverifikasi')
+                                <button class="btn btn-warning">Sedang Diverifikasi</button>
                             @else
                                 <button class="btn btn-success">Lunas</button>
                             @endif

@@ -35,6 +35,7 @@ class User extends Authenticatable
         'id_telegram',
         'agama',
         'chat_id',
+        'tanggal_lahir'
     ];
 
     /**
@@ -43,7 +44,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        // 'password',
         'remember_token',
     ];
 

@@ -17,18 +17,20 @@ class MassTagihanSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::whereIn('id',[3,4])->pluck('id')->toArray();
+        $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         $biaya = Biaya::pluck('id')->toArray();
         $buktiLunas = [null, 'Ada'];
+        $namaInvoice = ['Tagihan','Pembayaran','SPP','Bimbingan'];
+        $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
 
-        for ($i = 1; $i <= 10; $i++) {
-            $namaInvoice = 'Tagihan Bulanan ' . $i;
+        for ($i = 1; $i <= 30; $i++) {
+            // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $tagihan = Tagihan::insert([
                 'no_invoice' => $noInvoice,
-                'keterangan' => $namaInvoice,
+                'keterangan' => $namaInvoice[array_rand($namaInvoice)].' '.$i,
                 'user_id' => $user[array_rand($user)],
                 'biaya_id' => $biaya[array_rand($biaya)],
                 'bulan' => $bulan[array_rand($bulan)],
@@ -38,7 +40,7 @@ class MassTagihanSeeder extends Seeder
                 'user_penerbit_id' => 1,
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],
                 'created_at' => \Carbon\Carbon::now(),
-
+                'status' => $status[array_rand($status)],
             ]);
 
         }

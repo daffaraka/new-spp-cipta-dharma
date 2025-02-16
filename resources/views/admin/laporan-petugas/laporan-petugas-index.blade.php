@@ -40,11 +40,11 @@
             <thead class="thead-light">
                 <tr>
                     <th>No</th>
-                    <th>Nama petugas</th>
+                    <th>Nama Pegawai</th>
+                    <th>NIP</th>
                     <th>Jabatan</th>
                     <th>Email</th>
                     <th>No Telfon</th>
-                    <th>NIP</th>
                     <th>SPP Terbit</th>
                     <th>SPP Dilunasi</th>
                     <th>Aksi</th>
@@ -55,6 +55,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $petugas->nama }}</td>
+                        <td>{{ $petugas->nip ?? '-' }}</td>
                         <td>
                             <ul>
                                 @foreach ($petugas->roles as $role)
@@ -66,7 +67,7 @@
                         </td>
                         <td>{{ $petugas->email }}</td>
                         <td>{{ $petugas->no_telp ?? '-' }}</td>
-                        <td>{{ $petugas->nip ?? '-' }}</td>
+
                         <td>{{ $petugas->menerbitkan_count }}</td>
                         <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
                         <td>

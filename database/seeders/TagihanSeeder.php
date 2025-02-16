@@ -24,12 +24,13 @@ class TagihanSeeder extends Seeder
         $use = User::pluck('id')->toArray();
         $biaya = Biaya::pluck('id')->toArray();
         $buktiLunas = [null, 'Ada'];
-        for ($i = 1; $i <= 10; $i++) {
+        $namaInvoice = ['Tagihan','Pembayaran','SPP','Bimbingan'];
+        for ($i = 1; $i <= 20; $i++) {
             $noInvoice = 'INV' . sprintf('%03d', $i);
-            $namaInvoice = 'Tagihan Bulanan ' . $i;
+            // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $tagihan = Tagihan::insert([
                 'no_invoice' => $noInvoice,
-                'keterangan' => $namaInvoice,
+                'keterangan' => $namaInvoice[array_rand($namaInvoice)].' '.$i,
                 'user_id' => $use[array_rand($use)],
                 'biaya_id' => $biaya[array_rand($biaya)],
                 'bulan' => $bulan[array_rand($bulan)],

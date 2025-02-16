@@ -24,7 +24,7 @@ class TagihanController extends Controller
     public function index()
     {
         $data['judul'] = 'Tagihan';
-        $data['tagihans'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->latest()->paginate(10);
+        $data['tagihans'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->latest()->get();
         $data['kelas'] = User::role('SiswaOrangTua')->select('id', 'kelas')->get()->unique();
 
 
@@ -58,7 +58,7 @@ class TagihanController extends Controller
         $tagihan->keterangan = $request->keterangan;
         $tagihan->user_id = $request->user_id;
         $tagihan->biaya_id = $request->biaya_id;
-        $tagihan->bulan = $request->bulan;
+        $tagihan->bulan = $request->bulan ?? date('m');
         $tagihan->tahun = $request->tahun ?? date('Y');
         $tagihan->tanggal_terbit = $request->tanggal_terbit ?? Carbon::now();
         $tagihan->tanggal_lunas = $request->tanggal_lunas;
@@ -227,12 +227,12 @@ class TagihanController extends Controller
                     })
                     ->when(!empty($request->filter_bulan), function ($query) use ($request) {
                         $query->whereBulan($request->filter_bulan);
-                    })->when($request->filter_angkatan != null, function ($query) use ($request) {
+                    })->when(!empty($request->filter_angkatan), function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('angkatan', $request->filter_angkatan);
                         });
                     })
-                    ->when($request->filter_kelas != null, function ($query) use ($request) {
+                    ->when(!empty($request->filter_kelas) , function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('kelas', $request->filter_kelas);
                         });
@@ -245,7 +245,6 @@ class TagihanController extends Controller
 
     public function sendInvoice(Tagihan $tagihan)
     {
-
 
         try {
             $tagihan->isSentKuitansi = "1";

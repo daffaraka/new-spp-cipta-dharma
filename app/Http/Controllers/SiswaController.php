@@ -45,12 +45,14 @@ class SiswaController extends Controller
             'angkatan' => 'required',
             'kelas' => 'required',
             'jenis_kelamin' => 'required',
-            'id_telegram' => 'required',
+            'tanggal_lahir' => 'required',
+            'username' => 'required'
         ]);
 
 
         $user =  User::create(
             [
+                'username' => $request->username,
                 'nama' => $request->nama,
                 'nis' => $request->nis,
                 'nisn' => $request->nisn,
@@ -62,8 +64,9 @@ class SiswaController extends Controller
                 'email' => $request->email,
                 'angkatan' => $request->angkatan,
                 'kelas' => $request->kelas,
+                'agama' => $request->agama,
                 'jenis_kelamin' => $request->jenis_kelamin,
-                'id_telegram' => $request->id_telegram,
+                'tanggal_lahir' => $request->tanggal_lahir,
             ]
         );
 
@@ -89,6 +92,7 @@ class SiswaController extends Controller
     public function update(Request $request, User $siswa)
     {
         $this->validate($request, [
+            'username' => $request->username,
             'nama' => 'required',
             'nis' => 'required',
             'nisn' => 'required',
@@ -99,7 +103,10 @@ class SiswaController extends Controller
             'no_telp' => 'required',
             'angkatan' => 'required',
             'kelas' => 'required',
+            'agama' => 'required',
             'jenis_kelamin' => 'required',
+            'tanggal_lahir' => $request->tanggal_lahir,
+
         ]);
 
 
@@ -116,7 +123,10 @@ class SiswaController extends Controller
                 'email' => $request->email,
                 'angkatan' => $request->angkatan,
                 'kelas' => $request->kelas,
+                'agama' => $request->agama,
                 'jenis_kelamin' => $request->jenis_kelamin,
+                'tanggal_lahir' => $request->tanggal_lahir,
+
             ]
         );
 

@@ -8,6 +8,10 @@
             <input type="text" name="nama" class="form-control" required autocomplete="on" value="{{ old('nama', '') }}">
         </div>
         <div class="mb-3">
+            <label for="">Username</label>
+            <input type="text" name="username" class="form-control" required autocomplete="on" value="{{ old('username', '') }}">
+        </div>
+        <div class="mb-3">
             <label for="">Kelas</label>
             <select name="kelas" id="" class="form-control" autocomplete="on" value="{{ old('kelas', '') }}">
                 @for ($kelas = 1; $kelas <= 6; $kelas++)
@@ -30,12 +34,12 @@
 
         <div class="mb-3">
             <label for="">NIS</label>
-            <input type="text" name="nis" class="form-control" required autocomplete="on" value="{{ old('nis', '') }}">
+            <input type="number" name="nis" class="form-control" required autocomplete="on" value="{{ old('nis', '') }}">
         </div>
 
         <div class="mb-3">
             <label for="">NISN</label>
-            <input type="text" name="nisn" class="form-control" required autocomplete="on" value="{{ old('nisn', '') }}">
+            <input type="number" name="nisn" class="form-control" required autocomplete="on" value="{{ old('nisn', '') }}">
         </div>
 
         <div class="mb-3">
@@ -83,8 +87,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="">ID Telegram</label>
-            <input type="text" name="id_telegram" class="form-control" required autocomplete="on" value="{{ old('id_telegram', '') }}">
+            <label for="">Tanggal Lahir</label>
+            <input type="date" name="tanggal_lahir" class="form-control" required autocomplete="on" value="{{ old('tanggal_lahir', '') }}">
         </div>
 
 

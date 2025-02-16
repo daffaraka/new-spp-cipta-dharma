@@ -30,7 +30,7 @@
         <div class="mb-3">
             <strong><label for="" class="my-1">Ditujukan kepada</label></strong>
             <select type="text" name="user_id" id="user_id"
-                class="livesearch js-example-basic-multiple js-states form-control my-1" required>
+                class="livesearch  form-control my-1" required>
                 @foreach ($siswas as $item)
                     <option value="{{ $item->id }}">{{ $item->nis }} - {{ $item->nama }} - Kelas
                         {{ $item->kelas }} </option>

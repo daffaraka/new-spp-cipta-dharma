@@ -56,30 +56,6 @@
         </div>
 
 
-        <div class="mb-3">
-            <label for="">Tanggal Terbit</label>
-            <input type="date" name="tanggal_terbit"  class="form-control" value="{{ $tagihan->tanggal_terbit ?? date('Y-m-d') }}">
-            <label> Jika dikosongi otomatis di isi hari ini </label>
-        </div>
-
-        <div class="mb-3">
-            <label for="">Tanggal Lunas</label>
-            <input type="date" name="tanggal_lunas"  class="form-control" value="{{ $tagihan->tanggal_lunas }}">
-            <label> Boleh dikosongi </label>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="">Status Pelunasan</label>
-            <select type="date" name="status"  class="form-control" >
-                <option value="Belum Lunas" {{ $tagihan->status == 'Belum Lunas' ? 'selected' : '' }}>Belum Lunas</option>
-                <option value="Diajukan" {{ $tagihan->status == 'Diajukan' ? 'selected' : '' }}>Diajukan</option>
-                <option value="Lunas" {{ $tagihan->status == 'Lunas' ? 'selected' : '' }}>Lunas</option>
-
-            </select>
-            <label> Boleh dikosongi </label>
-        </div>
-
         <button type="submit" class="btn btn-primary my-3">Submit</button>
     </form>
 @endsection

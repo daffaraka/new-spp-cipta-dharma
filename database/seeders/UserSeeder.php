@@ -75,6 +75,7 @@ class UserSeeder extends Seeder
                     'kelas' => $kelas[array_rand($kelas)],
                     'id_telegram' => null,
                     'created_at' => now(),
+                    'tanggal_lahir' => $faker->dateTimeBetween('2000-01-01', '2020-12-31'),
                 ]
             );
 

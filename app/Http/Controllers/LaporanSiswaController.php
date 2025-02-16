@@ -11,7 +11,7 @@ class LaporanSiswaController extends Controller
     public function index()
     {
         $data['judul'] = 'Laporan Data Siswa';
-        $data['laporan_siswa'] = Tagihan::whereMonth('created_at', date('m'))->with('siswa')->latest()->get();
+        $data['laporan_siswa'] = Tagihan::with('siswa')->latest()->get();
 
         // dd($data);
         return view('admin.laporan-siswa.laporan-siswa-index', $data);
