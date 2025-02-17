@@ -104,8 +104,8 @@
                         </td>
                         <td>
                             <div class="d-grid">
-                                <a href="{{ route('laporanSiswa.show', ['laporan_siswa' => $siswa->id]) }}"
-                                    class="btn btn-block btn-info my-1">Detail</a>
+                                <button class="btn btn-block btn-info my-1 btnDetailLaporanSiswa" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal" data-id = "{{ $siswa->id }}">Detail</button>
                             </div>
 
                         </td>
@@ -115,6 +115,90 @@
 
             </tbody>
         </table>
+    </div>
+
+
+    <div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="my-modal-title">Detail Siswa</h5>
+                    <button class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="detail-nama-siswa">Nama Siswa</label>
+                        <input type="text" id="detail-nama-siswa" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nominal">Nominal</label>
+                        <input type="text" id="detail-nominal" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-no-invoice">No Invoice</label>
+                        <input type="text" id="detail-no-invoice" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-keterangan">Keterangan</label>
+                        <input type="text" id="detail-keterangan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-tanggal-terbit">Tanggal Terbit</label>
+                        <input type="date" id="detail-tanggal-terbit" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-tanggal-lunas">Tanggal Lunas</label>
+                        <input type="date" id="detail-tanggal-lunas" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-status">Status</label>
+                        <input type="text" id="detail-status" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-user-penerbit">User Penerbit</label>
+                        <input type="text" id="detail-user-penerbit" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-user-melunasi">User Melunasi</label>
+                        <input type="text" id="detail-user-melunasi" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-biaya">Biaya</label>
+                        <input type="text" id="detail-biaya" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-bulan">Bulan</label>
+                        <input type="text" id="detail-bulan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-tahun">Tahun</label>
+                        <input type="text" id="detail-tahun" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="detail-nis">NIS </label>
+                        <input type="text" id="detail-nis" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-bukti-pelunasan">Bukti Pelunasan</label>
+                        <br>
+                        <a href="" id="detail-bukti-pelunasan-link" target="_blank"> Click to view
+                        </a>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -157,6 +241,42 @@
                         });
                     }
                 });
+            });
+        });
+
+
+
+        $(document).on('click', '.btnDetailLaporanSiswa', function(e) {
+            var dataId = $(this).data('id');
+
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('laporanSiswa.show', ['laporan_siswa' => ':id']) }}".replace(':id', dataId),
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": dataId
+                },
+                dataType: "json",
+                success: function(response) {
+                    $('#detail-nis').val(response.siswa.nis);
+                        $('#detail-nama-siswa').val(response.siswa.nama);
+                        $('#detail-nominal').val(response.biaya.nominal);
+                        $('#detail-no-invoice').val(response.no_invoice);
+                        $('#detail-keterangan').val(response.keterangan);
+                        $('#detail-tanggal-terbit').val(response.tanggal_terbit);
+                        $('#detail-tanggal-lunas').val(response.tanggal_lunas);
+                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
+                            "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
+                        $('#detail-status').val(response.status);
+                        $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
+                            .nama : '-');
+                        $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
+                            .nama : '-');
+                        $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
+                        $('#detail-bulan').val(response.bulan);
+                        $('#detail-tahun').val(response.tahun);
+                }
             });
         });
     </script>

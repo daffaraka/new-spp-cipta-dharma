@@ -58,9 +58,10 @@ class LaporanSiswaController extends Controller
 
     public function show(Tagihan $laporan_siswa)
     {
-        $laporan_siswa->with('siswa', 'biaya', 'penerbit', 'melunasi')->find($laporan_siswa->id);
+        $laporan_siswa->load('siswa', 'biaya', 'penerbit', 'melunasi')->find($laporan_siswa->id);
 
-        return view('admin.laporan-siswa.laporan-siswa-show', compact('laporan_siswa'));
+        return response()->json($laporan_siswa);
+        // return view('admin.laporan-siswa.laporan-siswa-show', compact('laporan_siswa'));
     }
 
 

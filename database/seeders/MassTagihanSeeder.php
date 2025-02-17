@@ -35,7 +35,7 @@ class MassTagihanSeeder extends Seeder
                 'biaya_id' => $biaya[array_rand($biaya)],
                 'bulan' => $bulan[array_rand($bulan)],
                 'tahun' => $tahun[array_rand($tahun)],
-                'tanggal_terbit' => \Carbon\Carbon::now(),
+                'tanggal_terbit' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2025-01-01'), strtotime('2025-12-31'))),
                 'tanggal_lunas' => null,
                 'user_penerbit_id' => 1,
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],

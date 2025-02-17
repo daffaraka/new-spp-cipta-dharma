@@ -10,12 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $auth_id = Auth::user()->id;
 
 
         if (Auth::user()->hasRole(['KepalaSekolah', 'Petugas'])) {
+
+            // if($request->ajax()){
+
+            // } else {
+
+            // }
             $data['total_siswa'] = User::role('SiswaOrangTua')->count();
             $data['total_petugas'] = User::role(['KepalaSekolah', 'Petugas'])->count();
             $data['total_laki'] = User::where('jenis_kelamin', 'Laki-laki')->count();
@@ -29,14 +35,37 @@ class DashboardController extends Controller
                 ];
             });
 
+            $data['data_pembayaranPerHari'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->tanggal_terbit)->format('d-m-y');
+            })->map(function ($item) {
+                return $item->sum(function ($tagihan) {
+                    return $tagihan->biaya->nominal;
+                });
+            });
 
-            // $data['data_SppPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->map(function ($item) {
-            //     return [
-            //         'bulan' => $item->bulan,
-            //         'nominal' => $item->biaya->nominal,
-            //     ];
+
+            $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->orderBy('tanggal_terbit', 'asc')->get()->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
+            })->map(function ($item) {
+                return $item->sum(function ($tagihan) {
+                    return $tagihan->biaya->nominal;
+                });
+            });
+
+            // $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->groupBy(function ($item) {
+            //     return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
+            // })->map(function ($item) {
+            //     return $item->sum(function ($tagihan) {
+            //         return $tagihan->biaya->nominal;
+            //     });
             // });
 
+
+
+            // dd($data['data_pembayaranPerBulan']);
+
+
+            // dd( $data['data_pembayaranPerbulan']);
 
             // dd($data['data_SppPerBulan']);
 
