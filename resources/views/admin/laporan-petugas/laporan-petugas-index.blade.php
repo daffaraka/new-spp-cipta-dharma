@@ -43,8 +43,6 @@
                     <th>Nama Pegawai</th>
                     <th>NIP</th>
                     <th>Jabatan</th>
-                    <th>Email</th>
-                    <th>No Telfon</th>
                     <th>SPP Terbit</th>
                     <th>SPP Dilunasi</th>
                     <th>Aksi</th>
@@ -65,9 +63,6 @@
 
 
                         </td>
-                        <td>{{ $petugas->email }}</td>
-                        <td>{{ $petugas->no_telp ?? '-' }}</td>
-
                         <td>{{ $petugas->menerbitkan_count }}</td>
                         <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
                         <td>

@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
 use App\Exports\TagihanExport;
+use App\Imports\TagihanImport;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -207,7 +208,10 @@ class TagihanController extends Controller
 
     public function import()
     {
-        Excel::import(new TagihanExport, request()->file('file'));
+
+
+
+        Excel::import(new TagihanImport, request()->file('file'));
 
         return redirect()->back()->with('success', 'Data tagihan baru telah ditambahkan');
     }

@@ -46,7 +46,9 @@ class LaporanSPPController extends Controller
 
     public function show(Tagihan $laporan_spp)
     {
-        return view('admin.laporan-spp.laporan-spp-show', compact('laporan_spp'));
+        $laporan_spp->load(['siswa']);
+        return response()->json($laporan_spp);
+        // return view('admin.laporan-spp.laporan-spp-show', compact('laporan_spp'));
     }
 
 
@@ -64,8 +66,7 @@ class LaporanSPPController extends Controller
 
     public function filter(Request $request)
     {
-        // dd($request->all());
-        if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_angkatan) && empty($request->filter_kelas)) {
+        if (empty($request->filter_tahun) && empty($request->filter_bulan) && empty($request->filter_tanggal_awal) && empty($request->filter_tanggal_akhir)) {
             return Tagihan::with('siswa')->latest()->get();
         } else {
             return response()->json(
@@ -75,10 +76,8 @@ class LaporanSPPController extends Controller
                     })
                     ->when(!empty($request->filter_bulan), function ($query) use ($request) {
                         $query->whereBulan($request->filter_bulan);
-                    })->when($request->filter_angkatan != null, function ($query) use ($request) {
-                        return $query->whereHas('siswa', function ($query) use ($request) {
-                            $query->where('angkatan', $request->filter_angkatan);
-                        });
+                    })->when(!empty($request->filter_tanggal_awal) && !empty($request->filter_tanggal_akhir), function ($query) use ($request) {
+                        $query->whereBetween('tanggal_lunas', [$request->filter_tanggal_awal, $request->filter_tanggal_akhir]);
                     })
                     ->get()
             );

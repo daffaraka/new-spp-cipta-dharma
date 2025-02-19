@@ -7,13 +7,12 @@
         </div>
 
         <div>
-            <a href="{{ route('siswa.export') }}" class="btn btn-outline-success disabled" id="btnExport">
+            <a href="{{ route('tagihan.export') }}" class="btn btn-outline-success" id="btnExport">
                 <i class="fas fa-file-excel"></i> Export Excel
             </a>
-            <a href="#" class="btn btn-warning disabled" id="btnImport" data-bs-toggle="modal"
-                data-bs-target="#importModal">
+            <button class="btn btn-warning" id="btnImport" data-bs-toggle="modal" data-bs-target="#importModal">
                 <i class="fas fa-file-import"></i> Import Excel
-            </a>
+            </button>
             {{-- <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
                 <i class="fas fa-print"></i> Print
             </a> --}}
@@ -230,154 +229,163 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
-            aria-hidden="true">
-            <div class="modal-dialog " role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitleId">
-                            Import Data Tagihan
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{-- <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" name="file" class="form-control" accept=".xls,.xlsx,.csv">
-                            <button type="submit" class="btn btn-primary mt-3">Import</button>
-                        </form> --}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
+    <!-- Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Import Data Tagihan
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('tagihan.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" class="form-control" accept=".xls,.xlsx,.csv">
+                        <button type="submit" class="btn btn-primary mt-3">Import</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
 
-                    </div>
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
 
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#btnFilter').click(function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: "{{ route('tagihan.filter') }}",
-                        type: "POST",
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            "filter_tahun": $('#filterTahun').val(),
-                            "filter_bulan": $('#filterBulan').val(),
-                            "filter_angkatan": $('#filterAngkatan').val(),
-                            "filter_kelas": $('#filterKelas').val()
-                        },
-                        success: function(data) {
-                            $('#dataTables tbody').empty();
-                            $.each(data, function(index, value) {
-                                $('#dataTables tbody').append('<tr>' +
-                                    '<td>' + (index + 1) + '</td>' +
-                                    '<td>' + value.no_invoice + '</td>' +
-                                    '<td>' + value.keterangan + '</td>' +
-                                    '<td>' + value.siswa.nis + '</td>' +
-                                    '<td>' + 'Rp. ' + value.biaya.nominal + '</td>' +
-                                    '<td>' + value.bulan + '</td>' +
-                                    '<td>' + value.tahun + '</td>' +
-                                    '<td>' +
-                                    (value.status == 'Belum Lunas' ?
-                                        '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                        (value.status == 'Sedang Diverifikasi' ?
-                                            '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
-                                            '<span class="badge rounded-pill bg-success">Lunas</span>'
-                                        )
-                                    ) +
-                                    '</td>' +
-                                    '<td>' +
-                                    '<div class="d-flex gap-1">' +
-                                    '<button class="btn btn-block btn-info my-1 btnDetailTagihan" data-id="' +
-                                    value.id +
-                                    '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
-                                    '<a href="/tagihan/' + value.id +
-                                    '/edit" class="btn btn-warning my-1">Edit</a>' +
-                                    '<form action="/tagihan/' + value.id +
-                                    '" method="POST" style="display:inline;">' +
-                                    '@csrf' +
-                                    '@method('DELETE')' +
-                                    '<button type="submit" class="btn btn-danger m-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
-                                    '</form>' +
-                                    (value.status == 'Belum Lunas' ?
-                                        '<button class="btn btn-dark my-1 btnSendInvoice ' + (value.isSentKuitansi != '1' ? '' : 'disabled') + '" data-id="' + value.id + '">Kirim Invoice</button>' :
-                                        '<a href="' + "{{ route('tagihan.lihatKuitansi', '" + value.id + "')}}" + '" class="btn btn-outline-dark mx-1 btnLihatKuitansi ' + (value.isSentKuitansi != '1' ? '' : 'disabled') + '" data-id="' + value.id + '">Lihat Kutansi</a>'
-                                    ) +
-                                    '</div>' +
-                                    '</td>' +
-                                    '</tr>');
-                            });
-                        }
-                    });
-                });
-            });
-
-
-            $(document).on('click', '.btnDetailTagihan', function(e) {
-                var dataId = $(this).data('id');
-
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('tagihan.show', ['tagihan' => ':id']) }}".replace(':id', dataId),
-                    data: {
-                        "id": dataId
-                    },
-                    dataType: "json",
-                    success: function(response) {
-                        $('#detail-nis').val(response.siswa.nis);
-                        $('#detail-nama-siswa').val(response.siswa.nama);
-                        $('#detail-nominal').val(response.biaya.nominal);
-                        $('#detail-no-invoice').val(response.no_invoice);
-                        $('#detail-keterangan').val(response.keterangan);
-                        $('#detail-tanggal-terbit').val(response.tanggal_terbit);
-                        $('#detail-tanggal-lunas').val(response.tanggal_lunas);
-                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
-                            "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
-                        $('#detail-status').val(response.status);
-                        $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
-                            .nama : '-');
-                        $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
-                            .nama : '-');
-                        $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
-                        $('#detail-bulan').val(response.bulan);
-                        $('#detail-tahun').val(response.tahun);
-                    }
-                });
-            });
-
-
-            $(document).on('click', '.btnSendInvoice', function(e) {
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#btnFilter').click(function(e) {
                 e.preventDefault();
-
-                var dataId = $(this).data('id');
                 $.ajax({
-                    type: "GET",
-                    url: "{{ route('tagihan.sendInvoice', ['tagihan' => ':id']) }}".replace(':id', dataId),
+                    url: "{{ route('tagihan.filter') }}",
+                    type: "POST",
                     data: {
-                        "id": dataId
+                        "_token": "{{ csrf_token() }}",
+                        "filter_tahun": $('#filterTahun').val(),
+                        "filter_bulan": $('#filterBulan').val(),
+                        "filter_angkatan": $('#filterAngkatan').val(),
+                        "filter_kelas": $('#filterKelas').val()
                     },
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Invoice Berhasil dikirimkan ke email siswa');
-                        } else {
-                            alert('Gagal mengirimkan invoice. Silakan coba lagi.');
-                        }
-
-                        location.reload();
-
+                    success: function(data) {
+                        $('#dataTables tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('#dataTables tbody').append('<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.keterangan + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
+                                '<td>' + 'Rp. ' + value.biaya.nominal + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' + value.tahun + '</td>' +
+                                '<td>' +
+                                (value.status == 'Belum Lunas' ?
+                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
+                                    (value.status == 'Sedang Diverifikasi' ?
+                                        '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                        '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                    )
+                                ) +
+                                '</td>' +
+                                '<td>' +
+                                '<div class="d-flex gap-1">' +
+                                '<button class="btn btn-block btn-info my-1 btnDetailTagihan" data-id="' +
+                                value.id +
+                                '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
+                                '<a href="/tagihan/' + value.id +
+                                '/edit" class="btn btn-warning my-1">Edit</a>' +
+                                '<form action="/tagihan/' + value.id +
+                                '" method="POST" style="display:inline;">' +
+                                '@csrf' +
+                                '@method('DELETE')' +
+                                '<button type="submit" class="btn btn-danger m-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data tagihan keluar ini?\')">Hapus</button>' +
+                                '</form>' +
+                                (value.status == 'Belum Lunas' ?
+                                    '<button class="btn btn-dark my-1 btnSendInvoice ' +
+                                    (value.isSentKuitansi != '1' ? '' :
+                                        'disabled') + '" data-id="' + value.id +
+                                    '">Kirim Invoice</button>' :
+                                    '<a href="' +
+                                    "{{ route('tagihan.lihatKuitansi', '" + value.id + "') }}" +
+                                    '" class="btn btn-outline-dark mx-1 btnLihatKuitansi ' +
+                                    (value.isSentKuitansi != '1' ? '' :
+                                        'disabled') + '" data-id="' + value.id +
+                                    '">Lihat Kutansi</a>'
+                                ) +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>');
+                        });
                     }
-
                 });
             });
-        </script>
-    @endpush
+        });
+
+
+        $(document).on('click', '.btnDetailTagihan', function(e) {
+            var dataId = $(this).data('id');
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('tagihan.show', ['tagihan' => ':id']) }}".replace(':id', dataId),
+                data: {
+                    "id": dataId
+                },
+                dataType: "json",
+                success: function(response) {
+                    $('#detail-nis').val(response.siswa.nis);
+                    $('#detail-nama-siswa').val(response.siswa.nama);
+                    $('#detail-nominal').val(response.biaya.nominal);
+                    $('#detail-no-invoice').val(response.no_invoice);
+                    $('#detail-keterangan').val(response.keterangan);
+                    $('#detail-tanggal-terbit').val(response.tanggal_terbit);
+                    $('#detail-tanggal-lunas').val(response.tanggal_lunas);
+                    $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
+                        "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
+                    $('#detail-status').val(response.status);
+                    $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
+                        .nama : '-');
+                    $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
+                        .nama : '-');
+                    $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
+                    $('#detail-bulan').val(response.bulan);
+                    $('#detail-tahun').val(response.tahun);
+                }
+            });
+        });
+
+
+        $(document).on('click', '.btnSendInvoice', function(e) {
+            e.preventDefault();
+
+            var dataId = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "{{ route('tagihan.sendInvoice', ['tagihan' => ':id']) }}".replace(':id', dataId),
+                data: {
+                    "id": dataId
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        alert('Invoice Berhasil dikirimkan ke email siswa');
+                    } else {
+                        alert('Gagal mengirimkan invoice. Silakan coba lagi.');
+                    }
+
+                    location.reload();
+
+                }
+
+            });
+        });
+    </script>
+@endpush

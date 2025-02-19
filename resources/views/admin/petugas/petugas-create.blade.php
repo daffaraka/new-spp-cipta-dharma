@@ -35,7 +35,7 @@
         <div class="mb-3">
             <label for="">Email</label>
             <input type="email" name="email" class="form-control" required autocomplete="on"
-                value="{{ old('nip', '') }}">
+                value="{{ old('email', '') }}">
         </div>
 
         <div class="mb-3">

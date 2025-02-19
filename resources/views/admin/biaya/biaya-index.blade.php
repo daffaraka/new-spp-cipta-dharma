@@ -55,7 +55,7 @@
                 </thead>
                 <tbody>
                     @foreach ($biayas as $index => $biaya)
-                        <tr>
+                        <tr>x
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $biaya->nama_biaya }}</td>
                             <td>Rp.{{ number_format($biaya->nominal) }}</td>

@@ -30,14 +30,23 @@
             </select>
         </div>
         <div class="col-2">
+            <label for="filterTanggalAwal">Filter Tanggal Awal</label>
+            <input type="date" id="filterTanggalAwal" name="filter_tanggal_awal" class="form-control">
+        </div>
+        <div class="col-2">
+            <label for="filterTanggalAkhir">Filter Tanggal Akhir</label>
+            <input type="date" id="filterTanggalAkhir" name="filter_tanggal_akhir" class="form-control">
+        </div>
+
+        <div class="col-1">
             <button type="submit" class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
             </button>
 
         </div>
 
-        <div class="col-6">
-            <div class="d-flex justify-content-end my-3">
+        <div class="col-3">
+            <div class="d-flex justify-content-end my-4">
                 <div>
                     <a href="{{ route('laporanSpp.export') }}" class="btn btn-outline-success" id="btnExport">
                         <i class="fas fa-file-excel"></i> Export Excel
@@ -55,6 +64,8 @@
 
             </div>
         </div>
+
+
     </div>
 
     <div class="table-responsive">
@@ -85,8 +96,8 @@
                         <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
                         <td>
                             <div class="d-grid">
-                                <a href="{{ route('laporanSpp.show', ['laporan_spp' => $spp->id]) }}"
-                                    class="btn btn-block btn-info my-1">Detail</a>
+                                <button class="btn btn-block btn-info my-1 btnDetailLaporanSPP" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal" data-id="{{ $spp->id }}">Detail</button>
                             </div>
 
                         </td>
@@ -126,6 +137,55 @@
             </div>
         </div>
     </div>
+
+    <div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="my-modal-title">Detail Biaya</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="detail-no-invoice">No Invoice</label>
+                        <input type="text" id="detail-no-invoice" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nis">NIS</label>
+                        <input type="text" id="detail-nis" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-nama-siswa">Nama Siswa</label>
+                        <input type="text" id="detail-nama-siswa" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-kelas">Kelas</label>
+                        <input type="text" id="detail-kelas" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-bulan">Bulan</label>
+                        <input type="text" id="detail-bulan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-tahun">Tahun</label>
+                        <input type="text" id="detail-tahun" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-total-bayar">Total Bayar</label>
+                        <input type="text" id="detail-total-bayar" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -134,31 +194,60 @@
             $('#btnFilter').click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "{{ route('laporanPetugas.filter') }}",
+                    url: "{{ route('laporanSpp.filter') }}",
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
                         "filter_tahun": $('#filterTahun').val(),
                         "filter_bulan": $('#filterBulan').val(),
+                        "filter_tanggal_awal": $('#filterTanggalAwal').val(),
+                        "filter_tanggal_akhir": $('#filterTanggalAkhir').val(),
                     },
                     success: function(data) {
                         $('#dataTables tbody').empty();
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
-                                '<td>' + value.nama + '</td>' +
-                                '<td>' + value.email + '</td>' +
-                                '<td>' + value.no_telp + '</td>' +
-                                '<td>' + value.roles.map(role => role.name).join(
-                                    ', ') + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
+                                '<td>' + value.siswa.nama + '</td>' +
+                                '<td>' + value.siswa.kelas + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' + value.tahun + '</td>' +
+                                '<td>' + 'Rp. ' + value.total_bayar + '</td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
-                                '<a href="/laporan-petugas/' + value.id +
+                                '<a href="/laporan-spp/' + value.id +
                                 '" class="btn btn-block btn-info my-1">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');
                         });
+                    }
+                });
+            });
+
+
+
+            $('.btnDetailLaporanSPP').click(function(e) {
+                e.preventDefault();
+                var dataId = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('laporanSpp.show', ['laporan_spp' => ':id']) }}".replace(':id',
+                        dataId),
+                    type: "GET",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": dataId,
+                    },
+                    success: function(response) {
+                        $('#detail-no-invoice').val(response.no_invoice);
+                        $('#detail-nis').val(response.siswa.nis);
+                        $('#detail-nama-siswa').val(response.siswa.nama);
+                        $('#detail-kelas').val(response.siswa.kelas);
+                        $('#detail-bulan').val(response.bulan);
+                        $('#detail-tahun').val(response.tahun);
+                        $('#detail-total-bayar').val('Rp. ' + response.total_bayar);
                     }
                 });
             });

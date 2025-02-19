@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan-spp/print', [LaporanSPPController::class, 'print'])->name('laporanSpp.print');
     Route::get('laporan-spp/{laporan_spp}', [LaporanSPPController::class, 'show'])->name('laporanSpp.show');
     Route::post('laporan-spp/import', [LaporanSPPController::class, 'import'])->name('laporanSpp.import');
+    Route::post('filter-laporan-spp', [LaporanSPPController::class, 'filter'])->name('laporanSpp.filter');
 
 
     // Petugas
