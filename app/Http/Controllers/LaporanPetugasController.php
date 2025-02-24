@@ -10,7 +10,7 @@ class LaporanPetugasController extends Controller
     public function index()
     {
         $data['judul'] = 'Laporan Data Petugas';
-        $data['laporan_petugas'] = User::role(['Petugas', 'KepalaSekolah'])->withCount('menerbitkan')->latest()->get();
+        $data['laporan_petugas'] = User::role(['Petugas', 'KepalaSekolah'])->withCount('menerbitkan')->withCount('melunasi')->latest()->get();
 
 
         // dd($data);

@@ -54,7 +54,13 @@
 
 
                         </td>
-                        <td>{{ $petugas->status ?? '-' }}</td>
+                        <td>
+                            @if ($petugas->status == 1)
+                                <span class="badge rounded-pill bg-success">Aktif</span>
+                            @else
+                                <span class="badge rounded-pill bg-danger">Tidak Aktif</span>
+                            @endif
+                        </td>
                         <td>
                             <div class="d-flex gap-1">
                                 <a href="{{ route('petugas.edit', ['petugas' => $petugas->id]) }}"
@@ -94,8 +100,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="detail-nama">Nama</label>
-                        <input type="text" id="detail-nama" class="form-control" readonly>
+                        <label for="detail-nama-lengkap">Nama Lengkap</label>
+                        <input type="text" id="detail-nama-lengkap" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-nip">NIP</label>
@@ -106,18 +112,33 @@
                         <input type="text" id="detail-jabatan" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="detail-username">Username</label>
+                        <input type="text" id="detail-username" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-email">Email</label>
+                        <input type="text" id="detail-email" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="detail-jenis-kelamin">Jenis Kelamin</label>
                         <input type="text" id="detail-jenis-kelamin" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="detail-role">Role</label>
-                        <ul id="detail-role-list">
-
-                        </ul>
+                        <label for="detail-alamat">Alamat</label>
+                        <input type="text" id="detail-alamat" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-telepon">Telepon</label>
+                        <input type="text" id="detail-telepon" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="detail-agama">Agama</label>
+                        <input type="text" id="detail-agama" class="form-control" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="detail-status">Status</label>
-                        <input type="text" id="detail-status" class="form-control" readonly>
+                        <div id="detail-status">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -196,15 +217,17 @@
                 },
                 dataType: "json",
                 success: function(response) {
-                    $('#detail-nama').val(response.nama);
-                    $('#detail-nip').val(response.nip);
-                    $('#detail-jabatan').val(response.jabatan.nama_jabatan);
-                    $('#detail-jenis-kelamin').val(response.jenis_kelamin);
-                    $('#detail-role-list').empty();
-                    response.roles.map(role => {
-                        $('#detail-role-list').append('<li>' + role.name + '</li>')
-                    });
-                    $('#detail-status').val(response.status);
+                    $('#detail-nama-lengkap').val(response.nama);
+                    $('#detail-nama-lengkap').val(response.nama ?? '-');
+                    $('#detail-nip').val(response.nip ?? '-');
+                    $('#detail-jabatan').val(response.roles.map(role => role.name).join(', '));
+                    $('#detail-username').val(response.username ?? '-');
+                    $('#detail-email').val(response.email ?? '-');
+                    $('#detail-jenis-kelamin').val(response.jenis_kelamin ?? '-');
+                    $('#detail-alamat').val(response.alamat ?? '-');
+                    $('#detail-telepon').val(response.telepon ?? '-');
+                    $('#detail-agama').val(response.agama ?? '-');
+                    $('#detail-status').append(response.status == 1 ? '<span class="badge rounded-pill bg-success">Aktif</span>' : '<span class="badge rounded-pill bg-danger">Tidak Aktif</span>');
                 }
             });
         });

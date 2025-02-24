@@ -1,5 +1,5 @@
 <div id="layoutSidenav_nav">
-    <nav class="sb-sidenav accordion sb-sidenav-{{ Auth::user()->roles->first()->name == 'SiswaOrangTua' ? 'light' : 'dark' }}" id="sidenavAccordion">
+    <nav class="sb-sidenav accordion sb-sidenav-{{ Auth::user()->roles->first()->name == 'SiswaOrangTua' ? 'gray' : 'dark' }}" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Dashboard {{ Auth::user()->roles->first()->name == 'SiswaOrangTua' ? 'ORANG TUA' : 'ADMIN' }}</div>
@@ -21,7 +21,7 @@
                     </a>
                 @endrole
 
-                @role(['Petugas', 'Kepala Sekolah'])
+                @role(['Petugas', 'KepalaSekolah'])
                     <div class="sb-sidenav-menu-heading">Data Master</div>
                     <a class="nav-link" href="{{ route('siswa.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>

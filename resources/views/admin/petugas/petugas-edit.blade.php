@@ -35,8 +35,19 @@
         </div>
 
         <div class="mb-3">
+            <label for="">Agama</label>
+            <select name="agama" id="" class="form-control" required>
+                <option value="Islam" {{ $petugas->agama == 'Islam' ? 'selected' : '' }}>Islam</option>
+                <option value="Kristen" {{ $petugas->agama == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                <option value="Katolik" {{ $petugas->agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                <option value="Hindu" {{ $petugas->agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                <option value="Budha" {{ $petugas->agama == 'Budha' ? 'selected' : '' }}>Budha</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="">Password</label>
-            <input type="password" name="password" class="form-control">
+            <input type="password" name="password" class="form-control" value="{{$petugas->password}}">
         </div>
 
         <div class="mb-3">

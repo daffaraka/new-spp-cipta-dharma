@@ -91,12 +91,14 @@ class SiswaController extends Controller
     }
     public function update(Request $request, User $siswa)
     {
+
+        // dd($siswa);
         $this->validate($request, [
-            'username' => $request->username,
+            'username' => 'required|unique:users,username,' . $siswa->id . ',id',
             'nama' => 'required',
-            'nis' => 'required',
-            'nisn' => 'required',
-            'email' => 'required',
+            'nis' => 'required|unique:users,nis,' . $siswa->id,
+            'nisn' => 'required|unique:users,nisn,' . $siswa->id,
+            'email' => 'required|unique:users,email,' . $siswa->id,
             'password' => 'required',
             'nama_wali' => 'required',
             'alamat' => 'required',
@@ -105,7 +107,7 @@ class SiswaController extends Controller
             'kelas' => 'required',
             'agama' => 'required',
             'jenis_kelamin' => 'required',
-            'tanggal_lahir' => $request->tanggal_lahir,
+            'tanggal_lahir' => 'required',
 
         ]);
 
@@ -161,7 +163,7 @@ class SiswaController extends Controller
     public function export()
     {
         $tgl = date('d-m-Y_H-i-s');
-        return Excel::download(new SiswaExport, 'siswa_'.$tgl.'.xlsx');
+        return Excel::download(new SiswaExport, 'siswa_' . $tgl . '.xlsx');
     }
 
 
@@ -169,7 +171,7 @@ class SiswaController extends Controller
     {
         Excel::import(new SiswaImport, request()->file('file'));
 
-    return redirect()->back()->with('success', 'Data siswa baru telah ditambahkan');
+        return redirect()->back()->with('success', 'Data siswa baru telah ditambahkan');
     }
 
 
@@ -179,6 +181,6 @@ class SiswaController extends Controller
         $pdf = PDF::loadview('admin.pdf.siswa-pdf', compact('siswas'))
             ->setPaper('a4', 'landscape');
         $tgl = date('d-m-Y_H-i`-s');
-        return $pdf->stream('siswa'.$tgl.'.pdf');
+        return $pdf->stream('siswa' . $tgl . '.pdf');
     }
 }

@@ -65,7 +65,7 @@ class PetugasController extends Controller
     public function show(User $petugas)
     {
 
-        $petugas->roles();
+        $petugas->load('roles');
 
 
         return response()->json($petugas);

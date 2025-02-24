@@ -63,8 +63,8 @@
 
 
                         </td>
-                        <td>{{ $petugas->menerbitkan_count }}</td>
-                        <td>{{ $petugas->dilunasi_count ?? '-' }}</td>
+                        <td><b>{{ $petugas->menerbitkan_count }}</b></td>
+                        <td><b>{{ $petugas->melunasi_count ?? '-' }}</b></td>
                         <td>
                             <div class="d-grid">
                                 <a href="{{ route('laporanPetugas.show', ['petugas' => $petugas->id]) }}"
@@ -100,19 +100,15 @@
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.nama + '</td>' +
+                                '<td>' + (value.nip ? value.nip : '-') + '</td>' +
                                 '<td>' +
                                 '<ul>' +
                                 value.roles.map(role => '<li>' + role.name +
                                     '</li>').join('') +
                                 '</ul>' +
                                 '</td>' +
-                                '<td>' + value.email + '</td>' +
-                                '<td>' + (value.no_telp ? value.no_telp : '-') +
-                                '</td>' +
-                                '<td>' + (value.nip ? value.nip : '-') + '</td>' +
-                                '<td>' + value.menerbitkan_count + '</td>' +
-                                '<td>' + (value.no_telp ? value.no_telp : '-') +
-                                '</td>' +
+                                '<td><b>' + value.menerbitkan_count + '</b></td>' +
+                                '<td><b>' + (value.melunasi_count ? value.melunasi_count : '-') + '</b></td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
                                 '<a href="/laporan-petugas/' + value.id +

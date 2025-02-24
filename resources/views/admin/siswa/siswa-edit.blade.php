@@ -9,6 +9,13 @@
             <input type="text" name="nama" class="form-control" value="{{ $siswa->nama }}" required>
         </div>
 
+
+        <div class="mb-3">
+            <label for="">Username</label>
+            <input type="text" name="username" class="form-control" value="{{ $siswa->username }}" required>
+        </div>
+
+
         <div class="mb-3">
             <label for="">Kelas</label>
             <select name="kelas" id="" class="form-control" required>
@@ -109,10 +116,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="">ID Telegram</label>
-            <input type="text" name="id_telegram" class="form-control" value="{{ $siswa->id_telegram }}" required>
+            <label for="">Tanggal Lahir</label>
+            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $siswa->nama_wali }}" required>
         </div>
-
 
 
         <button type="submit" class="btn btn-primary">Submit</button>

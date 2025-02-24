@@ -230,11 +230,15 @@
                                 '<td>' + value.siswa.kelas + '</td>' +
                                 '<td>' + (value.status == 'Belum Lunas' ?
                                     '<button class="btn btn-danger">Belum Lunas</button>' :
-                                    '<button class="btn btn-success">Lunas</button>'
+                                    (value.status == 'Sedang Diverifikasi' ?
+                                        '<button class="btn btn-warning">Sedang Diverifikasi</button>' :
+                                        '<button class="btn btn-success">Lunas</button>'
+                                    )
                                 ) + '</td>' +
                                 '<td> <div class="d-grid">' +
-                                '<a href="/laporan-siswa/' + value.id +
-                                '" class="btn btn-block btn-info my-1">Detail</a>' +
+                                '<button class="btn btn-block btn-info my-1 btnDetailLaporanSiswa" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' +
+                                value.id +
+                                '">Detail</button>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

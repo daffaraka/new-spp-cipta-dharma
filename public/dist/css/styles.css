@@ -11538,6 +11538,39 @@ body {
   background-color: #e9ecef;
 }
 
+
+/*************  ✨ Codeium Command ⭐  *************/
+.sb-sidenav-gray {
+  background-color: #6c757d;
+  color: rgba(255, 255, 255, 0.5);
+}
+.sb-sidenav-gray .sb-sidenav-menu .sb-sidenav-menu-heading {
+  color: rgba(255, 255, 255, 0.25);
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link {
+  color: rgba(255, 255, 255, 0.5);
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+  color: rgba(255, 255, 255, 0.25);
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
+  color: rgba(255, 255, 255, 0.25);
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link:hover {
+  color: #fff;
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link.active {
+  color: #fff;
+}
+.sb-sidenav-gray .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+  color: #fff;
+}
+.sb-sidenav-gray .sb-sidenav-footer {
+  background-color: #5a6268;
+}
+
+/******  05c01ac1-273c-4d9a-ad20-6dd793b9cd5f  *******/
+
 .dataTable-wrapper .dataTable-container {
   font-size: 0.875rem;
 }

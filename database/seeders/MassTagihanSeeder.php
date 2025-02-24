@@ -24,7 +24,7 @@ class MassTagihanSeeder extends Seeder
         $buktiLunas = [null, 'Ada'];
         $namaInvoice = ['Tagihan','Pembayaran','SPP','Bimbingan'];
         $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
-
+        $userInternal = [1,2];
         for ($i = 1; $i <= 30; $i++) {
             // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
@@ -37,7 +37,8 @@ class MassTagihanSeeder extends Seeder
                 'tahun' => $tahun[array_rand($tahun)],
                 'tanggal_terbit' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2025-01-01'), strtotime('2025-12-31'))),
                 'tanggal_lunas' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2025-01-01'), strtotime('2025-12-31'))),
-                'user_penerbit_id' => 1,
+                'user_penerbit_id' =>$userInternal[array_rand($userInternal)],
+                'user_melunasi_id' => $userInternal[array_rand($userInternal)],
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],
                 'created_at' => \Carbon\Carbon::now(),
                 'status' => $status[array_rand($status)],

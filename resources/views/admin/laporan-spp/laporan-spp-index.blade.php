@@ -217,8 +217,9 @@
                                 '<td>' + 'Rp. ' + value.total_bayar + '</td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
-                                '<a href="/laporan-spp/' + value.id +
-                                '" class="btn btn-block btn-info my-1">Detail</a>' +
+                                '<button class="btn btn-block btn-info my-1 btnDetailLaporanSPP" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' +
+                                value.id +
+                                '">Detail</button>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');
@@ -229,27 +230,30 @@
 
 
 
-            $('.btnDetailLaporanSPP').click(function(e) {
-                e.preventDefault();
-                var dataId = $(this).data('id');
-                $.ajax({
-                    url: "{{ route('laporanSpp.show', ['laporan_spp' => ':id']) }}".replace(':id',
-                        dataId),
-                    type: "GET",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "id": dataId,
-                    },
-                    success: function(response) {
-                        $('#detail-no-invoice').val(response.no_invoice);
-                        $('#detail-nis').val(response.siswa.nis);
-                        $('#detail-nama-siswa').val(response.siswa.nama);
-                        $('#detail-kelas').val(response.siswa.kelas);
-                        $('#detail-bulan').val(response.bulan);
-                        $('#detail-tahun').val(response.tahun);
-                        $('#detail-total-bayar').val('Rp. ' + response.total_bayar);
-                    }
-                });
+        });
+
+        $(document).on('click', '.btnDetailLaporanSPP', function(e) {
+
+
+            e.preventDefault();
+            var dataId = $(this).data('id');
+            $.ajax({
+                url: "{{ route('laporanSpp.show', ['laporan_spp' => ':id']) }}".replace(':id',
+                    dataId),
+                type: "GET",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": dataId,
+                },
+                success: function(response) {
+                    $('#detail-no-invoice').val(response.no_invoice);
+                    $('#detail-nis').val(response.siswa.nis);
+                    $('#detail-nama-siswa').val(response.siswa.nama);
+                    $('#detail-kelas').val(response.siswa.kelas);
+                    $('#detail-bulan').val(response.bulan);
+                    $('#detail-tahun').val(response.tahun);
+                    $('#detail-total-bayar').val('Rp. ' + response.total_bayar);
+                }
             });
         });
     </script>
