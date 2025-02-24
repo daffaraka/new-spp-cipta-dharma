@@ -51,9 +51,11 @@ class PembayaranController extends Controller
         $pembayaran = Tagihan::find($id);
         $pembayaran->status = 'Lunas';
         $pembayaran->user_melunasi_id = auth()->user()->id;
-        $pembayaran->isSentKuitansi = 1;
+        $pembayaran->isSentKuitansi = '1';
         $pembayaran->tanggal_lunas = Carbon::now();
         $pembayaran->save();
+
+        // dd($pembayaran);
 
         return to_route('pembayaran.index')->with('success', 'pembayaran telah diverifikasi');
     }

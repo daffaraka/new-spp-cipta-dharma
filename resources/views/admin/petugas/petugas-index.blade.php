@@ -138,6 +138,7 @@
                     <div class="form-group mb-3">
                         <label for="detail-status">Status</label>
                         <div id="detail-status">
+
                         </div>
                     </div>
                 </div>
@@ -190,8 +191,9 @@
                             '<input type="hidden" name="_method" value="DELETE">' +
                             '<button type="submit" class="btn btn-block btn-danger my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus petugas ini?\')">Hapus</button>' +
                             '</form>' +
-                            '<a href="/petugas/' + value.id +
-                            '" class="btn btn-block btn-info my-1">Detail</a>' +
+                            '<button class="btn btn-block btn-info my-1 btnDetailPetugas" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' +
+                            value.id +
+                            '">Detail</button>' +
                             '</div>' +
                             '</td>' +
                             '</tr>');
@@ -227,7 +229,9 @@
                     $('#detail-alamat').val(response.alamat ?? '-');
                     $('#detail-telepon').val(response.telepon ?? '-');
                     $('#detail-agama').val(response.agama ?? '-');
-                    $('#detail-status').append(response.status == 1 ? '<span class="badge rounded-pill bg-success">Aktif</span>' : '<span class="badge rounded-pill bg-danger">Tidak Aktif</span>');
+                    $('#detail-status').html(response.status == 1 ?
+                        '<span class="badge rounded-pill bg-success">Aktif</span>' :
+                        '<span class="badge rounded-pill bg-danger">Tidak Aktif</span>');
                 }
             });
         });

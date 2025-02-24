@@ -52,25 +52,20 @@
                         @endif
                     </td>
                     <td>
-                        <div class="d-flex gap-1">
+                        {{-- <div class="d-flex1"> --}}
 
-                            {{-- @if ($pembayaran->status == 'Lunas' && $pembayaran->isSentKuitansi == 1)
-                                <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
-                                    class="btn btn-sm btn-secondary">Kuitansi</a>
-                            @else
-                                <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
-                            @endif --}}
-
+                            @if ($pembayaran->isSentKuitansi == '1')
+                                <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
+                            @endif
 
                             @if ($pembayaran->status == 'Belum Lunas')
-                                <div class="d-flex">
                                     <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
-                                        class="btn btn-success me-3">Bayar</a>
-                                </div>
+                                        class="btn btn-sm btn-success me-3">Bayar</a>
                             @endif
 
 
-                        </div>
+                        {{-- </div> --}}
 
 
                     </td>
@@ -104,9 +99,13 @@
                                 '<td>' + value.biaya.nama_nominal + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
                                 '<td>' + value.bulan + '</td>' +
-                                '<td>' + (value.status == 'Belum Lunas' ?
+                                '<td>' +
+                                (value.status == 'Belum Lunas' ?
                                     '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                    '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                    (value.status == 'Sedang Diverifikasi' ?
+                                        '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                        '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                    )
                                 ) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
@@ -114,7 +113,7 @@
                                     1 ?
                                     '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' :
                                     '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
-                                )
+                                ) +
                                 '</div>' +
                                 '</tr>');
                         });

@@ -57,10 +57,10 @@ class UserSeeder extends Seeder
 
 
         $jk = ['Laki-laki', 'Perempuan'];
-        for ($i = 1; $i < 30; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             $user = User::create(
                 [
-                    'nama' => 'User ' . $i,
+                    'nama' => $faker->unique()->name('female'|'male'),
                     'email' => 'user' . $i . '@gmail.com',
                     'username' => 'username' . $i,
                     'agama' => $agama[array_rand($agama)],

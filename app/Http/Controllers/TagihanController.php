@@ -236,7 +236,7 @@ class TagihanController extends Controller
                             $query->where('angkatan', $request->filter_angkatan);
                         });
                     })
-                    ->when(!empty($request->filter_kelas) , function ($query) use ($request) {
+                    ->when(!empty($request->filter_kelas), function ($query) use ($request) {
                         return $query->whereHas('siswa', function ($query) use ($request) {
                             $query->where('kelas', $request->filter_kelas);
                         });
@@ -267,11 +267,14 @@ class TagihanController extends Controller
         $options->setDpi(150);
         $dompdf = new Dompdf($options);
 
-        $dataTagihan = $tagihan;
+        $dataTagihan = $tagihan->load(['siswa', 'biaya', 'penerbit', 'melunasi']);
+        $imageData = base64_encode(file_get_contents(public_path('logo_sekolah.png')));
+        $imageSrc = 'data:image/png;base64,' . $imageData;
 
 
         $html = view('invoice_template', [
             'tagihan' => $dataTagihan,
+            'imageSrc' => $imageSrc,
             'bootstrap' => public_path('css/bootstrap.min.css')
         ])->render();
 

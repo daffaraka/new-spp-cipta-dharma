@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Routing\Controllers\Middleware;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -39,7 +41,9 @@ $app->singleton(
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
-);
+)
+;
+
 
 /*
 |--------------------------------------------------------------------------

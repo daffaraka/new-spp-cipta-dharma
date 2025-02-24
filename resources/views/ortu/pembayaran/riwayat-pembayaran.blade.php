@@ -51,7 +51,7 @@
             @foreach ($riwayats as $index => $riwayat)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $riwayat->created_at }}</td>
+                    <td>{{ $riwayat->tanggal_terbit }}</td>
                     <td>{{ $riwayat->siswa->angkatan }}</td>
                     <td>{{ $riwayat->siswa->kelas }}</td>
                     <td>{{ $riwayat->siswa->nama }}</td>
@@ -66,9 +66,9 @@
                                 <button type="button" class="btn btn-sm btn-success">Lunas</button>
                             @endif
 
-                            @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == 1)
+                            @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
                                 <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
-                                    class="btn btn-sm btn-secondary">Kuitansi</a>
+                                    class="btn btn-sm btn-primary">Kuitansi</a>
                             @else
                                 <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
                             @endif
@@ -97,7 +97,7 @@
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
-                                '<td>' + value.created_at + '</td>' +
+                                '<td>' + value.tanggal_terbit + '</td>' +
                                 '<td>' + value.siswa.angkatan + '</td>' +
                                 '<td>' + value.siswa.kelas + '</td>' +
                                 '<td>' + value.siswa.nama + '</td>' +
@@ -105,10 +105,11 @@
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
                                 (value.status == 'Belum Lunas' ?
-                                    '<a href="{{ route("pembayaran.verifikasi", ' + value.id + ') }}" class="btn btn-sm btn-danger">Belum Lunas</a>' :
+                                    '<a href="{{ route('pembayaran.verifikasi', ' + value.id + ') }}" class="btn btn-sm btn-danger">Belum Lunas</a>' :
                                     '<span class="btn btn-sm btn-success">Lunas</span>'
                                 ) +
-                                (value.status == 'Lunas' && value.isSentKuitansi == 1 ?
+                                (value.status == 'Lunas' && value.isSentKuitansi ==
+                                    1 ?
                                     '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' :
                                     '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
                                 ) +

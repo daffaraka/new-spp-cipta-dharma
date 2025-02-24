@@ -17,7 +17,8 @@ class MassTagihanSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
+        // $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
+        $user = [3];
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         $biaya = Biaya::pluck('id')->toArray();
@@ -25,7 +26,7 @@ class MassTagihanSeeder extends Seeder
         $namaInvoice = ['Tagihan','Pembayaran','SPP','Bimbingan'];
         $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
         $userInternal = [1,2];
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $tagihan = Tagihan::insert([
@@ -35,8 +36,8 @@ class MassTagihanSeeder extends Seeder
                 'biaya_id' => $biaya[array_rand($biaya)],
                 'bulan' => $bulan[array_rand($bulan)],
                 'tahun' => $tahun[array_rand($tahun)],
-                'tanggal_terbit' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2025-01-01'), strtotime('2025-12-31'))),
-                'tanggal_lunas' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2025-01-01'), strtotime('2025-12-31'))),
+                'tanggal_terbit' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2015-01-01'), strtotime('2025-12-31'))),
+                'tanggal_lunas' => \Carbon\Carbon::createFromTimestamp(rand(strtotime('2015-01-01'), strtotime('2025-12-31'))),
                 'user_penerbit_id' =>$userInternal[array_rand($userInternal)],
                 'user_melunasi_id' => $userInternal[array_rand($userInternal)],
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],

@@ -77,7 +77,8 @@ class DashboardController extends Controller
             $data['tagihanBelumLunas'] = Tagihan::whereStatus('Belum Lunas')->where('user_id', $auth_id)->get();
 
 
-            $data['tagihan_Lunas'] = Tagihan::whereStatus('Lunas')->where('user_id', $auth_id)->take(5)->get();
+            // dd($data);
+            $data['tagihan_Lunas'] = Tagihan::whereStatus('Lunas')->where('user_id', $auth_id)->get();
 
             // User::with('tagihans')->whereHas('tagihans', function ($tagihan) {
             //     $tagihan->whereStatus('Lunas');

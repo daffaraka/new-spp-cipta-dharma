@@ -11539,9 +11539,8 @@ body {
 }
 
 
-/*************  ✨ Codeium Command ⭐  *************/
 .sb-sidenav-gray {
-  background-color: #6c757d;
+  background-color: #343a40;
   color: rgba(255, 255, 255, 0.5);
 }
 .sb-sidenav-gray .sb-sidenav-menu .sb-sidenav-menu-heading {
@@ -11566,10 +11565,9 @@ body {
   color: #fff;
 }
 .sb-sidenav-gray .sb-sidenav-footer {
-  background-color: #5a6268;
+  background-color: #2f3237;
 }
 
-/******  05c01ac1-273c-4d9a-ad20-6dd793b9cd5f  *******/
 
 .dataTable-wrapper .dataTable-container {
   font-size: 0.875rem;
