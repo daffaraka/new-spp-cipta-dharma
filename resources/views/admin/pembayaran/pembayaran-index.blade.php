@@ -109,6 +109,7 @@
 
                     </tr>
                 @endforeach
+
             </tbody>
         </table>
     </div>
@@ -142,25 +143,23 @@
                                 '<td>' + value.bulan + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
                                 '<td>' +
-                                    (value.status == 'Belum Lunas' ?
-                                        '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
-                                        (value.status == 'Sedang Diverifikasi' ?
-                                            '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
-                                            '<span class="badge rounded-pill bg-success">Lunas</span>'
-                                        )
-                                    ) +
-                                    '</td>' +
+                                (value.status == 'Belum Lunas' ?
+                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
+                                    (value.status == 'Sedang Diverifikasi' ?
+                                        '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                        '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                    )
+                                ) +
+                                '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
-                                (value.isSentKuitansi == 1 ?
-                                    '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' :
-                                    ''
-                                ) +
-                                (value.bukti_pelunasan != null && value.status == 'Sedang Diverifikasi' ?
-                                    '<a href="/pembayaran/verifikasi/' + value.id + '" class="btn btn-sm btn-info">Verifikasi</a>' :
-                                    ''
-                                ) +
-                                '<a href="/pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
+                                @if ($value->isSentKuitansi == '1')
+                                    '<a href="{{ route('tagihan.lihatKuitansi', $value->id) }}" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' +
+                                @endif
+                                @if ($value->bukti_pelunasan != null && $value->status == 'Sedang Diverifikasi')
+                                    '<a href="{{ route('pembayaran.verifikasi', $value->id) }}" class="btn btn-sm btn-info">Verifikasi</a>' +
+                                @endif
+                                '<a href="{{ route('pembayaran.show', $value->id) }}" class="btn btn-sm btn-warning">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');

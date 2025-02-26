@@ -24,8 +24,9 @@
                 <th>No</th>
                 <th>No Invoice</th>
                 <th>Nama Siswa</th>
+                <th>NIS</th>
                 <th>Nominal</th>
-                <th>Nama Nominal</th>
+                <th>Keterangan</th>
                 <th>Tahun</th>
                 <th>Bulan</th>
                 <th>Status</th>
@@ -38,6 +39,8 @@
                     <td>{{ $index + 1 }}</td>
                     <td> {{ $pembayaran->no_invoice }}</td>
                     <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
+                    <td>{{ $pembayaran->siswa->nis }} </td>
+
                     <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
                     <td>{{ $pembayaran->biaya->nama_nominal }}</td>
                     <td>{{ $pembayaran->tahun }}</td>
@@ -52,7 +55,10 @@
                         @endif
                     </td>
                     <td>
-                        {{-- <div class="d-flex1"> --}}
+                        <div class="d-flex gap-1">
+
+                            <a href="{{ route('pembayaran.show', $pembayaran->id) }}"
+                                class="btn btn-sm btn-warning">Detail</a>
 
                             @if ($pembayaran->isSentKuitansi == '1')
                                 <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
@@ -60,12 +66,12 @@
                             @endif
 
                             @if ($pembayaran->status == 'Belum Lunas')
-                                    <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
-                                        class="btn btn-sm btn-success me-3">Bayar</a>
+                                <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-success me-3">Bayar</a>
                             @endif
 
 
-                        {{-- </div> --}}
+                        </div>
 
 
                     </td>
@@ -89,11 +95,30 @@
                     success: function(data) {
                         $('#dataTables tbody').empty();
                         $.each(data, function(index, value) {
+                            var actionButtons = '';
+
+                            // Perlu menggunakan kondisi JavaScript, bukan sintaks Blade
+                            if (value.isSentKuitansi == '1') {
+                                actionButtons += '<a href="' +
+                                    "{{ route('tagihan.lihatKuitansi', '') }}/" + value
+                                    .id +
+                                    '" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>';
+                            }
+
+                            if (value.status == 'Belum Lunas') {
+                                actionButtons += '<a href="' +
+                                    "{{ route('pelunasan.tagihan', '') }}/" + value
+                                    .id +
+                                    '" class="btn btn-sm btn-success me-3">Bayar</a>';
+                            }
+
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + value.no_invoice + '</td>' +
                                 '<td>' + value.siswa.nama + '-' + value.siswa
                                 .kelas + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
+
                                 '<td> Rp. ' + value.biaya.nominal.toLocaleString(
                                     'id-ID') + '</td>' +
                                 '<td>' + value.biaya.nama_nominal + '</td>' +
@@ -109,12 +134,9 @@
                                 ) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
-                                (value.status == 'Lunas' && value.isSentKuitansi ==
-                                    1 ?
-                                    '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' :
-                                    '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
-                                ) +
-                                '</div>' +
+                                '<a href="pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
+                                actionButtons +
+                                '</div> </td>' +
                                 '</tr>');
                         });
                     }
