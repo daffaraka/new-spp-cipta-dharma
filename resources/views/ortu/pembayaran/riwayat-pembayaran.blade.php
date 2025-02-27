@@ -35,49 +35,62 @@
 
         </div>
     </div>
-    <table class="table table-light" id="dataTables">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Angkatan</th>
-                <th>Kelas</th>
-                <th>Nama Siswa</th>
-                <th>Nominal</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($riwayats as $index => $riwayat)
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTables">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $riwayat->tanggal_terbit }}</td>
-                    <td>{{ $riwayat->siswa->angkatan }}</td>
-                    <td>{{ $riwayat->siswa->kelas }}</td>
-                    <td>{{ $riwayat->siswa->nama }}</td>
-                    <td>{{ 'Rp. ' . number_format($riwayat->biaya->nominal, 0, ',', '.') }}</td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            @if ($riwayat->status == 'Belum Lunas')
-                                <button type="button" class="btn btn-sm btn-danger">Belum Lunas</button>
-                            @elseif ($riwayat->status == 'Sedang Diverifikasi')
-                                <button type="button" class="btn btn-sm btn-warning">Sedang Diverifikasi</button>
-                            @else
-                                <button type="button" class="btn btn-sm btn-success">Lunas</button>
-                            @endif
-
-                            @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
-                                <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
-                                    class="btn btn-sm btn-primary">Kuitansi</a>
-                            @else
-                                <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
-                            @endif
-                        </div>
-                    </td>
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>Tanggal</th>
+                    <th>Nama Siswa</th>
+                    <th>NIS</th>
+                    <th>Angkatan</th>
+                    <th>Kelas</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($riwayats as $index => $riwayat)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $riwayat->no_invoice }}</td>
+                        <td>{{ $riwayat->tanggal_terbit }}</td>
+                        <td>{{ $riwayat->siswa->nama }}</td>
+                        <td>{{ $riwayat->siswa->nis }}</td>
+                        <td>{{ $riwayat->siswa->angkatan }}</td>
+                        <td>{{ $riwayat->siswa->kelas }}</td>
+                        <td>{{ 'Rp. ' . number_format($riwayat->biaya->nominal, 0, ',', '.') }}</td>
+
+                        <td>
+                            <div class="d-flex gap-1">
+                                @if ($riwayat->status == 'Belum Lunas')
+                                    <button type="button" class="btn btn-sm btn-danger">Belum Lunas</button>
+                                @elseif ($riwayat->status == 'Sedang Diverifikasi')
+                                    <button type="button" class="btn btn-sm btn-warning">Sedang Diverifikasi</button>
+                                @else
+                                    <button type="button" class="btn btn-sm btn-success">Lunas</button>
+                                @endif
+
+                                @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
+                                    <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
+                                        class="btn btn-sm btn-primary">Kuitansi</a>
+                                @else
+                                    <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
+                                @endif
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{{ route('ortu.show.riwayatPembayaran', $riwayat->id) }}" class="btn btn-sm btn-info">Detail</a>
+
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 @endsection
 @push('scripts')
     <script>
@@ -97,10 +110,12 @@
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
                                 '<td>' + value.tanggal_terbit + '</td>' +
+                                '<td>' + value.siswa.nama + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
                                 '<td>' + value.siswa.angkatan + '</td>' +
                                 '<td>' + value.siswa.kelas + '</td>' +
-                                '<td>' + value.siswa.nama + '</td>' +
                                 '<td> Rp. ' + value.biaya.nominal.toLocaleString('id-ID') + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
@@ -114,6 +129,9 @@
                                     '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
                                 ) +
                                 '</div>' +
+                                '</td>' +
+                                '<td>' +
+                                '<a href="ortu/riwayat-pembayaran/' + value.id + '" class="btn btn-sm btn-info">Detail</a>' +
                                 '</td>' +
                                 '</tr>');
                         });

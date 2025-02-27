@@ -20,6 +20,15 @@ class OrangTuaController extends Controller
     }
 
 
+    public function show(Tagihan $pembayaran)
+    {
+        $data['judul'] = 'Detil Data Pembayaran';
+
+
+        $data['pembayaran'] = $pembayaran->load('siswa', 'biaya', 'penerbit', 'melunasi');
+        return view('ortu.pembayaran.detail-pembayaran', $data);
+    }
+
 
     public function riwayatPembayaran()
     {
@@ -48,6 +57,16 @@ class OrangTuaController extends Controller
                     ->get()
             );
         }
+    }
+
+    public function showRiwayatPembayaran(Tagihan $pembayaran)
+    {
+        $data['judul'] = 'Detail Riwayat Pembayaran';
+        $data['pembayaran'] =  $pembayaran->load('siswa', 'biaya', 'penerbit', 'melunasi');
+
+
+        // dd($data['pembayarans']);
+        return view('ortu.pembayaran.detail-riwayat-pembayaran', $data);
     }
 
 

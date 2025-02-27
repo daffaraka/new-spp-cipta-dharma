@@ -121,7 +121,10 @@ Route::middleware('auth')->group(function () {
     Route::post('lunasi/{id}', [PelunasanController::class, 'lunasi'])->name('pelunasan.lunasi');
     Route::get('detail-pelunasan/{id}', [PelunasanController::class, 'detailTagihan'])->name('pelunasan.detailTagihan');
     Route::get('ortu/pembayaran', [OrangTuaController::class, 'pembayaran'])->name('ortu.pembayaran');
+    Route::get('ortu/pembayaran/{pembayaran}', [OrangTuaController::class, 'show'])->name('ortu.pembayaran.show');
     Route::get('ortu/riwayat-pembayaran', [OrangTuaController::class, 'riwayatPembayaran'])->name('ortu.riwayatPembayaran');
+    Route::get('ortu/riwayat-pembayaran/{pembayaran}', [OrangTuaController::class, 'showRiwayatPembayaran'])->name('ortu.show.riwayatPembayaran');
+
     Route::view('print', 'admin.tagihan.tagihan-invoice-print');
     Route::post('filter-riwayat-pembayaran', [OrangTuaController::class, 'filterRiwayatPembayaran'])->name('ortu.filterRiwayatPembayaran');
     Route::post('filter-status-pembayaran', [OrangTuaController::class, 'filterStatusPembayaran'])->name('ortu.filterStatusPembayaran');

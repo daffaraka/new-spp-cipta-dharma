@@ -57,7 +57,7 @@
                     <td>
                         <div class="d-flex gap-1">
 
-                            <a href="{{ route('pembayaran.show', $pembayaran->id) }}"
+                            <a href="{{ route('ortu.pembayaran.show', $pembayaran->id) }}"
                                 class="btn btn-sm btn-warning">Detail</a>
 
                             @if ($pembayaran->isSentKuitansi == '1')
@@ -134,7 +134,7 @@
                                 ) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
-                                '<a href="pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
+                                '<a href="ortu/pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
                                 actionButtons +
                                 '</div> </td>' +
                                 '</tr>');

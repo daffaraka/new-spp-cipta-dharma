@@ -17,15 +17,11 @@ class DashboardController extends Controller
 
         if (Auth::user()->hasRole(['KepalaSekolah', 'Petugas'])) {
 
-            // if($request->ajax()){
-
-            // } else {
-
-            // }
             $data['total_siswa'] = User::role('SiswaOrangTua')->count();
             $data['total_petugas'] = User::role(['KepalaSekolah', 'Petugas'])->count();
             $data['total_laki'] = User::where('jenis_kelamin', 'Laki-laki')->count();
             $data['total_perempuan'] = User::where('jenis_kelamin', 'Perempuan')->count();
+
 
 
             $data['data_perJenisKelamin'] = User::select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
