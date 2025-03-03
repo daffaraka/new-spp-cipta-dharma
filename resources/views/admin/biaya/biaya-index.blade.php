@@ -49,7 +49,7 @@
                         <th>Nama Nominal</th>
                         <th>Tahun </th>
                         <th>Bulan</th>
-                        <th>Level</th>
+                        <th>Kelas</th>
                         <th>Aksi</th> <!-- Kolom untuk aksi -->
                     </tr>
                 </thead>
@@ -117,8 +117,8 @@
                             <input type="text" id="detail-bulan" class="form-control" readonly>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="detail-level">Level</label>
-                            <input type="text" id="detail-level" class="form-control" readonly>
+                            <label for="detail-kelas">Kelas</label>
+                            <input type="text" id="detail-kelas" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -194,7 +194,7 @@
                             $('#detail-nama-nominal').val(response.nama_nominal);
                             $('#detail-tahun').val(response.tahun);
                             $('#detail-bulan').val(response.bulan);
-                            $('#detail-level').val(response.level);
+                            $('#detail-kelas').val(response.level);
                         }
                     });
                 });

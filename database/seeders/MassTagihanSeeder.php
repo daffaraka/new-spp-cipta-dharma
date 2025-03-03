@@ -26,7 +26,8 @@ class MassTagihanSeeder extends Seeder
         $namaInvoice = ['Tagihan','Pembayaran','SPP','Bimbingan'];
         $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
         $userInternal = [1,2];
-        for ($i = 1; $i <= 10; $i++) {
+        $statusKuitansi = ['0','1'];
+        for ($i = 1; $i <= 20; $i++) {
             // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $tagihan = Tagihan::insert([
@@ -43,6 +44,7 @@ class MassTagihanSeeder extends Seeder
                 'bukti_pelunasan' => $buktiLunas[array_rand($buktiLunas)],
                 'created_at' => \Carbon\Carbon::now(),
                 'status' => $status[array_rand($status)],
+                'isSentKuitansi' => $statusKuitansi[array_rand($statusKuitansi)],
             ]);
 
         }

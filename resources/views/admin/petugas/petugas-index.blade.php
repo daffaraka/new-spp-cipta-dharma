@@ -32,7 +32,7 @@
                     <th>NIP</th>
                     <th>Jabatan</th>
                     <th>Jenis Kelamin</th>
-                    <th>Role</th>
+
                     <th>Status</th>
                     <th>Aksi</th> <!-- Kolom untuk aksi -->
                 </tr>
@@ -43,8 +43,6 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $petugas->nama ?? '-' }}</td>
                         <td>{{ $petugas->nip ?? '-' }}</td>
-                        <td>{{ $petugas->jabatan->nama_jabatan ?? '-' }}</td>
-                        <td>{{ $petugas->jenis_kelamin ?? '-' }}</td>
                         <td>
                             <ul>
                                 @foreach ($petugas->roles as $role)
@@ -54,6 +52,8 @@
 
 
                         </td>
+                        <td>{{ $petugas->jenis_kelamin ?? '-' }}</td>
+
                         <td>
                             @if ($petugas->status == 1)
                                 <span class="badge rounded-pill bg-success">Aktif</span>
@@ -171,16 +171,18 @@
                             '<td>' + (index + 1) + '</td>' +
                             '<td>' + (value.nama ? value.nama : '-') + '</td>' +
                             '<td>' + (value.nip ? value.nip : '-') + '</td>' +
-                            '<td>' + (value.jabatan && value.jabatan.nama_jabatan ? value
-                                .jabatan.nama_jabatan : '-') + '</td>' +
-                            '<td>' + (value.jenis_kelamin ? value.jenis_kelamin : '-') +
-                            '</td>' +
                             '<td>' +
                             '<ul>' +
                             value.roles.map(role => '<li>' + role.name + '</li>').join('') +
                             '</ul>' +
                             '</td>' +
-                            '<td>' + (value.status ? value.status : '-') + '</td>' +
+                            '<td>' + (value.jenis_kelamin ? value.jenis_kelamin : '-') +
+                            '</td>' +
+
+                            '<td>' + (value.status == 1 ?
+                                '<span class="badge rounded-pill bg-success">Aktif</span>' :
+                                '<span class="badge rounded-pill bg-danger">Tidak Aktif</span>') +
+                            '</td>' +
                             '<td>' +
                             '<div class="d-flex gap-1">' +
                             '<a href="/petugas/' + value.id +

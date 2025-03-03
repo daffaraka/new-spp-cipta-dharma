@@ -22,9 +22,11 @@ class PelunasanController extends Controller
     public function lunasi(Request $request, $id)
     {
 
+
+        // dd($request->all());
         $user = Tagihan::with('siswa')->find($id);
 
-        $file = $request->file('bukti_pelunasan');
+        $file = $request->file('bukti_pembayaran');
         $fileName = $file->getClientOriginalName();
         $fileSaved = $user->siswa->nama.'-'.now()->format('Y-m-d H-i-s').'-'.$fileName;
 

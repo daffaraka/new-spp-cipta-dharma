@@ -9,10 +9,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="mb-1"><strong>Nama Invoice:</strong> {{ $pembayaran->keterangan ?? 'Uang SPP' }}</p>
-                        <p class="mb-1"><strong>Total Pembayaran:</strong> {{ number_format($pembayaran->biaya->nominal) }}</p>
+                        <p class="mb-1"><strong>Total Pembayaran:</strong> {{ number_format($pembayaran->biaya->nominal) }}
+                        </p>
                         <p class="mb-1">
                             <strong>Status:</strong>
-                            <span class="badge rounded-pill text-bg-danger">{{ $pembayaran->status }}</span>
+                            @if ($pembayaran->status == 'Lunas')
+                                <span class="badge bg-success rounded-pill text-bg-success px-3">Sukses</span>
+                            @elseif($pembayaran->status == 'Sedang Diverifikasi')
+                                <span class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>
+                            @else
+                                <span class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum Lunas</span>
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -31,16 +38,25 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal_lunas ?? \Carbon\Carbon::now())->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal_lunas ?? \Carbon\Carbon::now())->format('d-m-Y') }}
+                            </td>
                             <td>{{ number_format($pembayaran->biaya->nominal) }}</td>
                             <td>
                                 @if ($pembayaran->bukti_pelunasan)
-                                    <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" class="btn btn-sm btn-primary" target="_blank">View</a>
+                                    <a href="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}"
+                                        class="btn btn-sm btn-primary" target="_blank">View</a>
                                 @else
                                     -
                                 @endif
                             </td>
-                            <td><span class="badge rounded-pill text-bg-danger">{{ $pembayaran->status }}</span></td>
+                            <td>
+                                @if ($pembayaran->status == 'Lunas')
+                                <span class="badge bg-success rounded-pill text-bg-success px-3">Sukses</span>
+                            @elseif($pembayaran->status == 'Sedang Diverifikasi')
+                                <span class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>
+                            @else
+                                <span class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum Lunas</span>
+                            @endif</td>
                             <td>-</td>
                         </tr>
                     </tbody>
@@ -53,8 +69,8 @@
                     @if ($pembayaran->bukti_pelunasan == null)
                         <h3>Orang tua belum melakukan pembayaran</h3>
                     @else
-                        <img src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" id="preview" width="100%"
-                            alt="" class="img-thumbnail shadow">
+                        <img src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" id="preview"
+                            width="100%" alt="" class="img-thumbnail shadow">
                     @endif
                 </div>
 
@@ -62,18 +78,20 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="">No Invoice</label>
-                            <input type="text" name="no_invoice" class="form-control" value="{{ $pembayaran->no_invoice }}" readonly>
+                            <input type="text" name="no_invoice" class="form-control"
+                                value="{{ $pembayaran->no_invoice }}" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="">Nama Invoice</label>
-                            <input type="text" name="nama_tagihan" class="form-control" value="{{ $pembayaran->keterangan }}"
-                                readonly>
+                            <input type="text" name="nama_tagihan" class="form-control"
+                                value="{{ $pembayaran->keterangan }}" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="">NIS</label>
-                            <input type="text" name="nis" class="form-control" value="{{ $pembayaran->siswa->nis }}" readonly>
+                            <input type="text" name="nis" class="form-control" value="{{ $pembayaran->siswa->nis }}"
+                                readonly>
                         </div>
 
                         <div class="mb-3">
@@ -91,12 +109,14 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="">Bulan</label>
-                            <input type="text" name="bulan" class="form-control" value="{{ $pembayaran->bulan }}" readonly>
+                            <input type="text" name="bulan" class="form-control" value="{{ $pembayaran->bulan }}"
+                                readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="">Tahun</label>
-                            <input type="text" name="tahun" class="form-control" value="{{ $pembayaran->tahun }}" readonly>
+                            <input type="text" name="tahun" class="form-control" value="{{ $pembayaran->tahun }}"
+                                readonly>
                         </div>
 
                         <div class="mb-3">
@@ -107,13 +127,14 @@
 
                         <div class="mb-3">
                             <label for="">Tanggal Dilunasi</label>
-                            <input type="date" name="tanggal_lunas" class="form-control" value="{{ $pembayaran->tanggal_lunas }}"
-                                readonly>
+                            <input type="date" name="tanggal_lunas" class="form-control"
+                                value="{{ $pembayaran->tanggal_lunas }}" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="">Status Pelunasan</label>
-                            <input type="text" name="status" class="form-control" value="{{ $pembayaran->status }}" readonly>
+                            <input type="text" name="status" class="form-control" value="{{ $pembayaran->status }}"
+                                readonly>
                         </div>
                     </div>
                 </div>

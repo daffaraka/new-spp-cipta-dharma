@@ -55,16 +55,32 @@ class TagihanController extends Controller
 
 
         $tagihan = new Tagihan();
-        $tagihan->no_invoice = $request->no_invoice;
-        $tagihan->keterangan = $request->keterangan;
-        $tagihan->user_id = $request->user_id;
-        $tagihan->biaya_id = $request->biaya_id;
-        $tagihan->bulan = $request->bulan ?? date('m');
-        $tagihan->tahun = $request->tahun ?? date('Y');
-        $tagihan->tanggal_terbit = $request->tanggal_terbit ?? Carbon::now();
-        $tagihan->tanggal_lunas = $request->tanggal_lunas;
-        $tagihan->biaya_id = $request->biaya_id;
-        $tagihan->user_penerbit_id = auth()->user()->id;
+
+
+        if ($request->has('biaya_lain')) {
+            $tagihan->no_invoice = $request->no_invoice;
+            $tagihan->keterangan = $request->keterangan;
+            $tagihan->user_id = $request->user_id;
+            $tagihan->bulan = $request->bulan ?? date('m');
+            $tagihan->tahun = $request->tahun ?? date('Y');
+            $tagihan->tanggal_terbit = $request->tanggal_terbit ?? Carbon::now();
+            $tagihan->tanggal_lunas = $request->tanggal_lunas;
+            $tagihan->user_penerbit_id = auth()->user()->id;
+
+            $tagihan->biaya_lain = $request->biaya_lain;
+            $tagihan->nominal_biaya_lain = $request->nominal_biaya_lain;
+        } else {
+            $tagihan->no_invoice = $request->no_invoice;
+            $tagihan->keterangan = $request->keterangan;
+            $tagihan->user_id = $request->user_id;
+            $tagihan->bulan = $request->bulan ?? date('m');
+            $tagihan->tahun = $request->tahun ?? date('Y');
+            $tagihan->tanggal_terbit = $request->tanggal_terbit ?? Carbon::now();
+            $tagihan->tanggal_lunas = $request->tanggal_lunas;
+            $tagihan->biaya_id = $request->biaya_id;
+            $tagihan->user_penerbit_id = auth()->user()->id;
+        }
+
 
         //new
         $data_tagihan = [
@@ -286,6 +302,35 @@ class TagihanController extends Controller
         return response()->stream(
             fn() => print($dompdf->output()),
             200,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    public function downloadKuitansi(Tagihan $tagihan)
+    {
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $options->setDpi(150);
+        $dompdf = new Dompdf($options);
+
+        $dataTagihan = $tagihan->load(['siswa', 'biaya', 'penerbit', 'melunasi']);
+        $imageData = base64_encode(file_get_contents(public_path('logo_sekolah.png')));
+        $imageSrc = 'data:image/png;base64,' . $imageData;
+
+        $html = view('invoice_template', [
+            'tagihan' => $dataTagihan,
+            'imageSrc' => $imageSrc,
+            'bootstrap' => public_path('css/bootstrap.min.css')
+        ])->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->setBasePath(public_path());
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        return response()->streamDownload(
+            fn() => print($dompdf->output()),
+            'kuitansi_' . $tagihan->no_invoice . '.pdf',
             ['Content-Type' => 'application/pdf']
         );
     }

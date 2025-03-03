@@ -33,7 +33,7 @@ class OrangTuaController extends Controller
     public function riwayatPembayaran()
     {
         $data['judul'] = 'Riwayat Pembayaran';
-        $data['riwayats'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->latest()->get();
+        $data['riwayats'] = Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->whereStatus('Lunas')->latest()->get();
 
 
         // dd($data['pembayarans']);

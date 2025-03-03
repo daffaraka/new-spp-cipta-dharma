@@ -27,8 +27,11 @@ return new class extends Migration
             $table->string('bukti_pelunasan')->nullable();
             $table->enum('isSentKuitansi',[0,1])->default(0);
 
+            $table->string('biaya_lain')->nullable();
+            $table->bigInteger('nominal_biaya_lain')->nullable();
+
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onDelete('cascade');
-            $table->foreignId('biaya_id')->constrained()->onDelete('cascade')->onDelete('cascade');
+            $table->foreignId('biaya_id')->constrained()->onDelete('cascade')->onDelete('cascade')->nullable();
             $table->foreign('user_penerbit_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
             $table->foreign('user_melunasi_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
 

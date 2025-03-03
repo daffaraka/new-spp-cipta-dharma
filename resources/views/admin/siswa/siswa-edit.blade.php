@@ -117,7 +117,7 @@
 
         <div class="mb-3">
             <label for="">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $siswa->nama_wali }}" required>
+            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $siswa->tanggal_lahir }}">
         </div>
 
 

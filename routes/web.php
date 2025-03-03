@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         return to_route('dashboard');
     });
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('filter-dashboard',[DashboardController::class, 'filterData'])->name('dashboard.filter')->middleware('role:Petugas|KepalaSekolah');
 
 
 
@@ -130,7 +131,7 @@ Route::middleware('auth')->group(function () {
     Route::post('filter-status-pembayaran', [OrangTuaController::class, 'filterStatusPembayaran'])->name('ortu.filterStatusPembayaran');
 
     Route::get('lihat-kuitansi/{tagihan}', [TagihanController::class, 'lihatKuitansi'])->name('tagihan.lihatKuitansi');
-
+    Route::get('download-kuitansi/{tagihan}', [TagihanController::class, 'downloadKuitansi'])->name('tagihan.downloadKuitansi');
 });
 
 

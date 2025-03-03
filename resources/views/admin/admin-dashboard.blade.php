@@ -73,11 +73,22 @@
         <div class="col-xl-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-chart-area me-1"></i>
-                    Statistik Per Hari
+                    <div class="d-flex justify-content-between">
+                        <div class="py-2">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Statistik Per Tahun
+                        </div>
+                        <div>
+                            <select name="tahun" id="filter_tahun" class="form-control">
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card-body mb-5" style="height: 400px">
-                    <canvas id="dataPerHari" ></canvas>
+                    <canvas id="dataPerTahun"></canvas>
                 </div>
             </div>
         </div>
@@ -90,7 +101,7 @@
                     Statistik Per Bulan
                 </div>
                 <div class="card-body mb-5" style="height: 400">
-                    <canvas id="dataPerBulan" ></canvas>
+                    <canvas id="dataPerBulan"></canvas>
                 </div>
             </div>
         </div>
@@ -146,12 +157,12 @@
 
 
 
-        var ctx = document.getElementById("dataPerHari");
-        var myLineChart = new Chart(ctx, {
+        var ctx = document.getElementById("dataPerTahun");
+        var perTahunLineChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [
-                    @foreach ($data_pembayaranPerHari as $index => $item)
+                    @foreach ($data_pembayaranPerTahun as $index => $item)
                         '{{ $index }}',
                     @endforeach
                 ],
@@ -167,9 +178,9 @@
                     pointHoverBackgroundColor: "rgba(2,117,216,1)",
                     pointHitRadius: 50,
                     pointBorderWidth: 2,
-                    data:[
-                        @foreach ($data_pembayaranPerHari as $item)
-                            '{{$item}}',
+                    data: [
+                        @foreach ($data_pembayaranPerTahun as $item)
+                            '{{ $item }}',
                         @endforeach
                     ],
                 }],
@@ -205,7 +216,7 @@
 
 
         var ctx = document.getElementById("dataPerBulan");
-        var myLineChart = new Chart(ctx, {
+        var perbulanLineChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [
@@ -225,9 +236,9 @@
                     pointHoverBackgroundColor: "rgba(255,205,86,1)",
                     pointHitRadius: 50,
                     pointBorderWidth: 2,
-                    data:[
+                    data: [
                         @foreach ($data_pembayaranPerBulan as $item)
-                            '{{$item}}',
+                            '{{ $item }}',
                         @endforeach
                     ],
                 }],
@@ -257,5 +268,9 @@
                 }
             }
         });
+
+
+
+
     </script>
 @endpush

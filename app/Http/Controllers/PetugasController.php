@@ -120,7 +120,7 @@ class PetugasController extends Controller
     public function destroy(User $petugas)
     {
         $petugas->delete();
-        return redirect()->route('siswa.index')->with('success', 'Data siswa telah dihapus');
+        return redirect()->route('petugas.index')->with('success', 'Data siswa telah dihapus');
     }
 
 

@@ -24,7 +24,7 @@
             <select name="roles" class="form-control" required>
                 <option value="">Pilih Jabatan</option>
                 @foreach ($roles as $role)
-                    <option value="{{ $role->name }}" {{ $petugas->roles == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                    <option value="{{ $role->name }}" {{ $petugas->roles->first()->name == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
                 @endforeach
             </select>
         </div>
