@@ -62,26 +62,7 @@
             <input type="number" name="tahun" class="form-control my-1" required>
         </div>
 
-        {{-- <div class="mb-3">
-            <strong><label for="">Tanggal Terbit</label></strong>
-            <input type="date" name="tanggal_terbit" class="form-control">
-            <p class="fw-bold"> Jika dikosongi otomatis di isi hari ini </p>
-        </div>
 
-        <div class="mb-3">
-            <strong><label for="">Tanggal Lunas</label></strong>
-            <input type="date" name="tanggal_lunas" class="form-control">
-            <label> Boleh dikosongi </label>
-        </div>
-
-        <div class="mb-3">
-            <strong><label for="">Status Pelunasan</label></strong>
-            <select name="status" class="form-control">
-                <option value="Belum Lunas">Belum Lunas</option>
-                <option value="Lunas">Lunas</option>
-
-            </select>
-        </div> --}}
 
         <button type="submit" class="btn btn-primary my-3">Submit</button>
     </form>

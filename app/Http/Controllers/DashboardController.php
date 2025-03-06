@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -23,10 +24,16 @@ class DashboardController extends Controller
             $data['total_perempuan'] = User::where('jenis_kelamin', 'Perempuan')->count();
 
 
-            $data['select_tahun'] = Tagihan::distinct()->orderBy('tahun', 'desc')->pluck('tahun')->toArray();
-            $data['select_bulan'] = Tagihan::distinct()->orderBy('bulan', 'desc')->pluck('bulan')->toArray();
-            // dd($data['select_tahun']);
+            $data['select_tahun'] = Tagihan::whereStatus('Lunas')
+                ->selectRaw('YEAR(tanggal_terbit) as tahun')
+                ->distinct()
+                ->orderBy('tahun', 'desc')
+                ->pluck('tahun')
+                ->toArray();
 
+            $data['select_bulan'] = Tagihan::whereStatus('Lunas')->distinct()->orderBy('bulan', 'desc')->pluck('bulan')->toArray();
+            // dd($data['select_tahun']);
+            // dd($data['select_tahun']);
 
             $data['data_perJenisKelamin'] = User::select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
                 return [
@@ -47,6 +54,9 @@ class DashboardController extends Controller
             // dd($data['data_pembayaranPerTahun']);
 
 
+            // dd($data['data_pembayaranPerTahun']);
+
+
             $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->orderBy('tanggal_terbit', 'asc')->get()->groupBy(function ($item) {
                 return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
             })->map(function ($item) {
@@ -54,25 +64,6 @@ class DashboardController extends Controller
                     return $tagihan->biaya->nominal;
                 });
             });
-
-            // $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->groupBy(function ($item) {
-            //     return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
-            // })->map(function ($item) {
-            //     return $item->sum(function ($tagihan) {
-            //         return $tagihan->biaya->nominal;
-            //     });
-            // });
-
-
-
-            // dd($data['data_pembayaranPerBulan']);
-
-
-            // dd( $data['data_pembayaranPerbulan']);
-
-            // dd($data['data_SppPerBulan']);
-
-            // dd($data['data_perJenisKelamin']);
 
             return view('admin.admin-dashboard', $data);
         } else {
@@ -95,48 +86,57 @@ class DashboardController extends Controller
     public function filterData(Request $request)
     {
 
-        if($request->has('filter_tahun')) {
-            if (empty($request->filter_tahun)) {
-                $data['data_pembayaranPerTahun'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->groupBy(function ($item) {
+        // dd($request->all());
+
+
+
+        if ($request->has('filter_tahun_akhir') || $request->has('filter_tahun_awal')) {
+            $data['data_pembayaranPerTahun'] = Tagihan::with('biaya')
+                ->whereStatus('Lunas')
+                ->whereYear('tanggal_terbit', '>=', $request->filter_tahun_awal)
+                ->whereYear('tanggal_terbit', '<=', $request->filter_tahun_akhir)
+                ->get()
+                ->groupBy(function ($item) {
                     return \Carbon\Carbon::parse($item->tanggal_terbit)->format('Y');
                 })->map(function ($item) {
                     return $item->sum(function ($tagihan) {
                         return $tagihan->biaya->nominal;
                     });
                 });
-            } else {
-                $data['data_pembayaranPerTahun'] = Tagihan::with('biaya')->whereStatus('Lunas')->where('tanggal_terbit', $request->filter_tahun)->get()->groupBy(function ($item) {
-                    return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
-                })->map(function ($item) {
-                    return $item->sum(function ($tagihan) {
-                        return $tagihan->biaya->nominal;
-                    });
-                });
-                return response()->json($data['data_pembayaranPerTahun']);
-            }
+            return response()->json($data['data_pembayaranPerTahun']);
         }
 
 
-        if($request->has('filter_bulan')) {
-            if (empty($request->filter_bulan)) {
-                $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->get()->groupBy(function ($item) {
-                    return \Carbon\Carbon::parse($item->tanggal_terbit)->format('m');
-                })->map(function ($item) {
-                    return $item->sum(function ($tagihan) {
-                        return $tagihan->biaya->nominal;
+        if ($request->has('filter_bulan_akhir') || $request->has('filter_bulan_awal')) {
+
+
+            // $bulanAwal = Carbon::createFromDate(null, $request->filter_bulan_awal, 1)->format('m');
+
+            // dd($request->all());
+                $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')
+                    ->whereStatus('Lunas')
+                    ->whereMonth('tanggal_terbit', '>=', $request->filter_bulan_awal)
+                    ->whereMonth('tanggal_terbit', '<=', $request->filter_bulan_akhir)
+                    ->whereYear('tanggal_terbit', Carbon::now()->year)
+                    ->get()
+                    ->groupBy(function ($item) {
+                        return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
+                    })->map(function ($item) {
+                        return $item->sum(function ($tagihan) {
+                            return $tagihan->biaya->nominal;
+                        });
                     });
-                });
-            } else {
-                $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->where('tanggal_terbit', $request->filter_bulan)->get()->groupBy(function ($item) {
-                    return \Carbon\Carbon::parse($item->tanggal_terbit)->format('d');
-                })->map(function ($item) {
-                    return $item->sum(function ($tagihan) {
-                        return $tagihan->biaya->nominal;
-                    });
-                });
                 return response()->json($data['data_pembayaranPerBulan']);
-            }
+            // } else {
+            //     $data['data_pembayaranPerBulan'] = Tagihan::with('biaya')->whereStatus('Lunas')->where('tanggal_terbit', $request->filter_bulan)->get()->groupBy(function ($item) {
+            //         return \Carbon\Carbon::parse($item->tanggal_terbit)->format('d');
+            //     })->map(function ($item) {
+            //         return $item->sum(function ($tagihan) {
+            //             return $tagihan->biaya->nominal;
+            //         });
+            //     });
+            //     return response()->json($data['data_pembayaranPerBulan']);
+            // }
         }
-
     }
 }

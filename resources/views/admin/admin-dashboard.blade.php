@@ -78,16 +78,34 @@
                             <i class="fas fa-chart-area me-1"></i>
                             Statistik Per Tahun
                         </div>
-                        <div>
-                            <select name="tahun" id="filter_tahun" class="form-control">
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                            </select>
-                        </div>
+
                     </div>
 
                 </div>
-                <div class="card-body mb-5" style="height: 400px">
+                <div class="card-body mb-5" style="min-height: 400px">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <select name="tahun" id="filter_tahun_awal" class="form-control">
+                                <option value="">Pilih Tahun </option>
+                                @foreach ($select_tahun as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="tahun" id="filter_tahun_akhir" class="form-control">
+                                <option value="">Pilih Tahun </option>
+
+                                @foreach ($select_tahun as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-primary" id="btnFilterTahun">Filter</button>
+                        </div>
+                    </div>
+
                     <canvas id="dataPerTahun"></canvas>
                 </div>
             </div>
@@ -97,10 +115,40 @@
         <div class="col-xl-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-chart-area me-1"></i>
-                    Statistik Per Bulan
+                    <div class="d-flex justify-content-between">
+                        <div class="py-2">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Statistik Per Bulan
+                        </div>
+
+                    </div>
+
                 </div>
                 <div class="card-body mb-5" style="height: 400">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <select name="bulan_awal" id="filter_bulan_awal" class="form-control">
+                                <option value="">Pilih Bulan </option>
+                                @foreach (range(1, 12) as $bulan)
+                                    <option value="{{ $bulan }}">
+                                        {{ DateTime::createFromFormat('!m', $bulan)->format('F') }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="bulan_akhir" id="filter_bulan_akhir" class="form-control">
+                                <option value="">Pilih Bulan </option>
+                                @foreach (range(1, 12) as $bulan)
+                                    <option value="{{ $bulan }}">
+                                        {{ DateTime::createFromFormat('!m', $bulan)->format('F') }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-primary" id="btnFilterBulan">Filter</button>
+                        </div>
+                    </div>
+
                     <canvas id="dataPerBulan"></canvas>
                 </div>
             </div>
@@ -157,8 +205,8 @@
 
 
 
-        var ctx = document.getElementById("dataPerTahun");
-        var perTahunLineChart = new Chart(ctx, {
+        var ctxTahunan = document.getElementById("dataPerTahun");
+        var perTahunLineChart = new Chart(ctxTahunan, {
             type: 'line',
             data: {
                 labels: [
@@ -215,8 +263,8 @@
         });
 
 
-        var ctx = document.getElementById("dataPerBulan");
-        var perbulanLineChart = new Chart(ctx, {
+        var ctxBulanan = document.getElementById("dataPerBulan");
+        var perbulanLineChart = new Chart(ctxBulanan, {
             type: 'line',
             data: {
                 labels: [
@@ -270,7 +318,180 @@
         });
 
 
+        $('#btnFilterTahun').click(function(e) {
+            e.preventDefault();
+
+            var filter_tahun_akhir = $('#filter_tahun_akhir').val();
+            var filter_tahun_awal = $('#filter_tahun_awal').val();
+            $.ajax({
+                type: "POST",
+                url: "filter-dashboard",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "filter_tahun_akhir": filter_tahun_akhir,
+                    "filter_tahun_awal": filter_tahun_awal,
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    updateYearlyChart(response);
+                }
+            });
+        });
 
 
+
+        $('#btnFilterBulan').click(function(e) {
+            e.preventDefault();
+
+            var filter_bulan_awal = $('#filter_bulan_awal').val();
+            var filter_bulan_akhir = $('#filter_bulan_akhir').val();
+            $.ajax({
+                type: "POST",
+                url: "filter-dashboard",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "filter_bulan_awal": filter_bulan_awal,
+                    "filter_bulan_akhir": filter_bulan_akhir,
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    updateMonthlyChart(response);
+                }
+            });
+        });
+
+
+
+        function updateYearlyChart(data) {
+            var labels = Object.keys(data);
+            var dataSets = Object.values(data);
+
+            if (window.perTahunLineChart) {
+                // Update data jika chart sudah ada
+                window.perTahunLineChart.data.labels = labels;
+                window.perTahunLineChart.data.datasets[0].data = dataSets;
+                window.perTahunLineChart.update();
+            } else {
+                // Buat chart baru jika belum ada
+                var ctxTahunan = document.getElementById("dataPerTahun").getContext('2d');
+                window.perTahunLineChart = new Chart(ctxTahunan, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Jumlah Pembayaran",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(54, 162, 235, 0.2)", // Sesuai dengan bar chart
+                            borderColor: "rgba(54, 162, 235, 1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 7,
+                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointHitRadius: 50,
+                            pointBorderWidth: 2,
+                            data: dataSets
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    maxTicksLimit: 5
+                                },
+                                grid: {
+                                    color: "rgba(0, 0, 0, .125)"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+
+
+        function updateMonthlyChart(data) {
+            var labels = Object.keys(data);
+            var dataSets = Object.values(data);
+
+            if (window.perbulanLineChart) {
+                // Update data jika chart sudah ada
+                window.perbulanLineChart.data.labels = labels;
+                window.perbulanLineChart.data.datasets[0].data = dataSets;
+                window.perbulanLineChart.update();
+            } else {
+                // Buat chart baru jika belum ada
+                var ctxBulanan = document.getElementById("dataPerBulan").getContext('2d');
+                window.perbulanLineChart = new Chart(ctxBulanan, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Jumlah Pembayaran",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(54, 162, 235, 0.2)", // Sesuai dengan bar chart
+                            borderColor: "rgba(54, 162, 235, 1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 7,
+                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointHitRadius: 50,
+                            pointBorderWidth: 2,
+                            data: dataSets
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    maxTicksLimit: 5
+                                },
+                                grid: {
+                                    color: "rgba(0, 0, 0, .125)"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
     </script>
 @endpush

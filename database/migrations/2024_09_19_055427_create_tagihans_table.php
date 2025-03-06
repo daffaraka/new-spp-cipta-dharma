@@ -26,6 +26,7 @@ return new class extends Migration
             $table->enum('status',['Belum Lunas','Sedang Diverifikasi','Lunas'])->default('Belum Lunas');
             $table->string('bukti_pelunasan')->nullable();
             $table->enum('isSentKuitansi',[0,1])->default(0);
+            $table->string('nominal_pelunasan')->nullable();
 
             $table->string('biaya_lain')->nullable();
             $table->bigInteger('nominal_biaya_lain')->nullable();

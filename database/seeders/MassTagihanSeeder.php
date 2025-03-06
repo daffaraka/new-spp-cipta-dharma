@@ -27,7 +27,7 @@ class MassTagihanSeeder extends Seeder
         $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
         $userInternal = [1,2];
         $statusKuitansi = ['0','1'];
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $tagihan = Tagihan::insert([

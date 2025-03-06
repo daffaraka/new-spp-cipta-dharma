@@ -93,7 +93,13 @@
                         <td>{{ $spp->siswa->kelas ?? '-' }}</td>
                         <td>{{ $spp->bulan ?? '-' }}</td>
                         <td>{{ $spp->tahun ?? '-' }}</td>
-                        <td>{{ 'Rp. ' . number_format($spp->total_bayar, 0, ',', '.') }}</td>
+                        <td>
+                            @if ($spp->status == 'Lunas')
+                                <b> Rp. {{  number_format($spp->biaya->nominal, 0, ',', '.') }}</b>
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td>
                             <div class="d-grid">
                                 <button class="btn btn-block btn-info my-1 btnDetailLaporanSPP" data-bs-toggle="modal"
