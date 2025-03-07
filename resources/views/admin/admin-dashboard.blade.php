@@ -126,7 +126,15 @@
                 </div>
                 <div class="card-body mb-5" style="height: 400">
                     <div class="row mb-3">
-                        <div class="col-4">
+                        <div class="col-2">
+                            <select name="tahun" id="filter_tahun" class="form-control">
+                                <option value="">Pilih Tahun </option>
+                                @foreach ($select_tahun as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-2">
                             <select name="bulan_awal" id="filter_bulan_awal" class="form-control">
                                 <option value="">Pilih Bulan </option>
                                 @foreach (range(1, 12) as $bulan)
@@ -135,7 +143,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-2">
                             <select name="bulan_akhir" id="filter_bulan_akhir" class="form-control">
                                 <option value="">Pilih Bulan </option>
                                 @foreach (range(1, 12) as $bulan)
@@ -144,7 +152,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <button class="btn btn-primary" id="btnFilterBulan">Filter</button>
                         </div>
                     </div>
@@ -344,6 +352,7 @@
         $('#btnFilterBulan').click(function(e) {
             e.preventDefault();
 
+            var filter_tahun = $('#filter_tahun').val();
             var filter_bulan_awal = $('#filter_bulan_awal').val();
             var filter_bulan_akhir = $('#filter_bulan_akhir').val();
             $.ajax({
@@ -351,6 +360,7 @@
                 url: "filter-dashboard",
                 data: {
                     "_token": "{{ csrf_token() }}",
+                    "filter_tahun": filter_tahun,
                     "filter_bulan_awal": filter_bulan_awal,
                     "filter_bulan_akhir": filter_bulan_akhir,
                 },

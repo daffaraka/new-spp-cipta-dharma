@@ -117,7 +117,7 @@ class DashboardController extends Controller
                     ->whereStatus('Lunas')
                     ->whereMonth('tanggal_terbit', '>=', $request->filter_bulan_awal)
                     ->whereMonth('tanggal_terbit', '<=', $request->filter_bulan_akhir)
-                    ->whereYear('tanggal_terbit', Carbon::now()->year)
+                    ->whereYear('tanggal_terbit', $request->filter_tahun)
                     ->get()
                     ->groupBy(function ($item) {
                         return \Carbon\Carbon::parse($item->tanggal_terbit)->format('M');
