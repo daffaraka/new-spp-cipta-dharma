@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
 
 
         $jk = ['Laki-laki', 'Perempuan'];
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i < 30; $i++) {
             $user = User::create(
                 [
                     'nama' => $faker->unique()->name('female' | 'male'),

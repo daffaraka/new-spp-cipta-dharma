@@ -20,8 +20,8 @@ class DashboardController extends Controller
 
             $data['total_siswa'] = User::role('SiswaOrangTua')->count();
             $data['total_petugas'] = User::role(['KepalaSekolah', 'Petugas'])->count();
-            $data['total_laki'] = User::where('jenis_kelamin', 'Laki-laki')->count();
-            $data['total_perempuan'] = User::where('jenis_kelamin', 'Perempuan')->count();
+            $data['total_laki'] = User::role('SiswaOrangTua')->where('jenis_kelamin', 'Laki-laki')->count();
+            $data['total_perempuan'] = User::role('SiswaOrangTua')->where('jenis_kelamin', 'Perempuan')->count();
 
 
             $data['select_tahun'] = Tagihan::whereStatus('Lunas')
