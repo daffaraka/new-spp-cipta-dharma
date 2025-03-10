@@ -1,29 +1,33 @@
 @extends('admin.admin-layout')
 @section('content')
-    <div class="d-flex justify-content-between my-3">
-        <div>
+    <div class="row my-3">
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12  mt-3">
             <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah Siswa</a>
 
         </div>
-        <div>
+        <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 mt-3">
+            <div class="d-xxl-flex d-xl-flex d-md-flex d-sm-grid justify-content-end">
+                <form action="{{ route('siswa.update_chatid') }}" method="POST" class="d-inline m-1 pb-0">
+                    @csrf
+                    <div class="py-0 px-1">
+                        <button class="btn btn-secondary d-block w-100">
+                            Update ID Chat Telegram
+                        </button>
+                    </div>
 
-            <form action="{{ route('siswa.update_chatid') }}" method="POST" class="d-inline">
-                @csrf
-                <button class="btn n btn-secondary">
-                    Update ID Chat Telegram
-                </button>
                 </form>
+                <a href="{{ route('siswa.export') }}" class="btn btn-outline-success m-1 d-xl-inline d-lg-inline d-block " id="btnExport">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </a>
+                <a href="#" class="btn btn-warning m-1 d-xl-inline d-lg-inline d-block" id="btnImport" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
+                    <i class="fas fa-file-import"></i> Import Excel
+                </a>
+                <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark m-1 d-xl-inline d-lg-inline d-block" id="btnPrint">
+                    <i class="fas fa-print"></i> Print
+                </a>
+            </div>
 
-
-            <a href="{{ route('siswa.export') }}" class="btn btn-outline-success" id="btnExport">
-                <i class="fas fa-file-excel"></i> Export Excel
-            </a>
-            <a href="#" class="btn btn-warning" id="btnImport" data-bs-toggle="modal" data-bs-target="#importModal">
-                <i class="fas fa-file-import"></i> Import Excel
-            </a>
-            <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark" id="btnPrint">
-                <i class="fas fa-print"></i> Print
-            </a>
 
         </div>
 

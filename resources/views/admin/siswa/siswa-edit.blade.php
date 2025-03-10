@@ -54,7 +54,7 @@
 
         <div class="mb-3">
             <label for="">Password</label>
-            <input type="password" name="password" class="form-control" value="{{ $siswa->password }}" required>
+            <input type="password" name="password" class="form-control">
         </div>
 
         <div class="mb-3">

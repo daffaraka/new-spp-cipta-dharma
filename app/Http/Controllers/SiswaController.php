@@ -99,7 +99,6 @@ class SiswaController extends Controller
             'nis' => 'required|unique:users,nis,' . $siswa->id,
             'nisn' => 'required|unique:users,nisn,' . $siswa->id,
             'email' => 'required|unique:users,email,' . $siswa->id,
-            'password' => 'required',
             'nama_wali' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',
@@ -112,13 +111,17 @@ class SiswaController extends Controller
         ]);
 
 
+
+        $password = $request->filled('password') ? bcrypt($request->password) : $siswa->password;
+
         $siswa->update(
             [
+                'username' => $request->username,
                 'nama' => $request->nama,
                 'nis' => $request->nis,
                 'nisn' => $request->nisn,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => $password,
                 'nama_wali' => $request->nama_wali,
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
