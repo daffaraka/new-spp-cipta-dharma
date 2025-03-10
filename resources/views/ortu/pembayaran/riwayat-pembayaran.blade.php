@@ -69,9 +69,22 @@
                                     <button type="button" class="btn btn-sm btn-danger">Belum Lunas</button>
                                 @elseif ($riwayat->status == 'Sedang Diverifikasi')
                                     <button type="button" class="btn btn-sm btn-warning">Sedang Diverifikasi</button>
+
+                                <!-- tambahan a -->
+                                 @elseif ($riwayat->status == 'Lebih')
+                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#buktiModal_{{ $index + 1 }}">Lunas Lebih</a>
+                                @elseif ($riwayat->status == 'Kurang')
+                                    <button type="button" class="btn btn-sm btn-warning">Kurang</button>
+                                <!-- tambahan b -->
+
                                 @else
                                     <button type="button" class="btn btn-sm btn-success">Lunas</button>
                                 @endif
+
+                                {{-- tambahan --}}
+                                @if (($riwayat->status == 'Lunas' || $riwayat->status == 'Lebih') && $riwayat->isSentKuitansi == 1)
+                                @endif
+                                {{--  --}}
 
                                 @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
                                     <a href="{{ asset('bukti-pelunasan/'.$riwayat->bukti_pelunasan) }}"
@@ -90,6 +103,25 @@
             </tbody>
         </table>
     </div>
+
+    {{-- tambahan --}}
+    <!-- modal -->
+    @foreach ($riwayats as $index => $riwayat)
+    <div class="modal fade" id="buktiModal_{{ $index + 1 }}" tabindex="-1" aria-labelledby="buktiModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="buktiModalLabel">Bukti Dikembalikan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img id="buktiImage" src="{{ asset('bukti-pelunasan/' . $riwayat->bukti_lebih) }}" class="img-fluid" alt="Bukti Transfer">
+          </div>
+        </div>
+      </div>
+    </div>
+    @endforeach
+    {{--  --}}
 
 @endsection
 @push('scripts')

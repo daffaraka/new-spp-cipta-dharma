@@ -24,7 +24,8 @@ class Tagihan extends Model
         'bulan',
         'tahun',
         'isSentKuitansi',
-        'nominal_pelunasan'
+        'nominal_pelunasan',
+        'nominal',
     ];
 
     public function siswa()

@@ -86,6 +86,11 @@
                                 <span class="badge rounded-pill bg-danger">Belum Lunas</span>
                             @elseif ($pembayaran->status == 'Sedang Diverifikasi')
                                 <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                            @elseif ($pembayaran->status == 'Lebih')
+                                <span class="badge rounded-pill bg-success">Lunas Lebih</span>
+                            @elseif ($pembayaran->status == 'Kurang')
+                                <span class="badge rounded-pill bg-warning">Kurang</span>
+                            <!-- tambahan b -->
                             @else
                                 <span class="badge rounded-pill bg-success">Lunas</span>
                             @endif
@@ -97,10 +102,22 @@
                                         class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
                                 @endif
 
-                                @if ($pembayaran->bukti_pelunasan != null && $pembayaran->status == 'Sedang Diverifikasi')
+                                <!-- tambahan a -->
+                                @if ($pembayaran->bukti_pelunasan != null && ($pembayaran->status == 'Sedang Diverifikasi' || $pembayaran->status == 'Kurang'))
+
+                                    <a href="javascript:void(0);" id="btnVerifikasi" class="btn btn-sm btn-info"> Verifikasi</a>
+                                    <div id="statusButtons" style="display: none;">
+                                        <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}" class="btn btn-sm btn-success">Lunas</a>
+                                        <button data-bs-toggle="modal" data-bs-target="#lebih_{{ $index + 1 }}" class="btn btn-sm btn-primary">Lebih</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#kurang_{{ $index + 1 }}" class="btn btn-sm btn-danger">Kurang</button>
+                                    </div>
+                                @endif
+                                <!-- tambahan b -->
+
+                                {{-- @if ($pembayaran->bukti_pelunasan != null && $pembayaran->status == 'Sedang Diverifikasi')
                                     <a href="{{ route('pembayaran.verifikasi', $pembayaran->id) }}"
                                         class="btn btn-sm btn-info">Verifikasi</a>
-                                @endif
+                                @endif --}}
 
                                 <a href="{{ route('pembayaran.show', $pembayaran->id) }}"
                                     class="btn btn-sm btn-warning">Detail</a>
@@ -113,6 +130,68 @@
             </tbody>
         </table>
     </div>
+
+    <!-- tambahan a -->
+    @foreach ($pembayarans as $index => $pembayaran)
+    <!-- Modal lebih-->
+    <div class="modal fade" id="lebih_{{ $index + 1 }}" tabindex="-1" role="dialog" aria-labelledby="modalTitleId_{{ $index + 1 }}"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId_{{ $index + 1 }}">
+                        Verifikasi Nominal Lebih
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('lebih', $pembayaran->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <label for="numb">Jumlah Nominal Lebih Sebesar</label>
+                    <input id="numb" type="number" class="form-control" name="nominal">
+                <label for="bukti_kembali">Bukti dikembalikan</label>
+                    <input id="bukti_kembali" type="file" class="form-control" accept="image/*" name="file_bukti">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                        Kirim
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal kurang -->
+    <div class="modal fade" id="kurang_{{ $index + 1 }}" tabindex="-1" role="dialog" aria-labelledby="modalTitleId_{{ $index + 1 }}"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId_{{ $index + 1 }}">
+                        Verifikasi Nominal Kurang
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('kurang', $pembayaran->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <label for="numb">Jumlah Nominal Kurang Sebesar</label>
+                    <input id="numb" type="number" class="form-control" name="nominal">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">
+                        Kirim
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @endforeach
+    <!-- tambahan b -->
+
 @endsection
 @push('scripts')
     <script>
@@ -170,4 +249,14 @@
             });
         });
     </script>
+
+    <!-- tambahan a -->
+    <script>
+        document.getElementById('btnVerifikasi').addEventListener('click', function() {
+            this.style.display = 'none'; // Sembunyikan tombol Verifikasi
+            document.getElementById('statusButtons').style.display = 'block'; // Tampilkan tombol lainnya
+        });
+    </script>
+<!-- tambahan b -->
+
 @endpush

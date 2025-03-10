@@ -57,21 +57,33 @@
                 <div class="row">
 
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-12">
-                        @if ($tagihan->bukti_pelunasan)
+                        {{-- @if ($tagihan->bukti_pelunasan) --}}
+                        @if ($tagihan->bukti_pelunasan == null)
                             <div class="mb-3">
-                                <img src="{{ asset('bukti-pelunasan/' . $tagihan->bukti_pelunasan) }}" id="preview"
-                                    width="100%" alt="">
+
+                                <!-- tambahan a -->
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvX7ghSY75PvK5S-RvhkFxNz88MWEALSBDvA&s"
+                        id="preview" width="100%" alt="">
+                @else
+                    <img src="{{ asset('bukti-pelunasan/' . $tagihan->bukti_pelunasan) }}" id="preview" width="100%"
+                        alt="" class="img-thumbnail shadow">
+                @endif
+                <!-- tambahan b -->
+
+
+                                {{-- <img src="{{ asset('bukti-pelunasan/' . $tagihan->bukti_pelunasan) }}" id="preview"
+                                    width="100%" alt=""> --}}
 
                             </div>
-                        @else
+                        {{-- @else
                             <div class="mb-3">
-                                {{-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvX7ghSY75PvK5S-RvhkFxNz88MWEALSBDvA&s"
-                                    id="preview" width="100%" alt=""> --}}
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvX7ghSY75PvK5S-RvhkFxNz88MWEALSBDvA&s"
+                                    id="preview" width="100%" alt="">
 
                             </div>
-                            {{-- <input type="file" class="form-control" name="bukti_pelunasan" accept="image/*"
-                                id="selectImage" required> --}}
-                        @endif
+                            <input type="file" class="form-control" name="bukti_pelunasan" accept="image/*"
+                                id="selectImage" required>
+                        @endif --}}
 
                     </div>
 

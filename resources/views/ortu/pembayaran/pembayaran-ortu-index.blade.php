@@ -50,9 +50,17 @@
                             <span class="badge rounded-pill bg-danger">Belum Lunas</span>
                         @elseif ($pembayaran->status == 'Sedang Diverifikasi')
                             <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                        <!-- tambahan a -->
+                        @elseif ($pembayaran->status == 'Lebih')
+                            <span class="badge rounded-pill bg-success">Lunas Lebih</span>
+                        @elseif ($pembayaran->status == 'Kurang')
+                            <span class="badge rounded-pill bg-warning">Kurang</span>
+                        <!-- tambahan b -->
                         @else
                             <span class="badge rounded-pill bg-success">Lunas</span>
                         @endif
+                        {{-- tambahan --}}
+
                     </td>
                     <td>
                         <div class="d-flex gap-1">
@@ -65,12 +73,18 @@
                                     class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
                             @endif
 
-                            @if ($pembayaran->status == 'Belum Lunas')
+                            @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
                                 <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
                                     class="btn btn-sm btn-success me-3">Bayar</a>
                             @endif
+                            {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
 
-
+                            {{-- @elseif ($pembayaran->status == 'Lebih') --}}
+                            @if ($pembayaran->status == 'Lebih')
+                            <div class="d-flex">
+                                <a href="#" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
+                            </div>
+                        @endif
                         </div>
 
 
@@ -79,6 +93,25 @@
             @endforeach
         </tbody>
     </table>
+
+<!-- modal -->
+@foreach ($pembayarans as $index => $pembayaran)
+<div class="modal fade" id="buktiModal_{{ $index + 1 }}" tabindex="-1" aria-labelledby="buktiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="buktiModalLabel">Bukti Dikembalikan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="buktiImage" src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_lebih) }}" class="img-fluid" alt="Bukti Transfer">
+      </div>
+    </div>
+  </div>
+</div>
+@endforeach
+
+
 @endsection
 @push('scripts')
     <script>

@@ -32,11 +32,31 @@ class PelunasanController extends Controller
 
         $file->move('bukti-pelunasan', $fileSaved);
 
+        // tambahan a
+        if ($user->bukti_pelunasan == null) {
+            $tagihan = Tagihan::find($id);
+            $tagihan->bukti_pelunasan = $fileSaved;
+            $tagihan->status = 'Sedang Diverifikasi';
+            $tagihan->save();
+        } else {
+            $tagihan = Tagihan::findOrFail($id);
+            $lama = $tagihan->bukti_pelunasan;
+            $buktiLama = json_decode($lama, true);
+            if (!is_array($buktiLama)) {
+                $buktiLama = $lama ? [$lama] : [];
+            }
+            $buktiLama[] = $fileSaved;
+            $tagihan->bukti_pelunasan = json_encode($buktiLama);
+            $tagihan->save();
+        }
+        // tambahan b
+
+
         $tagihan = Tagihan::find($id);
         // dd($tagihan);
-        $tagihan->bukti_pelunasan = $fileSaved;
-        $tagihan->status = 'Sedang Diverifikasi';
-        $tagihan->save();
+        // $tagihan->bukti_pelunasan = $fileSaved;
+        // $tagihan->status = 'Sedang Diverifikasi';
+        // $tagihan->save();
         return redirect()->route('dashboard')->with('success','Bukti pelunasan sudah dikirim');
     }
 

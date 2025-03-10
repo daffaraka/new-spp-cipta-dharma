@@ -100,8 +100,8 @@ class TagihanController extends Controller
         // Telegram
         $id_siswa = $request->user_id;
         $user = User::where('id', $id_siswa)->first();
-        $biaya = biaya::where('id', $request->biaya_id)->first();
-        // dd($user);
+        $biaya = Biaya::where('id', $request->biaya_id)->first();
+
         $chatId = $user ? $user->chat_id : null;
         if (!$chatId) {
             $chatId = env('TELEGRAM_CHAT_ID');
@@ -109,7 +109,14 @@ class TagihanController extends Controller
         $imageData = base64_encode(file_get_contents(public_path('logo_sekolah.png')));
         $imageSrc = 'data:image/png;base64,' . $imageData;
 
-        $html = view('invoice_template', ['user' => $user, 'biaya' => $biaya, 'data_tagihan' => $data_tagihan, 'imageSrc' => $imageSrc])->render();
+        // Using both variable formats for compatibility with the unified template
+        $html = view('invoice_template', [
+            'user' => $user,
+            'biaya' => $biaya,
+            'data_tagihan' => $data_tagihan,
+            'imageSrc' => $imageSrc,
+            'tagihan' => null // Set to null to indicate we're using the separate variables format
+        ])->render();
 
         $options = new Options();
         $options->set('defaultFont', 'Arial');
@@ -122,17 +129,6 @@ class TagihanController extends Controller
         $dompdf->render();
 
         $output = $dompdf->output();
-        // try {
-        //     $dompdf->render();
-        //     $output = $dompdf->output();
-        //     return response()->stream(
-        //         fn() => print($output),
-        //         200,
-        //         ['Content-Type' => 'application/pdf']
-        //     );
-        // } catch (\Exception $e) {
-        //     echo "Error: " . $e->getMessage();
-        // }
 
         $pdfPath = storage_path('app/public/invoice.pdf');
         file_put_contents($pdfPath, $output);
@@ -224,9 +220,6 @@ class TagihanController extends Controller
 
     public function import()
     {
-
-
-
         Excel::import(new TagihanImport, request()->file('file'));
 
         return redirect()->back()->with('success', 'Data tagihan baru telah ditambahkan');
@@ -291,7 +284,11 @@ class TagihanController extends Controller
         $html = view('invoice_template', [
             'tagihan' => $dataTagihan,
             'imageSrc' => $imageSrc,
-            'bootstrap' => public_path('css/bootstrap.min.css')
+            'bootstrap' => public_path('css/bootstrap.min.css'),
+            // Include these for compatibility even though they won't be used
+            'user' => null,
+            'biaya' => null,
+            'data_tagihan' => null
         ])->render();
 
         $dompdf->loadHtml($html);
@@ -320,7 +317,11 @@ class TagihanController extends Controller
         $html = view('invoice_template', [
             'tagihan' => $dataTagihan,
             'imageSrc' => $imageSrc,
-            'bootstrap' => public_path('css/bootstrap.min.css')
+            'bootstrap' => public_path('css/bootstrap.min.css'),
+            // Include these for compatibility even though they won't be used
+            'user' => null,
+            'biaya' => null,
+            'data_tagihan' => null
         ])->render();
 
         $dompdf->loadHtml($html);
