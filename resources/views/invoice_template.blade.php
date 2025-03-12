@@ -7,16 +7,13 @@
     <title>Invoice</title>
     <style>
         body {
-            /* height: 100%; */
             width: 100%;
             font-family: Arial, sans-serif;
             font-size: 14px;
-            /* background: #f5f5f5; */
         }
 
         .invoice-box {
             width: 100%;
-            /* max-width: 800px; */
             margin: auto;
             padding: 20px;
             background: #dde6e6;
@@ -108,6 +105,29 @@
 
             return 'Angka terlalu besar';
         }
+
+        // Handle both data structure types
+        if (isset($tagihan)) {
+            // First format (using $tagihan object)
+            $nama_wali = $tagihan->siswa->nama_wali ?? '';
+            $tanggal_terbit = $tagihan->tanggal_terbit ?? '';
+            $nama_murid = $tagihan->siswa->nama ?? '';
+            $no_invoice = $tagihan->no_invoice ?? '';
+            $kelas = $tagihan->siswa->kelas ?? '';
+            $bulan = $tagihan->bulan ?? '';
+            $nama_biaya = $tagihan->biaya->nama_biaya ?? '';
+            $nominal = $tagihan->biaya->nominal ?? 0;
+        } else {
+            // Second format (using separate $user, $biaya, $data_tagihan)
+            $nama_wali = $user->nama_wali ?? '';
+            $tanggal_terbit = $data_tagihan['tanggal_terbit'] ?? '';
+            $nama_murid = $user->nama ?? '';
+            $no_invoice = $data_tagihan['no_invoice'] ?? '';
+            $kelas = $user->kelas ?? '';
+            $bulan = $data_tagihan['bulan'] ?? '';
+            $nama_biaya = $biaya->nama_biaya ?? '';
+            $nominal = $biaya->nominal ?? 0;
+        }
     @endphp
 
     <div class="invoice-box">
@@ -125,16 +145,16 @@
         <p><strong>Kepada</strong></p>
         <table style="width: 100%">
             <tr>
-                <td><strong>Nama Wali:</strong> {{ $tagihan->siswa->nama_wali }}</td>
-                <td><strong>Tanggal:</strong> {{ $tagihan->tanggal_terbit }}</td>
+                <td><strong>Nama Wali:</strong> {{ $nama_wali }}</td>
+                <td><strong>Tanggal:</strong> {{ $tanggal_terbit }}</td>
             </tr>
             <tr>
-                <td><strong>Nama Murid:</strong> {{ $tagihan->siswa->nama }}</td>
-                <td><strong>No. Invoice:</strong> {{ $tagihan->no_invoice }}</td>
+                <td><strong>Nama Murid:</strong> {{ $nama_murid }}</td>
+                <td><strong>No. Invoice:</strong> {{ $no_invoice }}</td>
             </tr>
             <tr>
-                <td><strong>Kelas:</strong> {{ $tagihan->siswa->kelas }}</td>
-                <td><strong>Bulan:</strong> {{ $tagihan->bulan }}</td>
+                <td><strong>Kelas:</strong> {{ $kelas }}</td>
+                <td><strong>Bulan:</strong> {{ $bulan }}</td>
             </tr>
         </table>
 
@@ -146,18 +166,19 @@
             </tr>
             <tr>
                 <td>1</td>
-                <td>{{ $tagihan->biaya->nama_biaya }}</td>
-                <td>Rp {{ number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
+                <td>{{ $nama_biaya }}</td>
+                <td>Rp {{ number_format($nominal, 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td colspan="2" class="total">Total</td>
-                <td class="total">Rp {{ number_format($tagihan->biaya->nominal, 0, ',', '.') }}</td>
+                <td class="total">Rp {{ number_format($nominal, 0, ',', '.') }}</td>
             </tr>
         </table>
 
-        <p><strong>Terbilang:</strong> {{ terbilang($tagihan->biaya->nominal) }}</p>
+        <p><strong>Terbilang:</strong> {{ terbilang($nominal) }}</p>
         <p style="text-align: center; margin-top: 20px;"><strong>Terima Kasih</strong><br>_________X_________</p>
     </div>
 </body>
 
 </html>
+

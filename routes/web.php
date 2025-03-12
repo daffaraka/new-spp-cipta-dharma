@@ -77,6 +77,12 @@ Route::middleware('auth')->group(function () {
         Route::post('pembayaran/kuitansi/{id}', [PembayaranController::class, 'kirimKuitansi'])->name('pembayaran.kuitansi');
         Route::post('filter-pembayaran', [PembayaranController::class, 'filter'])->name('pembayaran.filter');
 
+        // New
+        Route::post('pembayaran/lebih/{id}', [PembayaranController::class, 'lebih'])->name('lebih');
+        Route::post('pembayaran/kurang/{id}', [PembayaranController::class, 'kurang'])->name('kurang');
+        // tambahan 
+
+
         // Laporan Petugas
 
 

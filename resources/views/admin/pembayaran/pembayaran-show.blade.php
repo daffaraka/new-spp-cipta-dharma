@@ -4,27 +4,36 @@
         <div class="col">
             <div class="mb-3">
                 <label for="">Bukti Pelunasan</label>
-                @if ($pembayaran->bukti_pelunasan == null)
+
+                @if (empty($pembayaran->bukti_pelunasan))
                     <h3>Orang tua belum melakukan pembayaran</h3>
                 @else
-                    <img src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" id="preview" width="100%"
-                        alt="" class="img-thumbnail shadow">
+                    @php
+                        $buktiPelunasan = json_decode($pembayaran->bukti_pelunasan, true);
+                    @endphp
+
+                    @if (is_array($buktiPelunasan))
+                        @foreach ($buktiPelunasan as $file)
+                            <img src="{{ asset('bukti-pelunasan/' . $file) }}" id="preview" width="100%"
+                                alt="" class="img-thumbnail shadow">
+                        @endforeach
+                    @else
+                        <img src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" id="preview" width="100%"
+                            alt="" class="img-thumbnail shadow">
+                    @endif
                 @endif
-
-
             </div>
         </div>
 
         <div class="col">
             <div class="mb-3">
                 <label for="">Bukti Pelunasan</label>
-                @if ($pembayaran->bukti_pelunasan == null)
+                @if (empty($pembayaran->bukti_pelunasan))
                     <h3>Orang tua belum melakukan pembayaran</h3>
                 @else
                     <img src="{{ asset('bukti-pelunasan/' . $pembayaran->bukti_pelunasan) }}" id="preview" width="100%"
                         alt="" class="img-thumbnail shadow">
                 @endif
-
             </div>
 
             <div class="mb-3">
@@ -34,8 +43,7 @@
 
             <div class="mb-3">
                 <label for="">Nama Invoice</label>
-                <input type="text" name="nama_tagihan" class="form-control" value="{{ $pembayaran->keterangan }}"
-                    readonly>
+                <input type="text" name="nama_tagihan" class="form-control" value="{{ $pembayaran->keterangan }}" readonly>
             </div>
 
             <div class="mb-3">
@@ -96,3 +104,4 @@
         </div>
     </div>
 @endsection
+

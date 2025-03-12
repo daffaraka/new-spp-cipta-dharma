@@ -108,6 +108,12 @@
                                 <span class="badge rounded-pill bg-danger">Belum Lunas</span>
                             @elseif ($tagihan->status == 'Sedang Diverifikasi')
                                 <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                            <!-- tambahan a -->
+                            @elseif ($tagihan->status == 'Lebih')
+                                <span class="badge rounded-pill bg-success">Lunas Lebih</span>
+                            @elseif ($tagihan->status == 'Kurang')
+                                <span class="badge rounded-pill bg-warning">Kurang</span>
+                            <!-- tambahan b -->
                             @else
                                 <span class="badge rounded-pill bg-success">Lunas</span>
                             @endif
@@ -129,6 +135,10 @@
                                     onclick="return confirm('Apakah Anda yakin ingin menghapus data tagihan keluar ini?')">Hapus</button>
                             </form>
 
+                            <!-- tambahan a -->
+                            @if ($tagihan->status == 'Lunas' || $tagihan->status == 'Lebih')
+                            @endif
+                            <!-- tambahan b -->
 
                             @if ($tagihan->status == 'Belum Lunas')
                                 <button
