@@ -130,7 +130,9 @@
                         "filter_kelas": $('#filterKelas').val()
                     },
                     success: function(data) {
+                        $('#dataTables').DataTable().destroy();
                         $('#dataTables tbody').empty();
+
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -154,16 +156,42 @@
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
                                 (value.isSentKuitansi == '1' ?
-                                    '<a href="/lihat-kuitansi/' + value.id +'" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' :
+                                    '<a href="/lihat-kuitansi/' + value.id +
+                                    '" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' :
                                     '') +
                                 (value.bukti_pelunasan != null && value.status ==
                                     'Sedang Diverifikasi' ?
-                                    '<a href="/pembayaran/verifikasi/' + value.id + '" class="btn btn-sm btn-info">Verifikasi</a>' :
+                                    '<a href="/pembayaran/verifikasi/' + value.id +
+                                    '" class="btn btn-sm btn-info">Verifikasi</a>' :
                                     '') +
-                                '<a href="/pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
+                                '<a href="/pembayaran/' + value.id +
+                                '" class="btn btn-sm btn-warning">Detail</a>' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');
+                        });
+
+                        $('#dataTables').DataTable({
+                            "paging": true,
+                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "pageLength": 10, // Default 10 entries per page
+                            "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
+                            "searching": true, // Aktifkan fitur pencarian
+                            "info": true, // Tampilkan informasi jumlah data
+                            "language": {
+                                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                                "zeroRecords": "Tidak ada data ditemukan",
+                                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                "infoEmpty": "Tidak ada data tersedia",
+                                "infoFiltered": "(disaring dari _MAX_ total data)",
+                                "search": "Cari:",
+                                "paginate": {
+                                    "first": "<<",
+                                    "last": ">>",
+                                    "next": ">",
+                                    "previous": "<"
+                                }
+                            }
                         });
                     }
                 });

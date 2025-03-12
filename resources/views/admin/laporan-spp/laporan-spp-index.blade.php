@@ -95,7 +95,7 @@
                         <td>{{ $spp->tahun ?? '-' }}</td>
                         <td>
                             @if ($spp->status == 'Lunas')
-                                <b> Rp. {{  number_format($spp->biaya->nominal, 0, ',', '.') }}</b>
+                                <b> Rp. {{ number_format($spp->biaya->nominal, 0, ',', '.') }}</b>
                             @else
                                 -
                             @endif
@@ -210,7 +210,9 @@
                         "filter_tanggal_akhir": $('#filterTanggalAkhir').val(),
                     },
                     success: function(data) {
+                        $('#dataTables').DataTable().destroy();
                         $('#dataTables tbody').empty();
+
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -229,6 +231,30 @@
                                 '</div>' +
                                 '</td>' +
                                 '</tr>');
+                        });
+
+
+                        $('#dataTables').DataTable({
+                            "paging": true,
+                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "pageLength": 10, // Default 10 entries per page
+                            "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
+                            "searching": true, // Aktifkan fitur pencarian
+                            "info": true, // Tampilkan informasi jumlah data
+                            "language": {
+                                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                                "zeroRecords": "Tidak ada data ditemukan",
+                                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                "infoEmpty": "Tidak ada data tersedia",
+                                "infoFiltered": "(disaring dari _MAX_ total data)",
+                                "search": "Cari:",
+                                "paginate": {
+                                    "first": "<<",
+                                    "last": ">>",
+                                    "next": ">",
+                                    "previous": "<"
+                                }
+                            }
                         });
                     }
                 });

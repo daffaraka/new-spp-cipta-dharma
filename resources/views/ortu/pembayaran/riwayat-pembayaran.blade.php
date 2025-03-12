@@ -74,7 +74,7 @@
                                 @endif
 
                                 @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
-                                    <a href="{{ asset('bukti-pelunasan/'.$riwayat->bukti_pelunasan) }}"
+                                    <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
                                         class="btn btn-sm btn-primary">Kuitansi</a>
                                 @else
                                     <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
@@ -82,7 +82,8 @@
                             </div>
                         </td>
                         <td>
-                            <a href="{{ route('ortu.show.riwayatPembayaran', $riwayat->id) }}" class="btn btn-sm btn-info">Detail</a>
+                            <a href="{{ route('ortu.show.riwayatPembayaran', $riwayat->id) }}"
+                                class="btn btn-sm btn-info">Detail</a>
 
                         </td>
                     </tr>
@@ -90,7 +91,6 @@
             </tbody>
         </table>
     </div>
-
 @endsection
 @push('scripts')
     <script>
@@ -106,7 +106,8 @@
                         "filter_bulan": $('#filterBulan').val(),
                     },
                     success: function(data) {
-                        $('#dataTables tbody').empty();
+                         $('#dataTables').DataTable().destroy();
+                            $('#dataTables tbody').empty();
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -116,7 +117,8 @@
                                 '<td>' + value.siswa.nis + '</td>' +
                                 '<td>' + value.siswa.angkatan + '</td>' +
                                 '<td>' + value.siswa.kelas + '</td>' +
-                                '<td> Rp. ' + value.biaya.nominal.toLocaleString('id-ID') + '</td>' +
+                                '<td> Rp. ' + value.biaya.nominal.toLocaleString(
+                                    'id-ID') + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
                                 (value.status == 'Belum Lunas' ?
@@ -131,7 +133,8 @@
                                 '</div>' +
                                 '</td>' +
                                 '<td>' +
-                                '<a href="/ortu/riwayat-pembayaran/' + value.id + '" class="btn btn-sm btn-info">Detail</a>' +
+                                '<a href="/ortu/riwayat-pembayaran/' + value.id +
+                                '" class="btn btn-sm btn-info">Detail</a>' +
                                 '</td>' +
                                 '</tr>');
                         });

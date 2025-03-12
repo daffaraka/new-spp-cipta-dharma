@@ -16,14 +16,16 @@
                     </div>
 
                 </form>
-                <a href="{{ route('siswa.export') }}" class="btn btn-outline-success m-1 d-xl-inline d-lg-inline d-block " id="btnExport">
+                <a href="{{ route('siswa.export') }}" class="btn btn-outline-success m-1 d-xl-inline d-lg-inline d-block "
+                    id="btnExport">
                     <i class="fas fa-file-excel"></i> Export Excel
                 </a>
-                <a href="#" class="btn btn-warning m-1 d-xl-inline d-lg-inline d-block" id="btnImport" data-bs-toggle="modal"
-                    data-bs-target="#importModal">
+                <a href="#" class="btn btn-warning m-1 d-xl-inline d-lg-inline d-block" id="btnImport"
+                    data-bs-toggle="modal" data-bs-target="#importModal">
                     <i class="fas fa-file-import"></i> Import Excel
                 </a>
-                <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark m-1 d-xl-inline d-lg-inline d-block" id="btnPrint">
+                <a href="{{ route('siswa.print') }}" class="btn btn-outline-dark m-1 d-xl-inline d-lg-inline d-block"
+                    id="btnPrint">
                     <i class="fas fa-print"></i> Print
                 </a>
             </div>
@@ -229,6 +231,7 @@
     <script>
         $('#btnFilter').click(function(e) {
             e.preventDefault();
+
             $.ajax({
                 url: "{{ route('siswa.filter') }}",
                 type: "POST",
@@ -238,7 +241,9 @@
                     "filter_kelas": $('#filterKelas').val()
                 },
                 success: function(data) {
-                    $('#dataTables tbody').empty();
+                    $('#dataTables').DataTable().destroy(); // Hancurkan instance DataTable lama
+                    $('#dataTables tbody').empty(); // Kosongkan isi tabel sebelum menambahkan data baru
+
                     $.each(data, function(index, value) {
                         $('#dataTables tbody').append('<tr>' +
                             '<td>' + (index + 1) + '</td>' +
@@ -249,25 +254,47 @@
                             '<td>' + value.alamat + '</td>' +
                             '<td>' +
                             '<div class="d-flex gap-1">' +
-                            '<button class="btn btn-block btn-info my-1 btnDetailSiswa" data-id="' +
-                            value.id +
+                            '<button class="btn btn-info btnDetailSiswa" data-id="' + value
+                            .id +
                             '" data-bs-toggle="modal" data-bs-target="#detailModal">Detail</button>' +
                             '<a href="/siswa/' + value.id +
-                            '/edit" class="btn btn-block btn-warning my-1">Edit</a>' +
+                            '/edit" class="btn btn-warning">Edit</a>' +
                             '<form action="/siswa/' + value.id +
                             '" method="POST" style="display:inline;">' +
                             '<input type="hidden" name="_token" value="{{ csrf_token() }}">' +
                             '<input type="hidden" name="_method" value="DELETE">' +
-                            '<button type="submit" class="btn btn-danger btn-block my-1" onclick="return confirm(\'Apakah Anda yakin ingin menghapus siswa ini?\')">Hapus</button>' +
+                            '<button type="submit" class="btn btn-danger" onclick="return confirm(\'Apakah Anda yakin ingin menghapus siswa ini?\')">Hapus</button>' +
                             '</form>' +
                             '</div>' +
                             '</td>' +
                             '</tr>');
                     });
-
+                    $('#dataTables').DataTable({
+                        "paging": true,
+                        "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                        "pageLength": 10, // Default 10 entries per page
+                        "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
+                        "searching": true, // Aktifkan fitur pencarian
+                        "info": true, // Tampilkan informasi jumlah data
+                        "language": {
+                            "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                            "zeroRecords": "Tidak ada data ditemukan",
+                            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                            "infoEmpty": "Tidak ada data tersedia",
+                            "infoFiltered": "(disaring dari _MAX_ total data)",
+                            "search": "Cari:",
+                            "paginate": {
+                                "first": "<<",
+                                "last": ">>",
+                                "next": ">",
+                                "previous": "<"
+                            }
+                        }
+                    });
                 }
             });
         });
+
 
 
 
