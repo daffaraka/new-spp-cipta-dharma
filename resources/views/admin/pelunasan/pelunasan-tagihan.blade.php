@@ -116,8 +116,7 @@
                         </div>
 
 
-
-                        @if ($tagihan->status == 'Belum Lunas')
+                        @if ($tagihan->status == 'Belum Lunas' || $tagihan->status == 'Kurang')
                             <button type="submit" class="btn btn-primary my-3">Submit</button>
                         @else
                         <button type="submit" class="btn btn-primary my-3 disabled">Submit</button>
