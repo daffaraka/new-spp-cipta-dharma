@@ -10,16 +10,11 @@
                             <div class="table-responsive">
                                 <table class="table table-light" id="dataTables">
                                     <thead>
+
                                         <tr>
-                                            <th>No</th>
+                                            <th class="text-start w-auto" style="white-space: nowrap;">No</th>
+                                            <th class="text-start w-auto">Nama</th>
                                             <th>No Invoice</th>
-                                            <th>Nama Siswa</th>
-                                            <th>Nominal</th>
-                                            <th>Nama Nominal</th>
-                                            <th>Tahun</th>
-                                            <th>Bulan</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -130,9 +125,9 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#dataTables2').DataTable();
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTables2').DataTable();
+        });
+    </script>
 @endpush

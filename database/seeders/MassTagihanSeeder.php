@@ -17,7 +17,7 @@ class MassTagihanSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
+        $user = User::whereIn('id',[3,4,5,6,7])->pluck('id')->toArray();
         // $user = [3];
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];

@@ -146,6 +146,7 @@
                         success: function(data) {
                             $('#dataTables').DataTable().destroy();
                             $('#dataTables tbody').empty();
+
                             $.each(data, function(index, value) {
                                 $('#dataTables tbody').append('<tr>' +
                                     '<td>' + (index + 1) + '</td>' +
