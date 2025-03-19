@@ -17,8 +17,8 @@ class MassTagihanSeeder extends Seeder
      */
     public function run()
     {
-        // $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
-        $user = [3];
+        $user = User::whereNotIn('id',[1,2])->pluck('id')->toArray();
+        // $user = [3];
         $tahun = ['2019', '2020', '2021', '2022', '2023', '2024'];
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         $biaya = Biaya::pluck('id')->toArray();
@@ -27,7 +27,7 @@ class MassTagihanSeeder extends Seeder
         $status = ['Belum Lunas','Sedang Diverifikasi','Lunas'];
         $userInternal = [1,2];
         $statusKuitansi = ['0','1'];
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             // $namaInvoice = 'Tagihan Bulanan ' . $i;
             $noInvoice = 'INV' . sprintf('%03d', $i);
             $tagihan = Tagihan::insert([

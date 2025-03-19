@@ -211,7 +211,9 @@
                         "filter_kelas": $('#filterKelas').val()
                     },
                     success: function(data) {
+                        $('#dataTables').DataTable().destroy();
                         $('#dataTables tbody').empty();
+
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -263,7 +265,29 @@
                                 '</td>' +
                                 '</tr>');
                         });
-                        reattachEventHandlers();
+
+                        $('#dataTables').DataTable({
+                            "paging": true,
+                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "pageLength": 10, // Default 10 entries per page
+                            "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
+                            "searching": true, // Aktifkan fitur pencarian
+                            "info": true, // Tampilkan informasi jumlah data
+                            "language": {
+                                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                                "zeroRecords": "Tidak ada data ditemukan",
+                                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                "infoEmpty": "Tidak ada data tersedia",
+                                "infoFiltered": "(disaring dari _MAX_ total data)",
+                                "search": "Cari:",
+                                "paginate": {
+                                    "first": "<<",
+                                    "last": ">>",
+                                    "next": ">",
+                                    "previous": "<"
+                                }
+                            }
+                        });
                     }
                 });
             });

@@ -126,7 +126,9 @@
                         "filter_status": $('#filterStatus').val(),
                     },
                     success: function(data) {
+                        $('#dataTables').DataTable().destroy();
                         $('#dataTables tbody').empty();
+
                         $.each(data, function(index, value) {
                             var actionButtons = '';
 
@@ -167,7 +169,8 @@
                                 ) + '</td>' +
                                 '<td>' +
                                 '<div class="d-flex gap-1">' +
-                                '<a href="/ortu/pembayaran/' + value.id + '" class="btn btn-sm btn-warning">Detail</a>' +
+                                '<a href="/ortu/pembayaran/' + value.id +
+                                '" class="btn btn-sm btn-warning">Detail</a>' +
                                 actionButtons +
                                 '</div> </td>' +
                                 '</tr>');

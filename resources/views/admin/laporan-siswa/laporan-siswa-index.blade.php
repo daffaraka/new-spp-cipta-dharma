@@ -219,7 +219,9 @@
                         "filter_bulan": $('#filterBulan').val(),
                     },
                     success: function(data) {
+                        $('#dataTables').DataTable().destroy();
                         $('#dataTables tbody').empty();
+
                         $.each(data, function(index, value) {
                             $('#dataTables tbody').append('<tr>' +
                                 '<td>' + (index + 1) + '</td>' +
@@ -243,6 +245,29 @@
                                 '</td>' +
                                 '</tr>');
                         });
+
+                        $('#dataTables').DataTable({
+                            "paging": true,
+                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "pageLength": 10, // Default 10 entries per page
+                            "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
+                            "searching": true, // Aktifkan fitur pencarian
+                            "info": true, // Tampilkan informasi jumlah data
+                            "language": {
+                                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                                "zeroRecords": "Tidak ada data ditemukan",
+                                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                "infoEmpty": "Tidak ada data tersedia",
+                                "infoFiltered": "(disaring dari _MAX_ total data)",
+                                "search": "Cari:",
+                                "paginate": {
+                                    "first": "<<",
+                                    "last": ">>",
+                                    "next": ">",
+                                    "previous": "<"
+                                }
+                            }
+                        });
                     }
                 });
             });
@@ -264,22 +289,22 @@
                 dataType: "json",
                 success: function(response) {
                     $('#detail-nis').val(response.siswa.nis);
-                        $('#detail-nama-siswa').val(response.siswa.nama);
-                        $('#detail-nominal').val(response.biaya.nominal);
-                        $('#detail-no-invoice').val(response.no_invoice);
-                        $('#detail-keterangan').val(response.keterangan);
-                        $('#detail-tanggal-terbit').val(response.tanggal_terbit);
-                        $('#detail-tanggal-lunas').val(response.tanggal_lunas);
-                        $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
-                            "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
-                        $('#detail-status').val(response.status);
-                        $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
-                            .nama : '-');
-                        $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
-                            .nama : '-');
-                        $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
-                        $('#detail-bulan').val(response.bulan);
-                        $('#detail-tahun').val(response.tahun);
+                    $('#detail-nama-siswa').val(response.siswa.nama);
+                    $('#detail-nominal').val(response.biaya.nominal);
+                    $('#detail-no-invoice').val(response.no_invoice);
+                    $('#detail-keterangan').val(response.keterangan);
+                    $('#detail-tanggal-terbit').val(response.tanggal_terbit);
+                    $('#detail-tanggal-lunas').val(response.tanggal_lunas);
+                    $('#detail-bukti-pelunasan-link').attr('href', response.bukti_pelunasan ?
+                        "{{ asset('bukti-pelunasan') }}/" + response.bukti_pelunasan : '');
+                    $('#detail-status').val(response.status);
+                    $('#detail-user-penerbit').val(response.penerbit ? response.penerbit
+                        .nama : '-');
+                    $('#detail-user-melunasi').val(response.melunasi ? response.melunasi
+                        .nama : '-');
+                    $('#detail-biaya').val(response.biaya ? response.biaya.nama_biaya : '-');
+                    $('#detail-bulan').val(response.bulan);
+                    $('#detail-tahun').val(response.tahun);
                 }
             });
         });
