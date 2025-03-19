@@ -75,7 +75,7 @@ class OrangTuaController extends Controller
 
         if (empty($request->filter_tahun) && empty($request->filter_bulan)) {
             return response()->json(
-                Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->latest()->get()
+                Tagihan::with(['siswa', 'biaya', 'penerbit', 'melunasi'])->where('user_id', auth()->user()->id)->whereStatus('Lunas')->latest()->get()
 
             );
         } else {
@@ -87,6 +87,7 @@ class OrangTuaController extends Controller
                     ->when($request->filled('filter_bulan'), function ($query) use ($request) {
                         $query->where('bulan', $request->filter_bulan);
                     })
+                    ->whereStatus('Lunas')
                     ->where('user_id', auth()->user()->id)->latest()
                     ->get()
             );

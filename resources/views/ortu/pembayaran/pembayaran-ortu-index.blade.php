@@ -21,89 +21,74 @@
     <table class="table table-light" id="dataTableOrtu">
         <thead class="thead-light">
             <tr>
-                <th class="text-start w-auto" style="white-space: nowrap;">No</th>
-                <th class="text-start w-auto">Nama</th>
+                <th>No</th>
                 <th>No Invoice</th>
+                <th>Nama Siswa</th>
+                <th>NIS</th>
+                <th>Nominal</th>
+                <th>Keterangan</th>
+                <th>Tahun</th>
+                <th>Bulan</th>
+                <th>Status</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($pembayarans as $index => $pembayaran)
                 <tr>
-                    <td class="text-start w-auto" style="white-space: nowrap; width:100px;">{{ $index + 1 }}</td>
-                    <td lass="text-start w-auto" style="white-space: nowrap; width:200px;">{{ $pembayaran->siswa->nama }}
+                    <td>{{ $index + 1 }}</td>
+                    <td> {{ $pembayaran->no_invoice }}</td>
+                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
+                    <td>{{ $pembayaran->siswa->nis }} </td>
 
-                    <td class="text-start w-auto" style="white-space: nowrap; width:200px;">
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading-{{ $index }}">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapse-{{ $index }}" aria-expanded="true"
-                                        aria-controls="collapse-{{ $index }}">
-                                        {{ $pembayaran->no_invoice }}
-                                    </button>
-                                </h2>
-                                <div id="collapse-{{ $index }}" class="accordion-collapse collapse"
-                                    aria-labelledby="heading-{{ $index }}" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="d-flex flex-row gap-3 mb-2">
-                                            <div class="d-flex flex-column text-start">
-                                                <span class="fw-bold">No Invoice:</span>
-                                                <span class="fw-bold">Nama Siswa:</span>
-                                                <span class="fw-bold">NIS:</span>
-                                                <span class="fw-bold">Angkatan:</span>
-                                                <span class="fw-bold">Kelas:</span>
-                                                <span class="fw-bold">Tanggal:</span>
-                                                <span class="fw-bold">Nominal:</span>
-                                                <span class="fw-bold">Status:</span>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <span>{{ $pembayaran->no_invoice }}</span>
-                                                <span>{{ $pembayaran->siswa->nama }}</span>
-                                                <span>{{ $pembayaran->siswa->nis }}</span>
-                                                <span>{{ $pembayaran->siswa->angkatan }}</span>
-                                                <span>{{ $pembayaran->siswa->kelas }}</span>
-                                                <span>{{ \Carbon\Carbon::parse($pembayaran->tanggal_terbit)->format('d-m-Y') }}</span>
-                                                <span>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</span>
-                                                <span>
-                                                    @if ($pembayaran->status == 'Lunas')
-                                                        <span
-                                                            class="badge bg-success rounded-pill text-bg-success px-3">Lunas</span>
-                                                    @elseif($pembayaran->status == 'Sedang Diverifikasi')
-                                                        <span
-                                                            class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>
-                                                    @else
-                                                        <span
-                                                            class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum
-                                                            Lunas</span>
-                                                    @endif
-                                                </span>
-                                            </div>
+                    <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
+                    <td>{{ $pembayaran->biaya->nama_nominal }}</td>
+                    <td>{{ $pembayaran->tahun }}</td>
+                    <td>{{ $pembayaran->bulan }}</td>
+                    <td>
+                        @if ($pembayaran->status == 'Belum Lunas')
+                            <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                        @elseif ($pembayaran->status == 'Sedang Diverifikasi')
+                            <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                            <!-- tambahan a -->
+                        @elseif ($pembayaran->status == 'Lebih')
+                            <span class="badge rounded-pill bg-success">Lunas Lebih</span>
+                        @elseif ($pembayaran->status == 'Kurang')
+                            <span class="badge rounded-pill bg-warning">Kurang</span>
+                            <!-- tambahan b -->
+                        @else
+                            <span class="badge rounded-pill bg-success">Lunas</span>
+                        @endif
+                        {{-- tambahan --}}
 
-                                        </div>
-                                        <div class="d-inline mt-3">
-                                            <a href="{{ route('ortu.pembayaran.show', $pembayaran->id) }}"
-                                                class="btn btn-sm btn-warning">Detail</a>
-                                            @if ($pembayaran->isSentKuitansi == '1')
-                                                <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
-                                                    class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
-                                            @endif
-                                            @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
-                                                <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
-                                                    class="btn btn-sm btn-success me-3">Bayar</a>
-                                            @endif
-                                            {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
-                                            {{-- @elseif ($pembayaran->status == 'Lebih') --}}
-                                            @if ($pembayaran->status == 'Lebih')
-                                                <div class="d-flex">
-                                                    <a href="#" class="btn btn-success me-3" data-bs-toggle="modal"
-                                                        data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1">
+
+                            <a href="{{ route('ortu.pembayaran.show', $pembayaran->id) }}"
+                                class="btn btn-sm btn-warning">Detail</a>
+
+                            @if ($pembayaran->isSentKuitansi == '1')
+                                <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
+                            @endif
+
+                            @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
+                                <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-success me-3">Bayar</a>
+                            @endif
+                            {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
+
+                            {{-- @elseif ($pembayaran->status == 'Lebih') --}}
+                            @if ($pembayaran->status == 'Lebih')
+                                <div class="d-flex">
+                                    <a href="#" class="btn btn-success me-3" data-bs-toggle="modal"
+                                        data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
                                 </div>
-                            </div>
+                            @endif
                         </div>
+
+
                     </td>
                 </tr>
             @endforeach
@@ -131,15 +116,9 @@
 @endsection
 @push('scripts')
     <script>
+        // $('#dataTableOrtu').DataTable();
         $(document).ready(function() {
-            $('#dataTableOrtu').DataTable({
-                "autoWidth": false, // Matikan auto width
-                "columnDefs": [{
-                        "width": "1%",
-                        "targets": 0
-                    } // Atur width kolom pertama
-                ]
-            });
+            $('#dataTableOrtu').DataTable();
             $('#btnFilter').click(function(e) {
                 e.preventDefault();
                 $.ajax({
@@ -172,81 +151,34 @@
                             }
 
                             $('#dataTableOrtu tbody').append('<tr>' +
-                                '<td class="text-start w-auto" style="white-space: nowrap; width:100px;">' +
-                                (index + 1) + '</td>' +
-                                '<td lass="text-start w-auto" style="white-space: nowrap; width:200px;">' +
-                                value.siswa.nama +
-                                '</td>' +
-                                '<td class="text-start w-auto" style="white-space: nowrap; width:200px;">' +
-                                '<div class="accordion" id="accordionExample">' +
-                                '<div class="accordion-item">' +
-                                '<h2 class="accordion-header" id="heading-' +
-                                index + '">' +
-                                '<button class="accordion-button" type="button" data-bs-toggle="collapse" ' +
-                                'data-bs-target="#collapse-' + index +
-                                '" aria-expanded="true" ' +
-                                'aria-controls="collapse-' + index + '">' +
-                                value.no_invoice +
-                                '</button>' +
-                                '</h2>' +
-                                '<div id="collapse-' + index +
-                                '" class="accordion-collapse collapse" ' +
-                                'aria-labelledby="heading-' + index +
-                                '" data-bs-parent="#accordionExample">' +
-                                '<div class="accordion-body">' +
-                                '<div class="d-flex flex-row gap-3 mb-2">' +
-                                '<div class="d-flex flex-column text-start">' +
-                                '<span class="fw-bold">No Invoice:</span>' +
-                                '<span class="fw-bold">Nama Siswa:</span>' +
-                                '<span class="fw-bold">NIS:</span>' +
-                                '<span class="fw-bold">Angkatan:</span>' +
-                                '<span class="fw-bold">Kelas:</span>' +
-                                '<span class="fw-bold">Tanggal:</span>' +
-                                '<span class="fw-bold">Nominal:</span>' +
-                                '<span class="fw-bold">Status:</span>' +
-                                '</div>' +
-                                '<div class="d-flex flex-column">' +
-                                '<span>' + value.no_invoice + '</span>' +
-                                '<span>' + value.siswa.nama + '</span>' +
-                                '<span>' + value.siswa.nis + '</span>' +
-                                '<span>' + value.siswa.angkatan + '</span>' +
-                                '<span>' + value.siswa.kelas + '</span>' +
-                                '<span>' + value.tanggal_terbit + '</span>' +
-                                '<span> Rp. ' + value.biaya.nominal.toLocaleString(
-                                    'id-ID') + '</span>' +
-                                '<span>' +
-                                (value.status == 'Lunas' ?
-                                    '<span class="badge bg-success rounded-pill text-bg-success px-3">Lunas</span>' :
-                                    (value.status == 'Sedang Diverifikasi' ?
-                                        '<span class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>' :
-                                        '<span class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum Lunas</span>'
-                                    )
-                                ) +
-                                '</span>' +
-                                '</div>' +
-                                '</div>' +
-                                '<div class="d-inline mt-3">' +
-                                '<a href="' + value.routeShow +
-                                '" class="btn btn-sm btn-warning">Detail</a>' +
-                                (value.isSentKuitansi == '1' ? '<a href="' + value
-                                    .routeLihatKuitansi +
-                                    '" class="btn btn-sm btn-secondary">Lihat Kuitansi</a>' :
-                                    '') +
-                                (value.status == 'Belum Lunas' || value.status ==
-                                    'Kurang' ? '<a href="' + value.routeBayar +
-                                    '" class="btn btn-sm btn-success me-3">Bayar</a>' :
-                                    '') +
-                                (value.status == 'Lebih' ?
-                                    '<div class="d-flex"><a href="#" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#buktiModal_' +
-                                    index + '">Cek Bukti</a></div>' : '') +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</td>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.siswa.nama + '-' + value.siswa
+                                .kelas + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
 
+                                '<td> Rp. ' + value.biaya.nominal.toLocaleString(
+                                    'id-ID') + '</td>' +
+                                '<td>' + value.biaya.nama_nominal + '</td>' +
+                                '<td>' + value.tahun + '</td>' +
+                                '<td>' + value.bulan + '</td>' +
+                                '<td>' +
+                                (value.status == 'Belum Lunas' ?
+                                    '<span class="badge rounded-pill bg-danger">Belum Lunas</span>' :
+                                    (value.status == 'Sedang Diverifikasi' ?
+                                        '<span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>' :
+                                        '<span class="badge rounded-pill bg-success">Lunas</span>'
+                                    )
+                                ) + '</td>' +
+                                '<td>' +
+                                '<div class="d-flex gap-1">' +
+                                '<a href="/ortu/pembayaran/' + value.id +
+                                '" class="btn btn-sm btn-warning">Detail</a>' +
+                                actionButtons +
+                                '</div> </td>' +
                                 '</tr>');
+
+
                         });
 
 
@@ -259,7 +191,9 @@
                                 } // Atur width kolom pertama
                             ],
                             "paging": true,
-                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "lengthMenu": [10, 25, 50,
+                                100
+                            ], // Pilihan entries per page
                             "pageLength": 10, // Default 10 entries per page
                             "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
                             "searching": true, // Aktifkan fitur pencarian

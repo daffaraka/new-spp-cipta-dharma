@@ -39,70 +39,64 @@
         <table class="table table-light" id="dataTableOrtu">
             <thead class="thead-light">
                 <tr>
-                    <th class="d-flex justify-content-start w-auto" style="white-space: nowrap;">No</th>
-                    <th class="text-start w-auto" style="white-space: nowrap;">Nama</th>
+                    <th>No</th>
                     <th>No Invoice</th>
+                    <th>Tanggal</th>
+                    <th>Nama Siswa</th>
+                    <th>NIS</th>
+                    <th>Angkatan</th>
+                    <th>Kelas</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($riwayats as $index => $riwayat)
                     <tr>
-                        <td class="text-start w-auto" style="white-space: nowrap; width:100px;">{{ $index + 1 }}</td>
-                        <td lass="text-start w-auto" style="white-space: nowrap; width:200px;">{{ $riwayat->siswa->nama }}
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $riwayat->no_invoice }}</td>
+                        <td>{{ $riwayat->tanggal_terbit }}</td>
+                        <td>{{ $riwayat->siswa->nama }}</td>
+                        <td>{{ $riwayat->siswa->nis }}</td>
+                        <td>{{ $riwayat->siswa->angkatan }}</td>
+                        <td>{{ $riwayat->siswa->kelas }}</td>
+                        <td>{{ 'Rp. ' . number_format($riwayat->biaya->nominal, 0, ',', '.') }}</td>
+
+                        <td>
+                            <div class="d-flex gap-1">
+                                @if ($riwayat->status == 'Belum Lunas')
+                                    <button type="button" class="btn btn-sm btn-danger">Belum Lunas</button>
+                                @elseif ($riwayat->status == 'Sedang Diverifikasi')
+                                    <button type="button" class="btn btn-sm btn-warning">Sedang Diverifikasi</button>
+
+                                    <!-- tambahan a -->
+                                @elseif ($riwayat->status == 'Lebih')
+                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#buktiModal_{{ $index + 1 }}">Lunas Lebih</a>
+                                @elseif ($riwayat->status == 'Kurang')
+                                    <button type="button" class="btn btn-sm btn-warning">Kurang</button>
+                                    <!-- tambahan b -->
+                                @else
+                                    <button type="button" class="btn btn-sm btn-success">Lunas</button>
+                                @endif
+
+                                {{-- tambahan --}}
+                                @if (($riwayat->status == 'Lunas' || $riwayat->status == 'Lebih') && $riwayat->isSentKuitansi == 1)
+                                @endif
+                                {{--  --}}
+
+                                @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
+                                    <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
+                                        class="btn btn-sm btn-primary">Kuitansi</a>
+                                @else
+                                    <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
+                                @endif
+                            </div>
                         </td>
                         <td>
-
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading-{{ $index }}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapse-{{ $index }}" aria-expanded="true"
-                                            aria-controls="collapse-{{ $index }}">
-                                            {{ $riwayat->no_invoice }}
-                                        </button>
-                                    </h2>
-                                    <div id="collapse-{{ $index }}" class="accordion-collapse collapse"
-                                        aria-labelledby="heading-{{ $index }}" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <div class="d-flex flex-row gap-3">
-                                                <div class="d-flex flex-column text-start">
-                                                    <span class="fw-bold">No Invoice:</span>
-                                                    <span class="fw-bold">Nama Siswa:</span>
-                                                    <span class="fw-bold">NIS:</span>
-                                                    <span class="fw-bold">Angkatan:</span>
-                                                    <span class="fw-bold">Kelas:</span>
-                                                    <span class="fw-bold">Tanggal:</span>
-                                                    <span class="fw-bold">Nominal:</span>
-                                                    <span class="fw-bold">Status:</span>
-
-                                                </div>
-                                                <div class="d-flex flex-column">
-                                                    <span>{{ $riwayat->no_invoice }}</span>
-                                                    <span>{{ $riwayat->siswa->nama }}</span>
-                                                    <span>{{ $riwayat->siswa->nis }}</span>
-                                                    <span>{{ $riwayat->siswa->angkatan }}</span>
-                                                    <span>{{ $riwayat->siswa->kelas }}</span>
-                                                    <span>{{ \Carbon\Carbon::parse($riwayat->tanggal_terbit)->format('d-m-Y') }}</span>
-                                                    <span>{{ 'Rp. ' . number_format($riwayat->biaya->nominal, 0, ',', '.') }}</span>
-                                                    <span>
-                                                        @if ($riwayat->status == 'Lunas')
-                                                            <span
-                                                                class="badge bg-success rounded-pill text-bg-success px-3">Lunas</span>
-                                                        @elseif($riwayat->status == 'Sedang Diverifikasi')
-                                                            <span
-                                                                class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>
-                                                        @else
-                                                            <span
-                                                                class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum
-                                                                Lunas</span>
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="{{ route('ortu.show.riwayatPembayaran', $riwayat->id) }}"
+                                class="btn btn-sm btn-info">Detail</a>
 
                         </td>
                     </tr>
@@ -111,6 +105,8 @@
         </table>
     </div>
 
+    {{-- tambahan --}}
+    <!-- modal -->
     @foreach ($riwayats as $index => $riwayat)
         <div class="modal fade" id="buktiModal_{{ $index + 1 }}" tabindex="-1" aria-labelledby="buktiModalLabel"
             aria-hidden="true">
@@ -134,15 +130,8 @@
     <script>
 
         $(document).ready(function() {
-            $('#dataTableOrtu').DataTable({
-            "autoWidth": false, // Matikan auto width
-            "columnDefs": [{
-                    "width": "1%",
-                    "targets": 0
-                } // Atur width kolom pertama
-            ]
-        });
 
+            $('#dataTableOrtu').DataTable();
             $('#btnFilter').click(function(e) {
                 e.preventDefault();
                 $.ajax({
@@ -158,65 +147,38 @@
                         $('#dataTableOrtu tbody').empty();
                         $.each(data, function(index, value) {
                             $('#dataTableOrtu tbody').append('<tr>' +
-                                '<td class="text-start w-auto" style="white-space: nowrap; width:100px;">' +
-                                (index + 1) + '</td>' +
-                                '<td class="text-start w-auto" style="white-space: nowrap; width:200px;">' +
-                                value.siswa.nama + '</td>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + value.no_invoice + '</td>' +
+                                '<td>' + value.tanggal_terbit + '</td>' +
+                                '<td>' + value.siswa.nama + '</td>' +
+                                '<td>' + value.siswa.nis + '</td>' +
+                                '<td>' + value.siswa.angkatan + '</td>' +
+                                '<td>' + value.siswa.kelas + '</td>' +
+                                '<td> Rp. ' + value.biaya.nominal.toLocaleString(
+                                    'id-ID') + '</td>' +
                                 '<td>' +
-                                '<div class="accordion" id="accordionExample">' +
-                                '<div class="accordion-item">' +
-                                '<h2 class="accordion-header" id="heading-' +
-                                index + '">' +
-                                '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-' +
-                                index +
-                                '" aria-expanded="true" aria-controls="collapse-' +
-                                index + '">' +
-                                value.no_invoice +
-                                '</button>' +
-                                '</h2>' +
-                                '<div id="collapse-' + index +
-                                '" class="accordion-collapse collapse" aria-labelledby="heading-' +
-                                index + '" data-bs-parent="#accordionExample">' +
-                                '<div class="accordion-body">' +
-                                '<div class="d-flex flex-row gap-3">' +
-                                '<div class="d-flex flex-column text-start">' +
-                                '<span class="fw-bold">No Invoice:</span>' +
-                                '<span class="fw-bold">Nama Siswa:</span>' +
-                                '<span class="fw-bold">NIS:</span>' +
-                                '<span class="fw-bold">Angkatan:</span>' +
-                                '<span class="fw-bold">Kelas:</span>' +
-                                '<span class="fw-bold">Tanggal:</span>' +
-                                '<span class="fw-bold">Nominal:</span>' +
-                                '<span class="fw-bold">Status:</span>' +
-                                '</div>' +
-                                '<div class="d-flex flex-column">' +
-                                '<span>' + value.no_invoice + '</span>' +
-                                '<span>' + value.siswa.nama + '</span>' +
-                                '<span>' + value.siswa.nis + '</span>' +
-                                '<span>' + value.siswa.angkatan + '</span>' +
-                                '<span>' + value.siswa.kelas + '</span>' +
-                                '<span>' + value.tanggal_terbit + '</span>' +
-                                '<span> Rp. ' + value.biaya.nominal.toLocaleString(
-                                    'id-ID') + '</span>' +
-                                '<span>' +
-                                (value.status == 'Lunas' ?
-                                    '<span class="badge bg-success rounded-pill text-bg-success px-3">Lunas</span>' :
-                                    (value.status == 'Sedang Diverifikasi' ?
-                                        '<span class="badge bg-warning  rounded-pill text-bg-warning px-3">Diproses</span>' :
-                                        '<span class="badge bg-danger  rounded-pill text-bg-danger px-3">Belum Lunas</span>'
-                                    )
+                                '<div class="d-flex gap-1">' +
+                                (value.status == 'Belum Lunas' ?
+                                    '<a href="{{ route('pembayaran.verifikasi', ' + value.id + ') }}" class="btn btn-sm btn-danger">Belum Lunas</a>' :
+                                    '<span class="btn btn-sm btn-success">Lunas</span>'
                                 ) +
-                                '</span>' +
+                                (value.status == 'Lunas' && value.isSentKuitansi ==
+                                    1 ?
+                                    '<a href="{{ asset("bukti-pelunasan/' + value.bukti_pelunasan + '") }}" class="btn btn-sm btn-secondary">Kuitansi</a>' :
+                                    '<button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>'
+                                ) +
                                 '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
-                                '</div>' +
+                                '</td>' +
+                                '<td>' +
+                                '<a href="/ortu/riwayat-pembayaran/' + value.id +
+                                '" class="btn btn-sm btn-info">Detail</a>' +
+                                '</td>' +
                                 '</tr>');
                         });
 
 
                         $('#dataTableOrtu').DataTable({
+
                             "autoWidth": false, // Matikan auto width
                             "columnDefs": [{
                                     "width": "1%",
@@ -224,7 +186,9 @@
                                 } // Atur width kolom pertama
                             ],
                             "paging": true,
-                            "lengthMenu": [10, 25, 50, 100], // Pilihan entries per page
+                            "lengthMenu": [10, 25, 50,
+                                100
+                            ], // Pilihan entries per page
                             "pageLength": 10, // Default 10 entries per page
                             "ordering": false, // Nonaktifkan sorting jika tidak diperlukan
                             "searching": true, // Aktifkan fitur pencarian
