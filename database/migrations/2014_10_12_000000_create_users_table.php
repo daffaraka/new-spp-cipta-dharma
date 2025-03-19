@@ -30,8 +30,9 @@ return new class extends Migration
             $table->string('angkatan')->nullable();
             $table->string('kelas')->nullable();
             $table->string('jenis_kelamin')->nullable();
-            $table->string('id_telegram')->nullable();
-            $table->enum('status',[1,0])->default(1);
+            $table->string('chat_id')->nullable();
+            // $table->string('id_telegram')->nullable();
+            $table->enum('status', [1, 0])->default(1);
             $table->date('tanggal_lahir')->nullable();
 
             $table->rememberToken();

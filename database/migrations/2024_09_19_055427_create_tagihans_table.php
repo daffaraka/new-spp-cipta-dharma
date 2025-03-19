@@ -23,18 +23,20 @@ return new class extends Migration
             $table->year('tahun');
             $table->unsignedBigInteger('user_penerbit_id')->nullable();
             $table->unsignedBigInteger('user_melunasi_id')->nullable();
-            $table->enum('status',['Belum Lunas','Sedang Diverifikasi','Lunas'])->default('Belum Lunas');
-            $table->string('bukti_pelunasan')->nullable();
-            $table->enum('isSentKuitansi',[0,1])->default(0);
+            $table->enum('status', ['Belum Lunas', 'Sedang Diverifikasi', 'Lunas', 'Lebih', 'Kurang'])
+                ->default('Belum Lunas');
+            $table->integer('nominal')->nullable();
+            $table->text('bukti_pelunasan')->nullable();
+            $table->text('bukti_lebih')->nullable();
+            $table->enum('isSentKuitansi', [0,1])->default(0);
             $table->string('nominal_pelunasan')->nullable();
-
             $table->string('biaya_lain')->nullable();
             $table->bigInteger('nominal_biaya_lain')->nullable();
 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onDelete('cascade');
-            $table->foreignId('biaya_id')->constrained()->onDelete('cascade')->onDelete('cascade')->nullable();
-            $table->foreign('user_penerbit_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
-            $table->foreign('user_melunasi_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('biaya_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreign('user_penerbit_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_melunasi_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });
