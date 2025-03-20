@@ -34,6 +34,7 @@ class SiswaImport implements ToModel, WithStartRow
             'kelas'    => $row[11] ?? '',
             'jenis_kelamin' => $row[12] ?? '',
             'agama'    => $row[13] ?? '',
+            'tanggal_lahir' => $row[14] ?? '',
         ]);
         $user->assignRole('SiswaOrangTua');
         return $user;

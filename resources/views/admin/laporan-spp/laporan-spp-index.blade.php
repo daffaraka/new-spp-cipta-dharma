@@ -2,7 +2,7 @@
 @section('content')
     <div class="row mb-3">
 
-        <div class="col-2">
+        <div class="col-md-2">
             <label for="filterTahun">Filter Tahun</label>
             <select id="filterTahun" name="filter_tahun" class="form-control">
                 <option value="">Pilih Tahun</option>
@@ -11,7 +11,7 @@
                 @endfor
             </select>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <label for="filterBulan">Filter Bulan</label>
             <select id="filterBulan" class="form-control" name="filter_bulan">
                 <option value="">Pilih Bulan</option>
@@ -29,23 +29,23 @@
                 <option value="Desember">Desember</option>
             </select>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <label for="filterTanggalAwal">Filter Tanggal Awal</label>
             <input type="date" id="filterTanggalAwal" name="filter_tanggal_awal" class="form-control">
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <label for="filterTanggalAkhir">Filter Tanggal Akhir</label>
             <input type="date" id="filterTanggalAkhir" name="filter_tanggal_akhir" class="form-control">
         </div>
 
-        <div class="col-1">
+        <div class="col-md-1">
             <button type="submit" class="btn btn-outline-primary mt-4" id="btnFilter">
                 Filter
             </button>
 
         </div>
 
-        <div class="col-3">
+        <div class="col-md-12">
             <div class="d-flex justify-content-end my-4">
                 <div>
                     <a href="{{ route('laporanSpp.export') }}" class="btn btn-outline-success" id="btnExport">
@@ -222,7 +222,7 @@
                                 '<td>' + value.siswa.kelas + '</td>' +
                                 '<td>' + value.bulan + '</td>' +
                                 '<td>' + value.tahun + '</td>' +
-                                '<td>' + 'Rp. ' + value.total_bayar + '</td>' +
+                                '<td>' + 'Rp. ' + value.biaya.nominal + '</td>' +
                                 '<td>' +
                                 '<div class="d-grid">' +
                                 '<button class="btn btn-block btn-info my-1 btnDetailLaporanSPP" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="' +
@@ -284,7 +284,7 @@
                     $('#detail-kelas').val(response.siswa.kelas);
                     $('#detail-bulan').val(response.bulan);
                     $('#detail-tahun').val(response.tahun);
-                    $('#detail-total-bayar').val('Rp. ' + response.total_bayar);
+                    $('#detail-total-bayar').val('Rp. ' + response.biaya.nominal);
                 }
             });
         });

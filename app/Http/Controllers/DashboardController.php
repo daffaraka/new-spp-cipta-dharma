@@ -35,7 +35,7 @@ class DashboardController extends Controller
             // dd($data['select_tahun']);
             // dd($data['select_tahun']);
 
-            $data['data_perJenisKelamin'] = User::select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
+            $data['data_perJenisKelamin'] = User::role('SiswaOrangTua')->select('jenis_kelamin', DB::raw('count(*) as total'))->groupBy('jenis_kelamin')->get()->map(function ($item) {
                 return [
                     'jenis_kelamin' => $item->jenis_kelamin,
                     'total' => $item->total

@@ -85,12 +85,13 @@ class PetugasController extends Controller
             'nama' => 'required',
             'username' => 'required|unique:users,username,' . $petugas->id . ',id',
             'email' => 'required|unique:users,email,' . $petugas->id . ',id',
-            'password' => 'required',
+            // 'password' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',
             'jenis_kelamin' => 'required',
         ]);
 
+        $password = $request->filled('password') ? bcrypt($request->password) : $petugas->password;
 
         $petugas->update(
             [
@@ -99,7 +100,7 @@ class PetugasController extends Controller
                 'nisn' => $request->nisn,
                 'email' => $request->email,
                 'username' => $request->username,
-                'password' => bcrypt($request->password),
+                'password' => $password,
                 'nama_wali' => $request->nama_wali,
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
