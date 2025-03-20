@@ -43,6 +43,7 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             'Kelas',
             'Jenis Kelamin',
             'Agama',
+            'Tanggal Lahir'
         ];
     }
 
@@ -64,6 +65,7 @@ class SiswaExport implements FromCollection, WithHeadings, WithMapping, WithStyl
             $siswa->kelas,
             $siswa->jenis_kelamin,
             $siswa->agama,
+            $siswa->tanggal_lahir
         ];
     }
 
