@@ -76,6 +76,7 @@
             <div class="card-body p-4">
                 <h5 class="card-title">Riwayat Pelunasan Terbaru</h5>
                 @if ($tagihan_Lunas != null)
+                <div class="table-responsive">
                     <table class="table table-light" id="dataTables2">
                         <thead>
                             <tr>
@@ -117,6 +118,8 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
                 @endif
             </div>
         </div>

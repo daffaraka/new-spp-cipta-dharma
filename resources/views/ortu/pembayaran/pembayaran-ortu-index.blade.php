@@ -1,7 +1,7 @@
 @extends('admin.admin-layout')
 @section('content')
     <div class="row mb-3">
-        <div class="col-md-2">
+        <div class="col-md-4">
             <label for="filterStatus">Filter Status</label>
             <select id="filterStatus" name="filter_status" class="form-control">
                 <option value="">Pilih Status</option>
@@ -18,82 +18,86 @@
 
         </div>
     </div>
-    <table class="table table-light" id="dataTableOrtu">
-        <thead class="thead-light">
-            <tr>
-                <th>No</th>
-                <th>No Invoice</th>
-                <th>Nama Siswa</th>
-                <th>NIS</th>
-                <th>Nominal</th>
-                <th>Keterangan</th>
-                <th>Tahun</th>
-                <th>Bulan</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($pembayarans as $index => $pembayaran)
+
+    <div class="table-responsive">
+        <table class="table table-light" id="dataTableOrtu">
+            <thead class="thead-light">
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td> {{ $pembayaran->no_invoice }}</td>
-                    <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
-                    <td>{{ $pembayaran->siswa->nis }} </td>
-
-                    <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
-                    <td>{{ $pembayaran->biaya->nama_nominal }}</td>
-                    <td>{{ $pembayaran->tahun }}</td>
-                    <td>{{ $pembayaran->bulan }}</td>
-                    <td>
-                        @if ($pembayaran->status == 'Belum Lunas')
-                            <span class="badge rounded-pill bg-danger">Belum Lunas</span>
-                        @elseif ($pembayaran->status == 'Sedang Diverifikasi')
-                            <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
-                            <!-- tambahan a -->
-                        @elseif ($pembayaran->status == 'Lebih')
-                            <span class="badge rounded-pill bg-success">Lunas Lebih</span>
-                        @elseif ($pembayaran->status == 'Kurang')
-                            <span class="badge rounded-pill bg-warning">Kurang</span>
-                            <!-- tambahan b -->
-                        @else
-                            <span class="badge rounded-pill bg-success">Lunas</span>
-                        @endif
-                        {{-- tambahan --}}
-
-                    </td>
-                    <td>
-                        <div class="d-flex gap-1">
-
-                            <a href="{{ route('ortu.pembayaran.show', $pembayaran->id) }}"
-                                class="btn btn-sm btn-warning">Detail</a>
-
-                            @if ($pembayaran->isSentKuitansi == '1')
-                                <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
-                                    class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
-                            @endif
-
-                            @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
-                                <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
-                                    class="btn btn-sm btn-success me-3">Bayar</a>
-                            @endif
-                            {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
-
-                            {{-- @elseif ($pembayaran->status == 'Lebih') --}}
-                            @if ($pembayaran->status == 'Lebih')
-                                <div class="d-flex">
-                                    <a href="#" class="btn btn-success me-3" data-bs-toggle="modal"
-                                        data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
-                                </div>
-                            @endif
-                        </div>
-
-
-                    </td>
+                    <th>No</th>
+                    <th>No Invoice</th>
+                    <th>Nama Siswa</th>
+                    <th>NIS</th>
+                    <th>Nominal</th>
+                    <th>Keterangan</th>
+                    <th>Tahun</th>
+                    <th>Bulan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($pembayarans as $index => $pembayaran)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td> {{ $pembayaran->no_invoice }}</td>
+                        <td>{{ $pembayaran->siswa->nama }} - <b>{{ $pembayaran->siswa->kelas }} </b></td>
+                        <td>{{ $pembayaran->siswa->nis }} </td>
+
+                        <td>{{ 'Rp. ' . number_format($pembayaran->biaya->nominal, 0, ',', '.') }}</td>
+                        <td>{{ $pembayaran->biaya->nama_nominal }}</td>
+                        <td>{{ $pembayaran->tahun }}</td>
+                        <td>{{ $pembayaran->bulan }}</td>
+                        <td>
+                            @if ($pembayaran->status == 'Belum Lunas')
+                                <span class="badge rounded-pill bg-danger">Belum Lunas</span>
+                            @elseif ($pembayaran->status == 'Sedang Diverifikasi')
+                                <span class="badge rounded-pill bg-warning">Sedang Diverifikasi</span>
+                                <!-- tambahan a -->
+                            @elseif ($pembayaran->status == 'Lebih')
+                                <span class="badge rounded-pill bg-success">Lunas Lebih</span>
+                            @elseif ($pembayaran->status == 'Kurang')
+                                <span class="badge rounded-pill bg-warning">Kurang</span>
+                                <!-- tambahan b -->
+                            @else
+                                <span class="badge rounded-pill bg-success">Lunas</span>
+                            @endif
+                            {{-- tambahan --}}
+
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+
+                                <a href="{{ route('ortu.pembayaran.show', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-warning">Detail</a>
+
+                                @if ($pembayaran->isSentKuitansi == '1')
+                                    <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
+                                        class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
+                                @endif
+
+                                @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
+                                    <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
+                                        class="btn btn-sm btn-success me-3">Bayar</a>
+                                @endif
+                                {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
+
+                                {{-- @elseif ($pembayaran->status == 'Lebih') --}}
+                                @if ($pembayaran->status == 'Lebih')
+                                    <div class="d-flex">
+                                        <a href="#" class="btn btn-success me-3" data-bs-toggle="modal"
+                                            data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
+                                    </div>
+                                @endif
+                            </div>
+
+
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 
     <!-- modal -->
     @foreach ($pembayarans as $index => $pembayaran)

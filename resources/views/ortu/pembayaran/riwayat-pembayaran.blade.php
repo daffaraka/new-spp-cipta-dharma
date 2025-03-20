@@ -1,7 +1,7 @@
 @extends('admin.admin-layout')
 @section('content')
     <div class="row mb-3">
-        <div class="col-2">
+        <div class="col-md-4">
             <label for="filterTahun">Filter Tahun</label>
             <select id="filterTahun" name="filter_tahun" class="form-control">
                 <option value="">Pilih Tahun</option>
@@ -10,7 +10,7 @@
                 @endfor
             </select>
         </div>
-        <div class="col-2">
+        <div class="col-md-4">
             <label for="filterBulan">Filter Bulan</label>
             <select id="filterBulan" class="form-control" name="filter_bulan">
                 <option value="">Pilih Bulan</option>
