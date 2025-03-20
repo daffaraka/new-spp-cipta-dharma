@@ -88,7 +88,7 @@
 
                                 @if ($riwayat->status == 'Lunas' && $riwayat->isSentKuitansi == '1')
                                     <a href="{{ asset('bukti-pelunasan/' . $riwayat->bukti_pelunasan) }}"
-                                        class="btn btn-sm btn-primary">Kuitansi</a>
+                                        class="btn btn-sm btn-primary">Bukti</a>
                                 @else
                                     <button disabled class="btn btn-sm btn-secondary">Kuitansi Belum ada</button>
                                 @endif
