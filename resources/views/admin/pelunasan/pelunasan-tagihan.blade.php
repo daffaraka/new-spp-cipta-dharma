@@ -40,11 +40,11 @@
                                 <div>Buatkan Cara Upload ya!</div>
                             </div>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                        {{-- <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
                                 <div>...............</div>
                             </div>
-                        </li>
+                        </li> --}}
                     </ol>
                 </div>
             </div>
@@ -93,10 +93,20 @@
                             <input type="text" id="nama_invoice" name="nama_invoice" class="form-control" value="{{ $tagihan->no_invoice ?? '' }}" readonly>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="total_bayar">Total Bayar</label>
                             <input type="text" id="total_bayar" name="total_bayar" class="form-control" value="{{ $tagihan->biaya->nominal ?? '' }}" readonly>
+                        </div> --}}
+
+                        {{-- <div class="mb-3">
+                            <label for="total_bayar">Total Bayar</label>
+                            <input type="text" id="total_bayar" name="total_bayar" class="form-control" value="" readonly>
+                        </div> --}}
+                        <div class="mb-3">
+                            <label for="total_bayar">Total Bayar</label>
+                            <input type="text" id="total_bayar" name="total_bayar" class="form-control">
                         </div>
+
 
                         <div class="mb-3">
                             <label for="bukti_pembayaran">Upload Bukti</label>

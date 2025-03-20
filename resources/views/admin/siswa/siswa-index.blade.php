@@ -211,10 +211,10 @@
                         <label for="detail-password">Password</label>
                         <input type="password" id="detail-password" class="form-control" readonly>
                     </div>
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <label for="detail-id-telegram">ID Telegram</label>
                         <input type="text" id="detail-id-telegram" class="form-control" readonly>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

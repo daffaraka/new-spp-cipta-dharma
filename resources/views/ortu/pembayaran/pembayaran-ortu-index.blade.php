@@ -60,6 +60,20 @@
                                 <!-- tambahan b -->
                             @else
                                 <span class="badge rounded-pill bg-success">Lunas</span>
+                            @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang')
+                                <a href="{{ route('pelunasan.tagihan', $pembayaran->id) }}"
+                                    class="btn btn-sm btn-success me-3">Bayar</a>
+                            @endif
+                            {{-- @if ($pembayaran->status == 'Belum Lunas' || $pembayaran->status == 'Kurang') --}}
+
+                            {{-- @elseif ($pembayaran->status == 'Lebih') --}}
+                            @if ($pembayaran->status == 'Lebih')
+                                <div class="d-flex">
+                                    <a href="#" class="btn btn-success me-1" data-bs-toggle="modal"
+                                        data-bs-target="#buktiModal_{{ $index + 1 }}">Cek Bukti</a>
+                                    <a href="{{ route('tagihan.lihatKuitansi', $pembayaran->id) }}"
+                                        class="btn btn-sm btn-secondary">Lihat Kuitansi</a>
+                                </div>
                             @endif
                             {{-- tambahan --}}
 
